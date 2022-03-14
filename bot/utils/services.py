@@ -140,7 +140,7 @@ class Zupie(commands.AutoShardedBot):
                         exc = '{}: {}'.format(type(e).__name__, e)
                         print(f"Failed to Load Extension {extension}\n{exc}")
                 self.session = session
-                await self.start(token)
+                await self.run(token)
 
             #await self.connect_redis()
             #await self.connect_postgres()
