@@ -88,8 +88,8 @@ async def tree(interaction: discord.Interaction):
 
 
 if __name__ == '__main__':
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError as e:
-        loop = asyncio.get_event_loop()
-    loop.run_until_complete(bot.start_bot())
+    #try:
+        #loop = asyncio.get_running_loop()
+    #except RuntimeError as e:
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(bot.main())

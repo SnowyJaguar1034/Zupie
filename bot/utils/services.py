@@ -129,17 +129,19 @@ class Zupie(commands.AutoShardedBot):
             await self.prom.start()
     '''
 
-    async def start_bot(self):
-        #await self.connect_redis()
-        #await self.connect_postgres()
-        #await self.connect_prometheus()
-        for extension in self.config.initial_extensions:
-            try:
-                self.load_extension(extension)
-                print(f"Loaded {extension} Cog")
-            except Exception as e:
-                exc = '{}: {}'.format(type(e).__name__, e)
-                print(f"Failed to Load Extension {extension}\n{exc}")
-                #print(f"Failed to load extension {extension}.", file=sys.stderr)
-                #print(traceback.print_exc())
-        await self.start(token)
+    async def main(self):
+        async with aiohttp.ClientSession() as session:
+            async with self:
+                for extension in self.config.initial_extensions:
+                    try:
+                        self.load_extension(extension)
+                        print(f"Loaded {extension} Cog")
+                    except Exception as e:
+                        exc = '{}: {}'.format(type(e).__name__, e)
+                        print(f"Failed to Load Extension {extension}\n{exc}")
+                self.session = session
+                await self.start(token)
+
+            #await self.connect_redis()
+            #await self.connect_postgres()
+            #await self.connect_prometheus()
