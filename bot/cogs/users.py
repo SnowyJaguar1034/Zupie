@@ -136,11 +136,12 @@ def setup(bot):
     menus = [info_menu, joined_menu, avatar_menu, roles_menu, status_menu, permissions_menu]
     for menu in menus:
         bot.tree.add_command(menu, guild=discord.Object(id=default_guild))
+    bot.tree.add_command(permissions_menu))
+
     ''' 
     bot.tree.add_command(info_menu, guild=discord.Object(id=default_guild))
     bot.tree.add_command(joined_menu, guild=discord.Object(id=default_guild))
     bot.tree.add_command(avatar_menu, guild=discord.Object(id=default_guild))
     bot.tree.add_command(roles_menu, guild=discord.Object(id=default_guild))
     bot.tree.add_command(status_menu, guild=discord.Object(id=default_guild))
-    bot.tree.add_command(permissions_menu, guild=discord.Object(id=default_guild))
-     '''
+    '''

@@ -142,13 +142,4 @@ class Zupie(commands.AutoShardedBot):
                 print(f"Failed to Load Extension {extension}\n{exc}")
                 #print(f"Failed to load extension {extension}.", file=sys.stderr)
                 #print(traceback.print_exc())
-        ''' for extension in COG_PATH.glob("*.py"):
-            print(extension)
-            if extension.name != "__init__.py":
-                print(extension)
-                try:
-                    self.load_extension(extension)
-                except Exception:
-                    print(f"Failed to load extension {extension}.", file=sys.stderr)
-                    print(traceback.print_exc())   ''' 
         await self.start(token)
