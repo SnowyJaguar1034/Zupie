@@ -16,9 +16,8 @@ class Zupie(commands.AutoShardedBot):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.start_time = datetime.datetime.utcnow()
-        self.session = aiohttp.ClientSession(loop=self.loop)
-        self.cluster = kwargs.get("cluster_id")
-        self.cluster_count = kwargs.get("cluster_count")
+        # self.cluster = kwargs.get("cluster_id")
+        # self.cluster_count = kwargs.get("cluster_count")
 
     @property
     def uptime(self):
