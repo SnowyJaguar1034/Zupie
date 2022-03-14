@@ -1,8 +1,8 @@
-initial_extensions  = [
+initial_extensions = [
 	"cogs.users", 
-	]
+]
 
-owners =[
+owners = [
     "365262543872327681",
 ]
 
@@ -11,13 +11,14 @@ backend = {
     "Admins": []
     
 }
+
 # Channels to send logs
 join_channel = 816480943228452895
 event_channel = 816480957288546314
 admin_channel = 816480968830353458
 
 
-role_perms = [
+guild_perms = [
     "administrator", 
     "manage_guild", 
     "manage_webhooks", 
@@ -47,7 +48,7 @@ role_perms = [
     "stream", 
     "create_instant_invite", 
     "change_nickname",
-     "mention_everyone"
+    "mention_everyone"
 ]
 
 key_perms = [
@@ -75,4 +76,3 @@ database = {
     "host": "localhost",
     "port": 5432
 }
-

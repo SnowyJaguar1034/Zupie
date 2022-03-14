@@ -1,8 +1,8 @@
-initial_extensions  = [
+initial_extensions = [
 	"cogs.users", 
 ]
 
-owners =[
+owners = [
     "365262543872327681",
 ]
 
