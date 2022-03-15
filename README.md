@@ -7,9 +7,9 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 2. [Contributing](https://github.com/SnowyJaguar1034/Zupie#contributing)
 3. [Self Hosting](https://github.com/SnowyJaguar1034/Zupie#self-hosting)<br/>
 3.1 [Self Hosting: Prerequisites](https://github.com/SnowyJaguar1034/Zupie#prerequisites)<br/>
-3.2 [Self Hosting: Installing the source](https://github.com/SnowyJaguar1034/Zupie#installing-the-source)
-3.3 [Self Hosting: Setup](https://github.com/SnowyJaguar1034/Zupie#setup)
-3.4 [Self Hosting: Running the bot](https://github.com/SnowyJaguar1034/Zupie#running-the-bot)
+3.2 [Self Hosting: Installing the source](https://github.com/SnowyJaguar1034/Zupie#installing-the-source)<br/>
+3.3 [Self Hosting: Setup](https://github.com/SnowyJaguar1034/Zupie#setup)<br/>
+3.4 [Self Hosting: Running the bot](https://github.com/SnowyJaguar1034/Zupie#running-the-bot)<br/>
 4. [Code of Conduct](https://github.com/SnowyJaguar1034/Zupie#code-of-conduct)
 5. [License](https://github.com/SnowyJaguar1034/Zupie#license)
 
