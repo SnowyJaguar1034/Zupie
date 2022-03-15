@@ -27,8 +27,7 @@ class user(commands.Cog):
     async def parent(self, ctx):
         group_commands = []
         for subcommand in ctx.command.commands:
-            #command_string = f"{ctx.prefix + ctx.command.name + ' ' + subcommand.name}"
-            command_string = f"{ctx.prefix + subcommand.qualified_name}"
+            command_string = f"{ctx.prefix + ctx.command.name + ' ' + subcommand.name}"
             group_commands.append(command_string)
         response = await ctx.reply(embed=Embed(title = f"Commands in `{ctx.command.name}`", description = ", ".join(group_commands)), delete_after=30)
         invocation = response.reference.resolved
@@ -39,7 +38,7 @@ class user(commands.Cog):
        await self.parent(ctx)
 
     @legacy_user_group.command(name ="info", description=info_description, usage="[member]", aliases=["whois", "ui"])
-    async def info_legacy(self, ctx: commands.Context, member: Union[Member, User] = None):
+    async def info_legacy(self, ctx: commands.Context, member: member: Union[Member, User] = None):
         await user_info_func(ctx, member)
 
     @slash_user_group.command(name="info", description=info_description)
@@ -57,12 +56,12 @@ class user(commands.Cog):
         await user_joined_func(interaction, member)
 
     @legacy_user_group.command(name="avatar", description=avatar_description, usage="[member]", aliases=["av"])
-    async def avatar_legacy(self, ctx, member: Union[Member, User] = None):
+    async def avatar_legacy(self, ctx, member: member: Union[Member, User] = None):
         await user_avatar_func(ctx, member)
 
     @slash_user_group.command(name="avatar", description=avatar_description)
     @app_commands.describe(member="The discord member to get information for.")
-    async def avatar_slash(self, interaction: Interaction, member: Union[Member, User]=None):
+    async def avatar_slash(self, interaction: Interaction, member: member: Union[Member, User]=None):
         await user_avatar_func(interaction, member)
 
     @legacy_user_group.command(name="roles", description =roles_description, usage="[member]")
@@ -75,7 +74,7 @@ class user(commands.Cog):
         await user_roles_func(interaction, member)
 
     @legacy_user_group.command(name="status", description=status_description, usage = "[member]")
-    async def status_legacy(self, ctx, member: Union[Member, User] = None):
+    async def status_legacy(self, ctx, member: member: Union[Member, User] = None):
         await user_status_func(ctx, member)
 
     @slash_user_group.command(name="status", description=status_description)

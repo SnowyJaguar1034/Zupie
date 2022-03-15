@@ -13,13 +13,31 @@ def shorten_message(message):
     else:
         return message
 
-
-def tag_format(message, member):
+def user_tag_format(message, member):
     tags = {
-        "{username}": member.name,
-        "{usertag}": member.discriminator,
-        "{userid}": str(member.id),
-        "{usermention}": member.mention,
+        "{user_name}": member.name,
+        "{user_tag}": member.discriminator,
+        "{user_id}": str(member.id),
+        "{user_mention}": member.mention,
+    }
+    for tag, val in tags.items():
+        message = message.replace(tag, val)
+    return shorten_message(message)
+
+def channel_tag_format(message, channel):
+    tags = {
+        "{channel_name}": channel.name,
+        "{channel_id}": str(channel.id),
+        "{channel_mention}": channel.mention,
+    }
+    for tag, val in tags.items():
+        message = message.replace(tag, val)
+    return shorten_message(message)
+
+def guild_tag_format(message, guild):
+    tags = {
+        "{guild_name}": guild.name,
+        "{guild_id}": str(guild.id),
     }
     for tag, val in tags.items():
         message = message.replace(tag, val)
@@ -74,9 +92,9 @@ async def user_joined_func(transaction, member_arg):
     embed.set_thumbnail(url = member.avatar.url)
     await timestamps_func(member, embed, False)
     if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
+        await transaction.response.send_message(embed=embed)
     elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
+        await transaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_joined_func'")
 
@@ -88,9 +106,9 @@ async def user_avatar_func(transaction, member_arg):
     embed.add_field(name = "WebP", value = f"[Link]({member.avatar.with_static_format('webp')})", inline = True)
     embed.set_image(url = member.avatar.url)
     if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
+        await transaction.response.send_message(embed=embed)
     elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
+        await transaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_avatar_func'")
 
@@ -99,11 +117,11 @@ async def user_roles_func(transaction, member_arg):
     roles = [f"<@&{role.id}>" for role in member.roles]
     if len(roles) == 0:
         roles.append("No roles")
-    embed = Embed(title = f"Roles for {member}: {len(roles)}" if len(" ".join(roles)) > 1000 else " ".join(roles), description = f" ".join(roles))
+    embed = Embed(title = f"Roles for {member.name}#{member.discriminator}: {len(roles)}", description = "Too many roles to list" if len(" ".join(roles)) > 1000 else " ".join(roles))
     if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
+        await transaction.response.send_message(embed=embed)
     elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
+        await transaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_roles_func'")
     
@@ -111,27 +129,28 @@ async def user_status_func(transaction, member_arg):
     member = interaction_or_context("member", transaction, member_arg)
     member_status = "No status" if member.activity is None else member.activity.name
     embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
-    embed.set_author(name = f"{member.id}", icon_url = member.avatar_url)
-    embed.set_thumbnail(url = member.avatar_url)
+    embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
+    embed.set_thumbnail(url = member.avatar.url)
     if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
+        await transaction.response.send_message(embed=embed)
     elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
+        await transaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_status_func'")    
         
 async def user_permissions_func(transaction, member_arg, channel_arg):
     member = interaction_or_context("member", transaction, member_arg)
-    channel = transaction.channel if channel_arg is not None else channel_arg
+    channel = interaction_or_context("channel", transaction, channel_arg)
     permissions = channel.permissions_for(member)
-    embed = discord.Embed(title="Permission Information", colour = member.colour, description = f"{member} | {member.id}")
-    #embed.add_field(name="User", value=str(member), inline=False)
+    embed = discord.Embed(title=f"Permission Information for {member}", colour = member.colour)
+    embed.set_author(name = f"{member} | {member.id}", icon_url = member.avatar.url)
+    embed.set_footer(text=f"{channel.name} | {channel.id}")
     embed.add_field(name = "Allowed", value = ", ".join([perm_format(name) for name, value in permissions if value]), inline = False)
     embed.add_field(name = "Denied", value=", ".join([perm_format(name) for name, value in permissions if not value]), inline = False)
     if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
+        await transaction.response.send_message(embed=embed)
     elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
+        await transaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_permissions_func'")
 
