@@ -85,7 +85,7 @@ class user(commands.Cog):
     @legacy_user_group.command(name="permissions", description=permissions_description, usage = "[member] [channel]")
     async def permissions_legacy(self, ctx, member: discord.Member = None, channel: Union[discord.TextChannel, discord.VoiceChannel, discord.StageChannel, discord.CategoryChannel] = None):
         await user_permissions_func(ctx, member)
-
+    
     @slash_user_group.command(name="permissions", description=permissions_description)
     @app_commands.describe(member="The discord member to get information for.")
     @app_commands.describe(channel="The channel to get permissions for.")
@@ -131,12 +131,12 @@ async def permissions_menu(interaction: Interaction, member: Member):
     await user_status_func(interaction, member)
     
 
-def setup(bot):
-    bot.add_cog(user(bot))
-    menus = [info_menu, joined_menu, avatar_menu, roles_menu, status_menu, permissions_menu]
+async def setup(bot):
+    await bot.add_cog(user(bot))
+    menus = [info_menu, joined_menu, avatar_menu, roles_menu, status_menu]
     for menu in menus:
         bot.tree.add_command(menu, guild=discord.Object(id=default_guild))
-    bot.tree.add_command(permissions_menu))
+    bot.tree.add_command(permissions_menu)
 
     ''' 
     bot.tree.add_command(info_menu, guild=discord.Object(id=default_guild))

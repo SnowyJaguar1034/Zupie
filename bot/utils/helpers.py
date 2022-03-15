@@ -7,6 +7,24 @@ from discord.ext.commands import Context
 def perm_format(perm):
     return perm.replace("_", " ").replace("guild", "server").title()
 
+def shorten_message(message):
+    if len(message) > 2048:
+        return message[:2045] + "..."
+    else:
+        return message
+
+
+def tag_format(message, member):
+    tags = {
+        "{username}": member.name,
+        "{usertag}": member.discriminator,
+        "{userid}": str(member.id),
+        "{usermention}": member.mention,
+    }
+    for tag, val in tags.items():
+        message = message.replace(tag, val)
+    return shorten_message(message)
+
 def interaction_or_context(arg_type, transaction, object_arg):
     if arg_type == "member":
         if isinstance(transaction, Interaction):
@@ -101,7 +119,22 @@ async def user_status_func(transaction, member_arg):
         await interaction.reply(embed=embed)
     else:
         print("Something went wrong in 'user_status_func'")    
-    
+        
+async def user_permissions_func(transaction, member_arg, channel_arg):
+    member = interaction_or_context("member", transaction, member_arg)
+    channel = transaction.channel if channel_arg is not None else channel_arg
+    permissions = channel.permissions_for(member)
+    embed = discord.Embed(title="Permission Information", colour = member.colour, description = f"{member} | {member.id}")
+    #embed.add_field(name="User", value=str(member), inline=False)
+    embed.add_field(name = "Allowed", value = ", ".join([perm_format(name) for name, value in permissions if value]), inline = False)
+    embed.add_field(name = "Denied", value=", ".join([perm_format(name) for name, value in permissions if not value]), inline = False)
+    if isinstance(transaction, Interaction):
+        await interaction.response.send_message(embed=embed)
+    elif isinstance(transaction, Context):
+        await interaction.reply(embed=embed)
+    else:
+        print("Something went wrong in 'user_permissions_func'")
+
 def _emoji_counter_(self, guild):
     emoji_stats = Counter()
     for emoji in guild.emojis:
@@ -120,18 +153,3 @@ def _emoji_counter_(self, guild):
         fmt = f'{fmt} | Total Emojis: {len(guild.emojis)}/{guild.emoji_limit*2}'
 
     return fmt
-        
-async def user_permissions_func(transaction, member_arg, channel_arg):
-    member = interaction_or_context("member", transaction, member_arg)
-    channel = transaction.channel if channel_arg is not None else channel_arg
-    permissions = channel.permissions_for(member)
-    embed = discord.Embed(title="Permission Information", colour = member.colour, description = f"{member} | {member.id}")
-    #embed.add_field(name="User", value=str(member), inline=False)
-    embed.add_field(name = "Allowed", value = ", ".join([perm_format(name) for name, value in permissions if value]), inline = False)
-    embed.add_field(name = "Denied", value=", ".join([perm_format(name) for name, value in permissions if not value]), inline = False)
-    if isinstance(transaction, Interaction):
-        await interaction.response.send_message(embed=embed)
-    elif isinstance(transaction, Context):
-        await interaction.reply(embed=embed)
-    else:
-        print("Something went wrong in 'user_permissions_func'")

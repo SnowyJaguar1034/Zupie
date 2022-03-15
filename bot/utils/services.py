@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 token = os.environ.get('TOKEN')
+version = os.environ.get('VERSION')
 
 #log = logging.getLogger(__name__)
 
@@ -22,6 +23,10 @@ class Zupie(commands.AutoShardedBot):
     @property
     def uptime(self):
         return datetime.datetime.utcnow() - self.start_time
+
+    @property
+    def version(self):
+        return version
 
     @property
     def default_guild(self):
@@ -133,13 +138,13 @@ class Zupie(commands.AutoShardedBot):
             async with self:
                 for extension in self.config.initial_extensions:
                     try:
-                        self.load_extension(extension)
+                        await self.load_extension(extension)
                         print(f"Loaded {extension} Cog")
                     except Exception as e:
                         exc = '{}: {}'.format(type(e).__name__, e)
-                        print(f"Failed to Load Extension {extension}\n{exc}")
+                        print(f"\nFailed to Load Extension {extension}\n{exc}\n")
                 self.session = session
-                await self.run(token)
+                await self.start(token)
 
             #await self.connect_redis()
             #await self.connect_postgres()
