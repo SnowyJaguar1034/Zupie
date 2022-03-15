@@ -1,7 +1,7 @@
 import discord
 from main import bot as bot_var
 from typing import Union
-from discord import Member, User, Interaction, Embed, app_commands
+from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel
 from discord.ext.commands import Context
 
 def perm_format(perm):
@@ -43,8 +43,8 @@ def guild_tag_format(message, guild):
         message = message.replace(tag, val)
     return shorten_message(message)
 
-def interaction_or_context(arg_type, transaction, object_arg):
-    if arg_type == "member":
+async def interaction_or_context(transaction, object_arg):
+    if isinstance(object_arg, Member) or isinstance(object_arg, User): # == "MEMBER"
         if isinstance(transaction, Interaction):
             member = transaction.user if object_arg is None else object_arg
         elif isinstance(transaction, Context):
@@ -52,15 +52,31 @@ def interaction_or_context(arg_type, transaction, object_arg):
         else:
             print("Something went wrong in 'member interaction_or_context'")
         return member
-    elif arg_type == "channel":
+    elif isinstance(object_arg, Role): # == "ROLE"
+        if isinstance(transaction, Interaction):
+            role = transaction.user.top_role if object_arg is None else object_arg
+        elif isinstance(transaction, Context):
+            role = transaction.author.top_role if object_arg is None else object_arg
+        else:
+            print("Something went wrong in 'member interaction_or_context'")
+        return role
+    elif isinstance(object_arg, Embed): # == "SEND"
+        if isinstance(transaction, Interaction):
+            await transaction.response.send_message(embed=object_arg)
+        elif isinstance(transaction, Context):
+            await transaction.reply(embed=object_arg)
+        else:
+            print("Something went wrong in 'user_roles_func'")
+    elif isinstance(object_arg, TextChannel): # == "channel"
         channel = transaction.channel if object_arg is None else object_arg
         return channel
     else:
         print("The provided arg time is not recognize")
 
 class Users():
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
+        pass
+        #self.bot = bot
 
     async def timestamps_func(self, member, embed, avatar):
         embed.add_field(name = "Joined Server:", value = f"<t:{int(member.joined_at.timestamp())}:R>", inline = True)
@@ -69,7 +85,7 @@ class Users():
         embed.add_field(name = "Joined Discord:", value = f"<t:{int(member.created_at.timestamp())}:R>", inline = True)
 
     async def info_func(self, transaction, member_arg):
-        member = interaction_or_context("member", transaction, member_arg)
+        member = await interaction_or_context(transaction, member_arg)
         member_status = "No status" if member.activity is None else member.activity.name
 
         embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
@@ -82,85 +98,86 @@ class Users():
         if len(has_key) == 0: has_key.append('No permissions')
         embed.add_field(name = f"Roles: {len(roles)}",value = f"{len(roles)} roles" if len(" ".join(roles)) > 1000 else " ".join(roles), inline = False)
         embed.add_field(name =f'Key permissions', value = ", ".join(has_key).replace("_"," ").title(), inline = False)
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_info_func'")
+        await interaction_or_context(transaction, embed)
 
     async def joined_func(self, transaction, member_arg):
-        member = interaction_or_context("member", transaction, member_arg)    
+        member = await interaction_or_context(transaction, member_arg)    
         embed = Embed(title = f"{member}", colour = member.colour)
         embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
         embed.set_thumbnail(url = member.avatar.url)
         await self.timestamps_func(member, embed, False)
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_joined_func'")
+        await interaction_or_context(transaction, embed)
 
     async def avatar_func(self, transaction, member_arg):
-        member = interaction_or_context("member", transaction, member_arg)
+        member = await interaction_or_context(transaction, member_arg)
         embed = Embed(title = f"{member}'s Avatar", colour = member.colour)
         embed.add_field(name = "PNG", value = f"[Link]({member.avatar.with_static_format('png')})", inline = True)
         embed.add_field(name = "JPG", value = f"[Link]({member.avatar.with_static_format('jpg')})", inline = True)
         embed.add_field(name = "WebP", value = f"[Link]({member.avatar.with_static_format('webp')})", inline = True)
         embed.set_image(url = member.avatar.url)
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_avatar_func'")
+        await interaction_or_context(transaction, embed)
 
     async def roles_func(self, transaction, member_arg):
-        member = interaction_or_context("member", transaction, member_arg)
+        member = await interaction_or_context(transaction, member_arg)
         roles = [f"<@&{role.id}>" for role in member.roles]
         if len(roles) == 0:
             roles.append("No roles")
         embed = Embed(title = f"Roles for {member.name}#{member.discriminator}: {len(roles)}", description = "Too many roles to list" if len(" ".join(roles)) > 1000 else " ".join(roles))
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_roles_func'")
+        await interaction_or_context(transaction, embed)
         
     async def status_func(self, transaction, member_arg):
-        member = interaction_or_context("member", transaction, member_arg)
+        member = await interaction_or_context(transaction, member_arg)
         member_status = "No status" if member.activity is None else member.activity.name
         embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
         embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
         embed.set_thumbnail(url = member.avatar.url)
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_status_func'")    
+        await interaction_or_context(transaction, embed) 
             
     async def permissions_func(self, transaction, member_arg, channel_arg):
-        member = interaction_or_context("member", transaction, member_arg)
-        channel = interaction_or_context("channel", transaction, channel_arg)
+        member = await interaction_or_context(transaction, member_arg)
+        channel = await interaction_or_context(transaction, channel_arg)
         permissions = channel.permissions_for(member)
         embed = discord.Embed(title=f"Permission Information for {member}", colour = member.colour)
         embed.set_author(name = f"{member} | {member.id}", icon_url = member.avatar.url)
         embed.set_footer(text=f"{channel.name} | {channel.id}")
         embed.add_field(name = "Allowed", value = ", ".join([perm_format(name) for name, value in permissions if value]), inline = False)
         embed.add_field(name = "Denied", value=", ".join([perm_format(name) for name, value in permissions if not value]), inline = False)
-        if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=embed)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=embed)
-        else:
-            print("Something went wrong in 'user_permissions_func'")
+        await interaction_or_context(transaction, embed)
 
 class Roles():
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
+        pass
+        #self.bot = bot
+
+    async def info_func(self, transaction, role_arg):
+        role = await interaction_or_context(transaction, role_arg)
+        has_perm = [perm for perm in bot_var.config.guild_perms if getattr(role.permissions, perm)]
+
+        embed = Embed(title = f"{role.name}", description = f"{role.mention} was created <t:{int(role.created_at.timestamp())}:R>", color = role.colour)
+        embed.set_author(name = f"ID: {role.id}")
+        embed.add_field(name = "Members in role:", value = len(role.members), inline = True)
+        embed.add_field(name = "Position", value = role.position, inline = True)
+        embed.add_field(name = "Colour:", value = role.colour, inline = True)
+        embed.add_field(name = "Hoisted:", value = role.hoist, inline = True)
+        embed.add_field(name = "Mentionable:", value = role.mentionable, inline = True)
+        embed.add_field(name = "Intergration:", value = role.managed, inline = True)   
+        embed.add_field(name = f'Permissions', value = ", ".join([perm_format(name) for name, value in has_perm if not value]), inline = False)
+        await interaction_or_context(transaction, embed)
+
+    async def members_func(self, transaction, role_arg):
+        role = await interaction_or_context(transaction, role_arg)
+        members = [f"{member.mention}, " for member in role.members]
+        if len(members) == 0: members.append("No members")
+        embed=Embed(title = f"{len(role.members)} Members in `{role}`", description = f" ".join(members))
+        await interaction_or_context(transaction, embed)
+
+    async def permissions_func(self, transaction, role_arg):
+        role = await interaction_or_context(transaction, role_arg)
+        has_perm = [perm[0] for perm in role.permissions if perm[1]]
+        if len(has_perm) == 0:
+            has_perm.append('No permissions')
+        embed=Embed(title = f"Permissions for `{role}`", description = f", ".join(has_perm).replace("_"," ").title())
+        await interaction_or_context(transaction, embed)
 
 class Guilds():
     def __init__(self, bot):
