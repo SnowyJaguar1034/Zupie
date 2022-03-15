@@ -1,4 +1,4 @@
-from utils.helpers import interaction_or_context,user_info_func, user_joined_func, user_avatar_func, user_roles_func, user_status_func, user_permissions_func
+from utils.helpers import Users
 
 from discord import Member, User, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel
 from discord.ext import commands
@@ -40,82 +40,82 @@ class user(commands.Cog):
 
     @legacy_user_group.command(name ="info", description=info_description, usage="[member]", aliases=["whois", "ui"])
     async def info_legacy(self, ctx: commands.Context, member: Union[Member, User] = None):
-        await user_info_func(ctx, member)
+        await Users(self).info_func(ctx, member)
 
     @slash_user_group.command(name="info", description=info_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def info_slash(self, interaction: Interaction, member: Union[Member, User]=None):
-        await user_info_func(interaction, member)
+        await Users(self).info_func(interaction, member)
 
     @legacy_user_group.command(name="joined", description = joined_description, usage="[member]", aliases=["dates", "created", "j"])
     async def joined_legacy(self, ctx, member: Member=None):
-        await user_joined_func(ctx, member)
+        await Users(self).joined_func(ctx, member)
 
     @slash_user_group.command(name="joined", description=joined_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def joined_slash(self, interaction: Interaction, member: Member=None):
-        await user_joined_func(interaction, member)
+        await Users(self).joined_func(interaction, member)
 
     @legacy_user_group.command(name="avatar", description=avatar_description, usage="[member]", aliases=["av"])
     async def avatar_legacy(self, ctx, member: Union[Member, User] = None):
-        await user_avatar_func(ctx, member)
+        await Users(self).avatar_func(ctx, member)
 
     @slash_user_group.command(name="avatar", description=avatar_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def avatar_slash(self, interaction: Interaction, member: Union[Member, User]=None):
-        await user_avatar_func(interaction, member)
+        await Users(self).avatar_func(interaction, member)
 
     @legacy_user_group.command(name="roles", description =roles_description, usage="[member]")
     async def roles_legacy(self, ctx, member: Member = None):
-        await user_roles_func(ctx, member)
+        await roles_func(ctx, member)
 
     @slash_user_group.command(name="roles", description=roles_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def roles_slash(self, interaction: Interaction, member: Member = None):
-        await user_roles_func(interaction, member)
+        await Users(self).roles_func(interaction, member)
 
     @legacy_user_group.command(name="status", description=status_description, usage = "[member]")
     async def status_legacy(self, ctx, member: Union[Member, User] = None):
-        await user_status_func(ctx, member)
+        await Users(self).status_func(ctx, member)
 
     @slash_user_group.command(name="status", description=status_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def status_slash(self, interaction: Interaction, member: Union[Member, User] = None):
-        await user_status_func(interaction, member)
+        await Users(self).status_func(interaction, member)
 
     @legacy_user_group.command(name="permissions", description=permissions_description, usage = "[member] [channel]")
     async def permissions_legacy(self, ctx, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
-        await user_permissions_func(ctx, member, channel)
+        await Users(self).permissions_func(ctx, member, channel)
     
     @slash_user_group.command(name="permissions", description=permissions_description)
     @app_commands.describe(member="The discord member to get information for.")
     @app_commands.describe(channel="The channel to get permissions for.")
     async def permissions_slash(self, interaction: Interaction, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
-        await user_permissions_func(interaction, member, channel)
+        await Users(self).permissions_func(interaction, member, channel)
 
 @app_commands.context_menu(name="User Info")
 async def info_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_info_func(interaction, member)
+    await Users().info_func(interaction, member)
 
 @app_commands.context_menu(name="User Joined\Created")
 async def joined_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_joined_func(interaction, member)
+    await Users().joined_func(interaction, member)
 
 @app_commands.context_menu(name="User Avatar")
 async def avatar_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_avatar_func(interaction, member)
+    await Users().avatar_func(interaction, member)
 
 @app_commands.context_menu(name="User Roles")
 async def roles_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_roles_func(interaction, member)
+    await Users().roles_func(interaction, member)
 
 @app_commands.context_menu(name="User Status")
 async def status_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_status_func(interaction, member)
+    await Users().status_func(interaction, member)
 
 @app_commands.context_menu(name="User Permissions")
 async def permissions_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_permissions_func(interaction, member)
+    await Users().permissions_func(interaction, member)
     
 
 async def setup(bot):
