@@ -1,7 +1,7 @@
 import discord
 from main import bot as bot_var
 from typing import Union
-from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel
+from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel
 from discord.ext.commands import Context
 
 def perm_format(perm):
@@ -44,7 +44,7 @@ def guild_tag_format(message, guild):
     return shorten_message(message)
 
 async def interaction_or_context(transaction, object_arg):
-    if isinstance(object_arg, Member) or isinstance(object_arg, User): # == "MEMBER"
+    if isinstance(object_arg, (Member, User)): # == "MEMBER"
         if isinstance(transaction, Interaction):
             member = transaction.user if object_arg is None else object_arg
         elif isinstance(transaction, Context):
@@ -54,20 +54,22 @@ async def interaction_or_context(transaction, object_arg):
         return member
     elif isinstance(object_arg, Role): # == "ROLE"
         if isinstance(transaction, Interaction):
-            role = transaction.user.top_role if object_arg is None else object_arg
+            role = object_arg or transaction.user.top_role
+            #role = transaction.user.top_role if object_arg is None else object_arg
         elif isinstance(transaction, Context):
-            role = transaction.author.top_role if object_arg is None else object_arg
+            role = object_arg or transaction.user.top_role
+            #role = transaction.author.top_role if object_arg is None else object_arg
         else:
             print("Something went wrong in 'member interaction_or_context'")
         return role
     elif isinstance(object_arg, Embed): # == "SEND"
         if isinstance(transaction, Interaction):
-            await transaction.response.send_message(embed=object_arg)
+            await transaction.response.send(embed=object_arg)
         elif isinstance(transaction, Context):
             await transaction.reply(embed=object_arg)
         else:
             print("Something went wrong in 'user_roles_func'")
-    elif isinstance(object_arg, TextChannel): # == "channel"
+    elif isinstance(object_arg, (TextChannel, VoiceChannel, StageChannel, CategoryChannel)): # == "channel"
         channel = transaction.channel if object_arg is None else object_arg
         return channel
     else:
