@@ -1,7 +1,6 @@
-import discord
 from main import bot as bot_var
 from typing import Union
-from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel
+from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role
 from discord.ext.commands import Context
 
 def perm_format(perm):
@@ -43,37 +42,44 @@ def guild_tag_format(message, guild):
         message = message.replace(tag, val)
     return shorten_message(message)
 
-async def interaction_or_context(transaction, object_arg):
-    if isinstance(object_arg, (Member, User)): # == "MEMBER"
+async def interaction_or_context(arg_type, transaction, object_arg):
+    if arg_type == "MEMBER":
         if isinstance(transaction, Interaction):
             member = transaction.user if object_arg is None else object_arg
         elif isinstance(transaction, Context):
             member = transaction.author if object_arg is None else object_arg
         else:
-            print("Something went wrong in 'member interaction_or_context'")
+            print("ERROR: interaction_or_context : Hit ele statemnt in 'MEMBER' check")
         return member
-    elif isinstance(object_arg, Role): # == "ROLE"
+    elif arg_type == "ROLE":
         if isinstance(transaction, Interaction):
-            role = object_arg or transaction.user.top_role
-            #role = transaction.user.top_role if object_arg is None else object_arg
+            #role = object_arg or transaction.user.top_role
+            role = transaction.user.top_role if object_arg is None else object_arg
         elif isinstance(transaction, Context):
-            role = object_arg or transaction.user.top_role
-            #role = transaction.author.top_role if object_arg is None else object_arg
+            #role = object_arg or transaction.user.top_role
+            role = transaction.author.top_role if object_arg is None else object_arg
         else:
-            print("Something went wrong in 'member interaction_or_context'")
+            print("ERROR: interaction_or_context : Hit ele statemnt in 'ROLE' check")
         return role
-    elif isinstance(object_arg, Embed): # == "SEND"
-        if isinstance(transaction, Interaction):
-            await transaction.response.send(embed=object_arg)
-        elif isinstance(transaction, Context):
-            await transaction.reply(embed=object_arg)
+    elif arg_type == "SEND":
+        if isinstance(object_arg, Embed):
+            if isinstance(transaction, Interaction):
+                await transaction.response.send(embed=object_arg)
+            elif isinstance(transaction, Context):
+                await transaction.reply(embed=object_arg)
+            else:
+                print("ERROR: interaction_or_context : Hit ele statemnt in 'SEND.EMBED' check'")
         else:
-            print("Something went wrong in 'user_roles_func'")
-    elif isinstance(object_arg, (TextChannel, VoiceChannel, StageChannel, CategoryChannel)): # == "channel"
-        channel = transaction.channel if object_arg is None else object_arg
-        return channel
+            if isinstance(transaction, Interaction):
+                await transaction.response.send(content=object_arg)
+            elif isinstance(transaction, Context):
+                await transaction.reply(content=object_arg)
+            else:
+                print("ERROR: interaction_or_context : Hit ele statemnt in 'SEND.CONTENT' check")
+    elif arg_type == "CHANNEL":
+        return transaction.channel if object_arg is None else object_arg
     else:
-        print("The provided arg time is not recognize")
+        print("ERROR: interaction_or_context : Hit final eele statemnt")
 
 class Users():
     def __init__(self, bot):
@@ -87,9 +93,8 @@ class Users():
         embed.add_field(name = "Joined Discord:", value = f"<t:{int(member.created_at.timestamp())}:R>", inline = True)
 
     async def info_func(self, transaction, member_arg):
-        member = await interaction_or_context(transaction, member_arg)
+        member = await interaction_or_context("MEMBER", transaction, member_arg)
         member_status = "No status" if member.activity is None else member.activity.name
-
         embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
         embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
         embed.set_thumbnail(url = member.avatar.url)
@@ -100,51 +105,51 @@ class Users():
         if len(has_key) == 0: has_key.append('No permissions')
         embed.add_field(name = f"Roles: {len(roles)}",value = f"{len(roles)} roles" if len(" ".join(roles)) > 1000 else " ".join(roles), inline = False)
         embed.add_field(name =f'Key permissions', value = ", ".join(has_key).replace("_"," ").title(), inline = False)
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
     async def joined_func(self, transaction, member_arg):
-        member = await interaction_or_context(transaction, member_arg)    
+        member = await interaction_or_context("MEMBER", transaction, member_arg)    
         embed = Embed(title = f"{member}", colour = member.colour)
         embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
         embed.set_thumbnail(url = member.avatar.url)
         await self.timestamps_func(member, embed, False)
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
     async def avatar_func(self, transaction, member_arg):
-        member = await interaction_or_context(transaction, member_arg)
+        member = await interaction_or_context("MEMBER", transaction, member_arg)
         embed = Embed(title = f"{member}'s Avatar", colour = member.colour)
         embed.add_field(name = "PNG", value = f"[Link]({member.avatar.with_static_format('png')})", inline = True)
         embed.add_field(name = "JPG", value = f"[Link]({member.avatar.with_static_format('jpg')})", inline = True)
         embed.add_field(name = "WebP", value = f"[Link]({member.avatar.with_static_format('webp')})", inline = True)
         embed.set_image(url = member.avatar.url)
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
     async def roles_func(self, transaction, member_arg):
-        member = await interaction_or_context(transaction, member_arg)
+        member = await interaction_or_context("MEMBER", transaction, member_arg)
         roles = [f"<@&{role.id}>" for role in member.roles]
         if len(roles) == 0:
             roles.append("No roles")
         embed = Embed(title = f"Roles for {member.name}#{member.discriminator}: {len(roles)}", description = "Too many roles to list" if len(" ".join(roles)) > 1000 else " ".join(roles))
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
         
     async def status_func(self, transaction, member_arg):
-        member = await interaction_or_context(transaction, member_arg)
+        member = await interaction_or_context("MEMBER", transaction, member_arg)
         member_status = "No status" if member.activity is None else member.activity.name
         embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
         embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
         embed.set_thumbnail(url = member.avatar.url)
-        await interaction_or_context(transaction, embed) 
+        await interaction_or_context("SEND", transaction, embed) 
             
     async def permissions_func(self, transaction, member_arg, channel_arg):
-        member = await interaction_or_context(transaction, member_arg)
-        channel = await interaction_or_context(transaction, channel_arg)
+        member = await interaction_or_context("MEMBER", transaction, member_arg)
+        channel = await interaction_or_context("CHANNEL", transaction, channel_arg)
         permissions = channel.permissions_for(member)
-        embed = discord.Embed(title=f"Permission Information for {member}", colour = member.colour)
+        embed = Embed(title=f"Permission Information for {member}", colour = member.colour)
         embed.set_author(name = f"{member} | {member.id}", icon_url = member.avatar.url)
         embed.set_footer(text=f"{channel.name} | {channel.id}")
         embed.add_field(name = "Allowed", value = ", ".join([perm_format(name) for name, value in permissions if value]), inline = False)
         embed.add_field(name = "Denied", value=", ".join([perm_format(name) for name, value in permissions if not value]), inline = False)
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
 class Roles():
     def __init__(self, bot):
@@ -152,9 +157,8 @@ class Roles():
         self.bot = bot
 
     async def info_func(self, transaction, role_arg):
-        role = await interaction_or_context(transaction, role_arg)
+        role = await interaction_or_context("ROLE", transaction, role_arg)
         has_perm = [perm for perm in bot_var.config.guild_perms if getattr(role.permissions, perm)]
-
         embed = Embed(title = f"{role.name}", description = f"{role.mention} was created <t:{int(role.created_at.timestamp())}:R>", color = role.colour)
         embed.set_author(name = f"ID: {role.id}")
         embed.add_field(name = "Members in role:", value = len(role.members), inline = True)
@@ -164,22 +168,22 @@ class Roles():
         embed.add_field(name = "Mentionable:", value = role.mentionable, inline = True)
         embed.add_field(name = "Intergration:", value = role.managed, inline = True)   
         embed.add_field(name = f'Permissions', value = ", ".join([perm_format(name) for name, value in has_perm if not value]), inline = False)
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
     async def members_func(self, transaction, role_arg):
-        role = await interaction_or_context(transaction, role_arg)
+        role = await interaction_or_context("ROLE", transaction, role_arg)
         members = [f"{member.mention}, " for member in role.members]
         if len(members) == 0: members.append("No members")
         embed=Embed(title = f"{len(role.members)} Members in `{role}`", description = f" ".join(members))
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
     async def permissions_func(self, transaction, role_arg):
-        role = await interaction_or_context(transaction, role_arg)
+        role = await interaction_or_context("ROLE", transaction, role_arg)
         has_perm = [perm[0] for perm in role.permissions if perm[1]]
         if len(has_perm) == 0:
             has_perm.append('No permissions')
         embed=Embed(title = f"Permissions for `{role}`", description = f", ".join(has_perm).replace("_"," ").title())
-        await interaction_or_context(transaction, embed)
+        await interaction_or_context("SEND", transaction, embed)
 
 class Guilds():
     def __init__(self, bot):

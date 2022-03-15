@@ -27,7 +27,6 @@ class user(commands.Cog):
     async def parent(self, ctx):
         group_commands = []
         for subcommand in ctx.command.commands:
-            #command_string = f"{ctx.prefix + ctx.command.name + ' ' + subcommand.name}"
             command_string = f"{ctx.prefix + subcommand.qualified_name}"
             group_commands.append(command_string)
         response = await ctx.reply(embed=Embed(title = f"Commands in `{ctx.command.name}`", description = ", ".join(group_commands)), delete_after=30)
@@ -67,7 +66,7 @@ class user(commands.Cog):
 
     @legacy_user_group.command(name="roles", description =roles_description, usage="[member]")
     async def roles_legacy(self, ctx, member: Member = None):
-        await roles_func(ctx, member)
+        await Users(self).roles_func(ctx, member)
 
     @slash_user_group.command(name="roles", description=roles_description)
     @app_commands.describe(member="The discord member to get information for.")
@@ -83,7 +82,7 @@ class user(commands.Cog):
     async def status_slash(self, interaction: Interaction, member: Union[Member, User] = None):
         await Users(self).status_func(interaction, member)
 
-    @legacy_user_group.command(name="permissions", description=permissions_description, usage = "[member] [channel]")
+    @legacy_user_group.command(name="permissions", description=permissions_description, usage = "[member] [channel]", aliases = ["perms"])
     async def permissions_legacy(self, ctx, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
         await Users(self).permissions_func(ctx, member, channel)
     

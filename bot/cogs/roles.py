@@ -1,6 +1,6 @@
 from utils.helpers import Roles
 
-from discord import Member, User, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role
+from discord import Role, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel
 from discord.ext import commands
 
 from typing import Union
@@ -17,17 +17,15 @@ class role(commands.Cog):
         self.bot = bot
 
     slash_role_group = app_commands.Group(name="roles", description="Check Role stuff.", guild_ids=[default_guild])
-    info_description = "Show some information about yourself or the member specified."
-    joined_description = "Show when yourself or the member specified joined this server and Discord."
-    avatar_description = "Show a users avatar."
-    roles_description = "Show a users roles."
-    status_description = "Show a users status."
-    permissions_description = "Show a member's permission, Defualts to current channel."
+    info_description = "Show some information about a role"
+    members_description = "Show the members who have this role."
+    permissions_description = "Show a role's permission, Defualts to current channel."
+    role_param="Defaults to your highest role"
 
     async def parent(self, ctx):
         group_commands = []
         for subcommand in ctx.command.commands:
-            command_string = f"{ctx.prefix + ctx.command.name + ' ' + subcommand.name}"
+            command_string = f"{ctx.prefix + subcommand.qualified_name}"
             group_commands.append(command_string)
         response = await ctx.reply(embed=Embed(title = f"Commands in `{ctx.command.name}`", description = ", ".join(group_commands)), delete_after=30)
         invocation = response.reference.resolved
@@ -37,24 +35,34 @@ class role(commands.Cog):
     async def role_group(self, ctx):
         await self.parent(ctx)
 
-    @role_group.command(name="info", description = "Show information about the given role.", usage = "<role>", aliases = ["whatis", "ri"])
+    @role_group.command(name="info", description=info_description, usage = "<role>", aliases = ["whatis", "ri"])
     async def info_legacy(self, ctx, role: Role = None):
         await Roles(self).info_func(ctx, role)
 
-    @role_group.command(name="members", description = "Show the members of the role specified.", usage = "[role]",)
+    @slash_role_group.command(name="info", description=info_description)
+    @app_commands.describe(role=role_param)
+    async def info_slash(self, interaction: Interaction, Role: Role = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
+        await Roles(self).permissions_func(interaction, role, channel)
+
+    @role_group.command(name="members", description=members_description, usage = "[role]",)
     async def members_legacy(self, ctx, role: Role=None):
         await Roles(self).members_func(ctx, role)
 
-    @role_group.command(name="permissions", description = "Show the members of the role specified.", usage = "[role]", aliases = ["perms"])
+    @slash_role_group.command(name="members", description=members_description)
+    @app_commands.describe(role=role_param)
+    async def members_slash(self, interaction: Interaction, Role: Role = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
+        await Roles(self).permissions_func(interaction, role, channel)
+
+    @role_group.command(name="permissions", description = permissions_description, usage = "[role]", aliases = ["perms"])
     async def permissions_legacy(self, ctx, role: Role=None):
         await Roles(self).permissions_func(ctx, role)
-    '''
-    @slash_user_group.command(name="permissions", description=permissions_description)
-    @app_commands.describe(member="The discord member to get information for.")
+    
+    @slash_role_group.command(name="permissions", description=permissions_description)
+    @app_commands.describe(role=role_param)
     @app_commands.describe(channel="The channel to get permissions for.")
-    async def permissions_slash(self, interaction: Interaction, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
-        await user_permissions_func(interaction, member, channel)
-    '''
+    async def permissions_slash(self, interaction: Interaction, Role: Role = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
+        await Roles(self).permissions_func(interaction, role, channel)
+
 
 async def setup(bot):
     await bot.add_cog(role(bot))
