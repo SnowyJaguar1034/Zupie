@@ -115,7 +115,7 @@ async def status_menu(interaction: Interaction, member: Union[Member, User]):
 
 @app_commands.context_menu(name="User Permissions")
 async def permissions_menu(interaction: Interaction, member: Union[Member, User]):
-    await user_status_func(interaction, member)
+    await user_permissions_func(interaction, member)
     
 
 async def setup(bot):
