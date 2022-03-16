@@ -92,7 +92,6 @@ async def interaction_or_context(arg_type, transaction, object_arg):
 
 class Users():
     def __init__(self, bot):
-        #pass
         self.bot = bot
 
     async def timestamps_func(self, member, embed, avatar):
@@ -162,7 +161,6 @@ class Users():
 
 class Roles():
     def __init__(self, bot):
-        #pass
         self.bot = bot
 
     async def info_func(self, transaction, role_arg):
@@ -203,6 +201,10 @@ class Emojis():
         self.bot = bot
 
 class Messages():
+    def __init__(self, bot):
+        self.bot = bot
+
+class Owners():
     def __init__(self, bot):
         self.bot = bot
 

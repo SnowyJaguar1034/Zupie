@@ -1,6 +1,7 @@
 initial_extensions = [
     "cogs.help",
     "cogs.events",
+    "cogs.owners",
 	"cogs.users", 
     "cogs.roles",
 ]
