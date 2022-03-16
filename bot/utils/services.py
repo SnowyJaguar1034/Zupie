@@ -143,7 +143,7 @@ class Zupie(commands.AutoShardedBot):
                         print(f"Loaded {extension.title()}")
                     except Exception as e:
                         #exc = '{}: {}'.format(type(e).__name__, e)
-                        print(f"\nFailed to Load Extension {extension}\n{traceback.print_exc()}\n")
+                        print(f"\nFailed to Load Extension {extension}\n{traceback.format_exc()}\n")
                 self.session = session
                 await self.start(token)
 

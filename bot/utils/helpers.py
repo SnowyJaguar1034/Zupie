@@ -42,6 +42,15 @@ def guild_tag_format(message, guild):
         message = message.replace(tag, val)
     return shorten_message(message)
 
+async def parent(ctx):
+    group_commands = []
+    for subcommand in ctx.command.commands:
+        command_string = f"{ctx.prefix + subcommand.qualified_name}"
+        group_commands.append(command_string)
+    response = await ctx.reply(embed=Embed(title = f"Commands in `{ctx.command.name}`", description = ", ".join(group_commands)), delete_after=30)
+    invocation = response.reference.resolved
+    await invocation.delete(delay=30)
+
 async def interaction_or_context(arg_type, transaction, object_arg):
     if arg_type == "MEMBER":
         if isinstance(transaction, Interaction):

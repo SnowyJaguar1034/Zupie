@@ -25,6 +25,7 @@ bot = Zupie(
     owner_ids=["365262543872327681"],
     description=description,
     command_prefix=commands.when_mentioned,
+    case_insensitive = True
 )
 
 @app_commands.command()

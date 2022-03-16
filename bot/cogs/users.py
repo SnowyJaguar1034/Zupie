@@ -1,4 +1,4 @@
-from utils.helpers import Users
+from utils.helpers import Users, parent
 
 from discord import Member, User, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel
 from discord.ext import commands
@@ -24,18 +24,9 @@ class user(commands.Cog):
     status_description = "Show a users status."
     permissions_description = "Show a member's permission, Defualts to current channel."
 
-    async def parent(self, ctx):
-        group_commands = []
-        for subcommand in ctx.command.commands:
-            command_string = f"{ctx.prefix + subcommand.qualified_name}"
-            group_commands.append(command_string)
-        response = await ctx.reply(embed=Embed(title = f"Commands in `{ctx.command.name}`", description = ", ".join(group_commands)), delete_after=30)
-        invocation = response.reference.resolved
-        await invocation.delete(delay=30)
-
     @commands.group(name = "user", aliases = ["member"], invoke_without_command = True, case_insensitive = True,)
     async def legacy_user_group(self, ctx):
-       await self.parent(ctx)
+       await parent(ctx)
 
     @legacy_user_group.command(name ="info", description=info_description, usage="[member]", aliases=["whois", "ui"])
     async def info_legacy(self, ctx: commands.Context, member: Union[Member, User] = None):
