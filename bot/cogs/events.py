@@ -25,7 +25,7 @@ webhook_url = environ.get('STATUS_WEBHOOK')
 default_guild = int(environ.get('DEFAULT_GUILD'))
 default_guild_obj = Object(id=default_guild)
 
-class Events(commands.Cog):
+class Events_Cog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -425,5 +425,5 @@ class Events(commands.Cog):
     '''
 
 async def setup(bot):
-    await bot.add_cog(Events(bot))
+    await bot.add_cog(Events_Cog(bot))
 

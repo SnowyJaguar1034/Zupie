@@ -12,7 +12,7 @@ load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
     
-class role(app_commands.Group, commands.Cog):
+class Role_Cog(app_commands.Group, commands.Cog, name="Role", description="Shows all role related commands, legacy and slash"):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
@@ -73,4 +73,4 @@ class role(app_commands.Group, commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(role(bot))
+    await bot.add_cog(Role_Cog(bot), guild=Object(id=default_guild))

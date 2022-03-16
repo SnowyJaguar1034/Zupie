@@ -12,7 +12,7 @@ load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
     
-class user(app_commands.Group, commands.Cog):
+class User_Cog(app_commands.Group, commands.Cog, name="user", description="Shows all user related commands, legacy and slash"):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
@@ -110,7 +110,7 @@ async def permissions_menu(interaction: Interaction, member: Union[Member, User]
     
 
 async def setup(bot):
-    await bot.add_cog(user(bot))
+    await bot.add_cog(User_Cog(bot), guild=Object(id=default_guild))
     menus = [info_menu, joined_menu, avatar_menu, roles_menu, status_menu]
     for menu in menus:
         bot.tree.add_command(menu, guild=Object(id=default_guild))
