@@ -19,9 +19,9 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
         super().__init__()
         self.bot = bot
 
-    @app_commands.command(name="sync tree", description="Syncs the slash command tree")
+    @app_commands.command(name="sync-tree", description="Syncs the slash command tree")
     @app_commands.guilds(Object(id=default_guild))
-    async def tree(interaction: Interaction):
+    async def tree(self, interaction: Interaction):
         try:
             await self.bot.tree.sync(guild=discord.Object(id=interaction.guild_id))
         except Exception as e:
