@@ -12,7 +12,7 @@ load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
     
-class user(commands.Cog):
+class user(app_commands.Group, commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -32,7 +32,7 @@ class user(commands.Cog):
     async def info_legacy(self, ctx: commands.Context, member: Union[Member, User] = None):
         await Users(self).info_func(ctx, member)
 
-    @slash_user_group.command(name="info", description=info_description)
+    @app_commands.command(name="info", description=info_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def info_slash(self, interaction: Interaction, member: Union[Member, User]=None):
         await Users(self).info_func(interaction, member)
@@ -41,7 +41,7 @@ class user(commands.Cog):
     async def joined_legacy(self, ctx, member: Member=None):
         await Users(self).joined_func(ctx, member)
 
-    @slash_user_group.command(name="joined", description=joined_description)
+    @app_commands.command(name="joined", description=joined_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def joined_slash(self, interaction: Interaction, member: Member=None):
         await Users(self).joined_func(interaction, member)
@@ -50,7 +50,7 @@ class user(commands.Cog):
     async def avatar_legacy(self, ctx, member: Union[Member, User] = None):
         await Users(self).avatar_func(ctx, member)
 
-    @slash_user_group.command(name="avatar", description=avatar_description)
+    @app_commands.command(name="avatar", description=avatar_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def avatar_slash(self, interaction: Interaction, member: Union[Member, User]=None):
         await Users(self).avatar_func(interaction, member)
@@ -59,7 +59,7 @@ class user(commands.Cog):
     async def roles_legacy(self, ctx, member: Member = None):
         await Users(self).roles_func(ctx, member)
 
-    @slash_user_group.command(name="roles", description=roles_description)
+    @app_commands.command(name="roles", description=roles_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def roles_slash(self, interaction: Interaction, member: Member = None):
         await Users(self).roles_func(interaction, member)
@@ -68,7 +68,7 @@ class user(commands.Cog):
     async def status_legacy(self, ctx, member: Union[Member, User] = None):
         await Users(self).status_func(ctx, member)
 
-    @slash_user_group.command(name="status", description=status_description)
+    @app_commands.command(name="status", description=status_description)
     @app_commands.describe(member="The discord member to get information for.")
     async def status_slash(self, interaction: Interaction, member: Union[Member, User] = None):
         await Users(self).status_func(interaction, member)
@@ -77,7 +77,7 @@ class user(commands.Cog):
     async def permissions_legacy(self, ctx, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
         await Users(self).permissions_func(ctx, member, channel)
     
-    @slash_user_group.command(name="permissions", description=permissions_description)
+    @app_commands.command(name="permissions", description=permissions_description)
     @app_commands.describe(member="The discord member to get information for.")
     @app_commands.describe(channel="The channel to get permissions for.")
     async def permissions_slash(self, interaction: Interaction, member: Member = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
