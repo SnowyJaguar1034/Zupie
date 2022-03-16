@@ -14,6 +14,7 @@ default_guild = int(environ.get('DEFAULT_GUILD'))
     
 class role(app_commands.Group, commands.Cog):
     def __init__(self, bot):
+        super().__init__()
         self.bot = bot
 
     edit_role = app_commands.Group(name="edit", description="edit Role stuff.", guild_ids=[default_guild])
@@ -48,12 +49,13 @@ class role(app_commands.Group, commands.Cog):
     async def permissions_legacy(self, ctx, role: Role=None):
         await Roles(self).permissions_func(ctx, role)
 
-    @role_group.group(name="edit", description = permissions_description, aliases = ["perms"])
+    @role_group.group(name="edit", description = permissions_description)
     async def edit_legacy(self, ctx, role: Role=None):
-        await Roles(self).permissions_func(ctx, role)
+         await parent(ctx)
 
     @edit_legacy.command(name="name")
     async def edit_name_legacy(self, interaction: Interaction, role: Role = None, *, name=str):
+        print("'edit_name_legacy' print out")
 
     
     @app_commands.command(name="permissions", description=permissions_description)
@@ -64,9 +66,9 @@ class role(app_commands.Group, commands.Cog):
 
     @edit_role.command(name="name")
     @app_commands.describe(role=role_param)
-    @app_commands.describe(name=The name you want the command to be)
-    async def edit_name_slash(self, interaction: Interaction, role: Role = None, *, name=str):
-        print("edit_slash print out")
+    @app_commands.describe(name="The name you want the command to be")
+    async def edit_name_slash(self, interaction: Interaction, role: Role = None, *, name: str):
+        print("edit_name_slash print out")
 
 
 

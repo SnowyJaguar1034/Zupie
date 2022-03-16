@@ -14,6 +14,7 @@ default_guild = int(environ.get('DEFAULT_GUILD'))
     
 class user(app_commands.Group, commands.Cog):
     def __init__(self, bot):
+        super().__init__()
         self.bot = bot
 
     slash_user_group = app_commands.Group(name="users", description="Check User stuff.", guild_ids=[default_guild])
