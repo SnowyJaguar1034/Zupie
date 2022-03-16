@@ -26,7 +26,7 @@ class MyNewHelp(MinimalHelpCommand):
         channel = self.get_destination()
         await channel.send(embed=embed)
 
-class Help_Cog(Cog, name="help", "Shows the custom help menu"):
+class Help_Cog(Cog, name="help", description="Shows the custom help menu"):
     def __init__(self, bot):
       self.bot = bot
       self.bot.help_command = MyNewHelp()

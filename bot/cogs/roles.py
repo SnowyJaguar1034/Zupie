@@ -12,7 +12,7 @@ load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
     
-class Role_Cog(app_commands.Group, commands.Cog, name="Role", description="Shows all role related commands, legacy and slash"):
+class Role_Cog(app_commands.Group, commands.Cog, name="role", description="Shows all role related commands, legacy and slash"):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
@@ -49,6 +49,12 @@ class Role_Cog(app_commands.Group, commands.Cog, name="Role", description="Shows
     async def permissions_legacy(self, ctx, role: Role=None):
         await Roles(self).permissions_func(ctx, role)
 
+    @app_commands.command(name="permissions", description=permissions_description)
+    @app_commands.describe(role=role_param)
+    @app_commands.describe(channel="The channel to get permissions for.")
+    async def permissions_slash(self, interaction: Interaction, role: Role = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
+        await Roles(self).permissions_func(interaction, role, channel)
+
     @role_group.group(name="edit", description = permissions_description)
     async def edit_legacy(self, ctx, role: Role=None):
          await parent(ctx)
@@ -57,16 +63,9 @@ class Role_Cog(app_commands.Group, commands.Cog, name="Role", description="Shows
     async def edit_name_legacy(self, interaction: Interaction, role: Role = None, *, name=str):
         print("'edit_name_legacy' print out")
 
-    
-    @app_commands.command(name="permissions", description=permissions_description)
-    @app_commands.describe(role=role_param)
-    @app_commands.describe(channel="The channel to get permissions for.")
-    async def permissions_slash(self, interaction: Interaction, role: Role = None, channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None):
-        await Roles(self).permissions_func(interaction, role, channel)
-
     @edit_role.command(name="name")
     @app_commands.describe(role=role_param)
-    @app_commands.describe(name="The name you want the command to be")
+    @app_commands.describe(name="The name you want the role to have")
     async def edit_name_slash(self, interaction: Interaction, role: Role = None, *, name: str):
         print("edit_name_slash print out")
 
