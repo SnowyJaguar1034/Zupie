@@ -1,6 +1,10 @@
 from main import bot as bot_var
+
 from typing import Union
-from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role
+from datetime import datetime
+from traceback import format_exc
+
+from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role, Colour, Object
 from discord.ext.commands import Context
 
 def perm_format(perm):
@@ -51,7 +55,7 @@ async def parent(ctx):
     invocation = response.reference.resolved
     await invocation.delete(delay=30)
 
-async def interaction_or_context(arg_type, transaction, object_arg):
+async def interaction_or_context(arg_type, transaction, object_arg, ephemeral):
     if arg_type == "MEMBER":
         if isinstance(transaction, Interaction):
             member = transaction.user if object_arg is None else object_arg
@@ -73,14 +77,14 @@ async def interaction_or_context(arg_type, transaction, object_arg):
     elif arg_type == "SEND":
         if isinstance(object_arg, Embed):
             if isinstance(transaction, Interaction):
-                await transaction.response.send(embed=object_arg)
+                await transaction.response.send_message(embed=object_arg, ephemeral=ephemeral)
             elif isinstance(transaction, Context):
                 await transaction.reply(embed=object_arg)
             else:
                 print("ERROR: interaction_or_context : Hit ele statemnt in 'SEND.EMBED' check'")
         else:
             if isinstance(transaction, Interaction):
-                await transaction.response.send(content=object_arg)
+                await transaction.response.send(content=object_arg, ephemeral=ephemeral)
             elif isinstance(transaction, Context):
                 await transaction.reply(content=object_arg)
             else:
@@ -130,7 +134,7 @@ class Users():
         embed.add_field(name = "JPG", value = f"[Link]({member.avatar.with_static_format('jpg')})", inline = True)
         embed.add_field(name = "WebP", value = f"[Link]({member.avatar.with_static_format('webp')})", inline = True)
         embed.set_image(url = member.avatar.url)
-        await interaction_or_context("SEND", transaction, embed)
+        await interaction_or_context("SEND", transaction, embed, True)
 
     async def roles_func(self, transaction, member_arg):
         member = await interaction_or_context("MEMBER", transaction, member_arg)
@@ -207,6 +211,41 @@ class Messages():
 class Owners():
     def __init__(self, bot):
         self.bot = bot
+
+    async def cog(self, task, transaction, cog):
+        embed = Embed(timestamp=datetime.now())
+        ephemeral = None
+        try:
+            if task == "LOAD":
+                await bot_var.load_extension(cog)
+                embed.color=(Colour.green())
+            elif task == "UNLOAD":
+                await bot_var.unload_extension(cog)
+                embed.color=(Colour.orange())
+            elif task == "RELOAD":
+                await bot_var.reload_extension(cog)
+                embed.color=(Colour.gold())
+            embed.title=(f"__Cog {task.title()}ed__")
+            embed.description=(f"{cog.split('.')[1].title()} has been {task.lower()}ed.")
+            ephemeral = False
+        except Exception as e:
+            embed.title=(f"__{task.title()} Error__")
+            embed.description=(f"There was an error trying to {task.lower()} `{cog.split('.')[1].title()}`")
+            embed.color=(Colour.red())
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral=True
+        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
+        await interaction_or_context("SEND", transaction, embed, ephemeral)
+
+    async def cog_error(self, transaction, cog, task):
+        embed = Embed(timestamp=datetime.now())
+        embed.title=(f"__{task.title()} Error__")
+        embed.description=(f"There was an error trying to {task.lower()} `{cog.split('.')[1].title()}`")
+        embed.color=(Colour.red())
+        embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+        ephemeral=True
+        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
+        await interaction_or_context("SEND", transaction, embed, ephemeral)
 
 def _emoji_counter_(guild):
     emoji_stats = Counter()

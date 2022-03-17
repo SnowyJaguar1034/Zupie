@@ -1,4 +1,4 @@
-from utils.helpers import Users, parent
+from utils.helpers import Owners, parent, interaction_or_context
 
 from discord import Member, User, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Colour, Embed
 from discord.ext import commands
@@ -8,7 +8,7 @@ from datetime import datetime
 from os import environ
 from traceback import format_exc
 from dotenv import load_dotenv
-#from main import bot
+from main import bot
 
 load_dotenv()
 
@@ -38,21 +38,48 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
 
     @cogs_group.command(name="load", description="loads a cog")
     @app_commands.describe(cog="the cog to load.")
-    @app_commands.choices(cogs=[Choice(name=cog.split('.')[1].title(),value=cog) for cog in self.bot.initial_extensions])
+    @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
     async def load_slash(self, interaction: Interaction, cog: str):
-        embed = Embed(timestamp=datetime.datetime.now())
         try:
             await self.bot.load_extension(cog)
-            embed.title=("__Cog Loaded__")
-            embed.description=(f"{cog} has been Loaded.")
-            embed.color=(Colour.green())
+            embed.color=Colour.green()
+        
         except Exception as e:
-            embed.title=("__Load Error__")
-            embed.description=(f"There was an error trying to load *{cog}*")
+            embed.title=f"__{task.title()} Error__"
+            embed.description=(f"There was an error trying to {task.lower()} `{cog.split('.')[1].title()}`")
             embed.color=(Colour.red())
-            embed.add_field(name="Traceback", description=format_exc)
-        embed.set_footer(text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url)
-        await interaction.response.send_message(embed= embed, ephemeral=True)			
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral=True
+            embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
+        await interaction_or_context("SEND", transaction, embed, ephemeral)
+        await Owners(self).cog("LOAD", interaction, cog)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
+
+    @cogs_group.command(name="unload", description="unloads a cog")
+    @app_commands.describe(cog="the cog to unload.")
+    @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
+    async def unload_slash(self, interaction: Interaction, cog: str):
+        await self.bot.unload_extension(cog)
+        embed.color=(Colour.orange())
+        await Owners(self).cog("UNLOAD", interaction, cog)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
+
+    @cogs_group.command(name="reload", description="reloads a cog")
+    @app_commands.describe(cog="the cog to reload.")
+    @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
+    async def reload_slash(self, interaction: Interaction, cog: str):
+        await self.bot.reload_extension(cog)
+        embed.color=(Colour.gold())
+        embed = Embed(timestamp=datetime.now())
+        ephemeral = None
+        try:
+            embed.title=(f"__Cog {task.title()}ed__")
+            embed.description=(f"{cog.split('.')[1].title()} has been {task.lower()}ed.")
+            ephemeral = False
+        except Exception as e:
+            pass
+        await Owners(self).cog("RELOAD", interaction, cog)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
     
 
 async def setup(bot):

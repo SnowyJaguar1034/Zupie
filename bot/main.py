@@ -28,4 +28,4 @@ if __name__ == '__main__':
     try:
         asyncio.run(bot.main())
     except RuntimeError as e:
-        print(e)
+        print(traceback.format_exc())

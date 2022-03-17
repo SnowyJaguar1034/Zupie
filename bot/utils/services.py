@@ -1,6 +1,6 @@
 import discord, datetime, sys, traceback, os, pathlib, asyncio, aiohttp, config
 #import logging, aioredis, asyncpg
-from discord import app_commands
+from discord import app_commands, Object
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -8,6 +8,8 @@ load_dotenv()
 
 token = os.environ.get('TOKEN')
 version = os.environ.get('VERSION')
+default_guild = int(os.environ.get('DEFAULT_GUILD'))
+
 
 #log = logging.getLogger(__name__)
 
@@ -132,11 +134,26 @@ class Zupie(commands.AutoShardedBot):
         if self.config.testing is False:
             await self.prom.start()
     '''
+    async def setup_hook(self) -> None:
+        print(
+            '------',
+            'setup hook',
+            f'Logged in as: {self.user}',
+            f'ID: {self.user.id}',
+            f'Version: {self.version}',
+            f'Started at: {datetime.datetime.utcnow()}',
+            '------',
+            sep="\n"
+        )
 
     async def main(self):
         async with aiohttp.ClientSession() as session:
             async with self:
-                print('------')
+                print(
+                    '------',
+                    'main func',
+                    sep='\n'
+                )
                 for extension in self.config.initial_extensions:
                     try:
                         await self.load_extension(extension)

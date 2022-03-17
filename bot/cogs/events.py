@@ -109,20 +109,16 @@ class Events_Cog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('------')
+        await self.bot.tree.sync(guild=Object(id=default_guild))
         print(
-        f'Logged in as: {self.bot.user}',
-        f'ID: {self.bot.user.id}',
-        f'Guilds connected to: {len(self.bot.guilds)}',
-        f'Version: {self.bot.version}',
-        f'Running shards: {len(self.bot.shards)}',
-        f'Loaded cogs: {len(self.bot.cogs)}',
-        f'Started at: {datetime.datetime.utcnow()}',
-        sep='\n'
+            'ready event',
+            f'Guilds connected to: {len(self.bot.guilds)}',
+            f'Running shards: {len(self.bot.shards)}',
+            f'Loaded cogs: {len(self.bot.cogs)}',
+            'Sucessfully synced applications commands',
+            '------',
+            sep='\n'
         )
-        await self.bot.tree.sync(guild=Object(id=default_guild))# 
-        print('Sucessfully synced applications commands')
-        print('------')
         ''' 
         log.info("\n")
         log.info("--------")
