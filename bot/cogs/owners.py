@@ -40,45 +40,57 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
     @app_commands.describe(cog="the cog to load.")
     @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
     async def load_slash(self, interaction: Interaction, cog: str):
+        embed= Embed(timestamp=datetime.now())
         try:
-            await self.bot.load_extension(cog)
+            await self.bot.unload_extension(cog)
             embed.color=Colour.green()
-        
+            ephemeral=False
         except Exception as e:
-            embed.title=f"__{task.title()} Error__"
-            embed.description=(f"There was an error trying to {task.lower()} `{cog.split('.')[1].title()}`")
+            embed.description=(f"There was an error trying to {interaction.command.name.lower()} `{cog.split('.')[1].title()}`")
             embed.color=(Colour.red())
             embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
             ephemeral=True
-            embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
-        await interaction_or_context("SEND", transaction, embed, ephemeral)
-        await Owners(self).cog("LOAD", interaction, cog)
+        embed.title=(f"__Cog {interaction.command.name.title()}ed__")
+        embed.set_footer(text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
 
     @cogs_group.command(name="unload", description="unloads a cog")
     @app_commands.describe(cog="the cog to unload.")
     @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
     async def unload_slash(self, interaction: Interaction, cog: str):
-        await self.bot.unload_extension(cog)
-        embed.color=(Colour.orange())
-        await Owners(self).cog("UNLOAD", interaction, cog)
+        embed= Embed(timestamp=datetime.now())
+        try:
+            await self.bot.unload_extension(cog)
+            embed.color=Colour.green()
+            ephemeral=False
+        except Exception as e:
+            embed.description=(f"There was an error trying to {interaction.command.name.lower()} `{cog.split('.')[1].title()}`")
+            embed.color=(Colour.red())
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral=True
+        embed.title=(f"__Cog {interaction.command.name.title()}ed__")
+        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=object_arg, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
 
     @cogs_group.command(name="reload", description="reloads a cog")
     @app_commands.describe(cog="the cog to reload.")
     @app_commands.choices(cog=[app_commands.Choice(name=cog.split('.')[1].title(),value=cog) for cog in bot.config.initial_extensions])
     async def reload_slash(self, interaction: Interaction, cog: str):
-        await self.bot.reload_extension(cog)
-        embed.color=(Colour.gold())
-        embed = Embed(timestamp=datetime.now())
-        ephemeral = None
+        embed= Embed(timestamp=datetime.now())
         try:
-            embed.title=(f"__Cog {task.title()}ed__")
-            embed.description=(f"{cog.split('.')[1].title()} has been {task.lower()}ed.")
-            ephemeral = False
+            await self.bot.unload_extension(cog)
+            embed.color=Colour.green()
+            ephemeral=False
         except Exception as e:
-            pass
-        await Owners(self).cog("RELOAD", interaction, cog)
+            embed.description=(f"There was an error trying to {interaction.command.name.lower()} `{cog.split('.')[1].title()}`")
+            embed.color=(Colour.red())
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral=True
+        embed.title=(f"__Cog {interaction.command.name.title()}ed__")
+        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=object_arg, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
     
 

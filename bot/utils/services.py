@@ -152,8 +152,7 @@ class Zupie(commands.AutoShardedBot):
                 print(
                     '------',
                     'main func',
-                    sep='\n'
-                )
+                    )
                 for extension in self.config.initial_extensions:
                     try:
                         await self.load_extension(extension)

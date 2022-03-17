@@ -1,11 +1,12 @@
 from main import bot as bot_var
 
-from typing import Union
+from typing import Union, Sequence
 from datetime import datetime
 from traceback import format_exc
 
-from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role, Colour, Object
+from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Role, Colour, Object, Message, NotFound
 from discord.ext.commands import Context
+
 
 def perm_format(perm):
     return perm.replace("_", " ").replace("guild", "server").title()
