@@ -42,7 +42,7 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
     async def load_slash(self, interaction: Interaction, cog: str):
         embed= Embed(timestamp=datetime.now())
         try:
-            await self.bot.unload_extension(cog)
+            await self.bot.load_extension(cog)
             embed.color=Colour.green()
             ephemeral=False
         except Exception as e:
@@ -70,8 +70,8 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
             embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
             ephemeral=True
         embed.title=(f"__Cog {interaction.command.name.title()}ed__")
-        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
-        await interaction.response.send_message(embed=object_arg, ephemeral=ephemeral)
+        embed.set_footer(text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
 
     @cogs_group.command(name="reload", description="reloads a cog")
@@ -80,7 +80,7 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
     async def reload_slash(self, interaction: Interaction, cog: str):
         embed= Embed(timestamp=datetime.now())
         try:
-            await self.bot.unload_extension(cog)
+            await self.bot.reload_extension(cog)
             embed.color=Colour.green()
             ephemeral=False
         except Exception as e:
@@ -89,8 +89,8 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
             embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
             ephemeral=True
         embed.title=(f"__Cog {interaction.command.name.title()}ed__")
-        embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
-        await interaction.response.send_message(embed=object_arg, ephemeral=ephemeral)
+        embed.set_footer(text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url)
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
     
 
