@@ -1,6 +1,8 @@
 # Zupie
 Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
-
+<!-- [![Discord](https://discordapp.com/api/guilds/576016832956334080/embed.png)](https://discord.gg/wjWJwJB) -->
+<!-- [![License](https://img.shields.io/github/license/chamburr/modmail.svg)](https://github.com/chamburr/modmail/blob/master/LICENSE) -->
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e531e880aad44149984ee41561918ad2)](https://www.codacy.com/gh/SnowyJaguar1034/Zupie/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SnowyJaguar1034/Zupie&amp;utm_campaign=Badge_Grade)
 ## Table of Contents
 
 - [What is Zupie](#what-is-zupie)

@@ -4,7 +4,8 @@ initial_extensions = [
     "cogs.owners",
 	"cogs.users", 
     "cogs.roles",
-    "cogs.code_snippets"
+    "cogs.code_snippets",
+    "cogs.eval",
 ]
 
 owners = [
