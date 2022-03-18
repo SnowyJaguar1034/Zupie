@@ -6,13 +6,22 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 - [What is Zupie](#what-is-zupie)
 - [Questions](#questions)
 - [Self Hosting](#self-hosting)<br/>
-- [Self Hosting: Prerequisites](#prerequisites)<br/>
-&nbsp;&nbsp;- [Self Hosting: Installing the source](#installing-the-source)<br/>
-&nbsp;&nbsp;- [Self Hosting: Setup](#setup)<br/>
-&nbsp;&nbsp;- [Self Hosting: Running the bot](#running-the-bot)<br/>
+&nbsp;- [Self Hosting: Prerequisites](#prerequisites)<br/>
+&nbsp;- [Self Hosting: Installing the source](#installing-the-source)<br/>
+&nbsp;- [Self Hosting: Setup](#setup)<br/>
+&nbsp;&nbsp;- [Self Hosting: Setup: `config.py`](#`config.py` file)<br/>
+&nbsp;&nbsp;- [Self Hosting: Setup: `.env`](#`.env` file)<br/>
+&nbsp;&nbsp;- [Self Hosting: Setup: Module Installation](#installing-the-modules)<br/>
+&nbsp;- [Self Hosting: Running the bot](#running-the-bot)<br/>
 - [Contributing](#contributing)
-4. [Code of Conduct](#code-of-conduct)
-5. [License](#license)
+&nbsp;- [Contributing: Issues & Bugs](#issues-and-bugs)<br/>
+&nbsp;- [Contributing: Pull Requests](#pull-requests)<br/>
+&nbsp;&nbsp;- [Contributing: Pull Requests: Header](#header)<br/>
+&nbsp;&nbsp;- [Contributing: Pull Requests: Body](#body)<br/>
+&nbsp;&nbsp;- [Contributing: Pull Requests: Footer](#footer)<br/>
+&nbsp;- [Contributing: Development Environment](#development-environment)<br/>
+- [Code of Conduct](#code-of-conduct)
+- [License](#license)
 
 ## What is Zupie
 
@@ -71,7 +80,7 @@ You should make a copy of `example.env` and rename it to `.env`. All fields mark
 - `ACTIVITY`: The message you want your bot to show on it's profile
 - `STATUS_WEBHOOK` : The URL of the webhook your bot will use to send status updates (shard connections/disconnections/restarts)
 
-### Installing the Modules
+#### Installing the Modules
 
 Zupie utilises [discord.py](https://github.com/Rapptz/discord.py) and several other modules to function properly. The list of modules can be found in `requirements.txt` and you can install them with the following command.
 
@@ -97,24 +106,15 @@ better than it is today. there are many ways you can contribute to this project:
 
 For more information on contributing, please see the [contributing guidelines](#contributing-guide).
 
-The issue tracker here is only for bug reports and feature requests. Please do not use it to ask a question. Instead, ask it on our [Discord server](https://discord.gg/wjWJwJB).
+The issue tracker here is only for bug reports and feature requests. Please do not use it to ask a question. Instead, ask it on our [Discord server](https://discord.gg/).
 
-### Contributing Guide
-
-- [Issues and Bugs](#issues-and-bugs)
-- [Pull Requests](#pull-requests)
-- [Commit Convention](#commit-convention)
-- [Development Environment](#development-environment)
-- [Questions](#questions)
-- [Code of Conduct](#code-of-conduct)
-
-#### Issues and Bugs
+### Issues and Bugs
 
 We track bugs and features using the GitHub issue tracker. If you come across any bugs or have
 feature suggestions, please let us know by submitting an issue, or even better, making a pull
 request.
 
-#### Pull Requests
+### Pull Requests
 
 Please follow these guidelines related to submitting a pull request.
 
@@ -135,7 +135,7 @@ The commit message must follow this format:
 ```
 
 Additionally, the maximum length of each line must not exceed 72 characters.
-##### Header
+#### Header
 
 The header is mandatory.
 
@@ -152,18 +152,18 @@ The type must be one of the following, the scope is optional and can be decided 
 - `style`: Changes to code that do not affect its functionality.
 - `test`: Adding missing tests or correcting existing tests.
 
-##### Body
+#### Body
 
 The body is optional and can contain additional information, such as motivation for the commit.
 
-##### Footer
+#### Footer
 
 The footer is optional and should contain any information about breaking changes. It is also the
 place to reference GitHub issues that the commit closes.
 
 Breaking changes should start with `BREAKING CHANGE:` with a space or two newlines. The rest of the
 commit message is then used for explaining the change.
-#### Development Environment
+### Development Environment
 
 To set up your development environment, follow the [self-hosting
 guide here](#self-hosting). When you successfully
