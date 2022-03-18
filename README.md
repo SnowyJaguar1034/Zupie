@@ -9,7 +9,7 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 &nbsp;- [Self Hosting: Prerequisites](#prerequisites)<br/>
 &nbsp;- [Self Hosting: Installing the source](#installing-the-source)<br/>
 &nbsp;- [Self Hosting: Setup](#setup)<br/>
-&nbsp;&nbsp;- [Self Hosting: Setup: `config.py`](#configpy file)<br/>
+&nbsp;&nbsp;- [Self Hosting: Setup: config.py](#configpy file)<br/>
 &nbsp;&nbsp;- [Self Hosting: Setup: `.env`](#env file)<br/>
 &nbsp;&nbsp;- [Self Hosting: Setup: Module Installation](#installing-the-modules)<br/>
 &nbsp;- [Self Hosting: Running the bot](#running-the-bot)<br/>
