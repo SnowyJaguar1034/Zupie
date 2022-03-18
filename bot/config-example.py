@@ -1,21 +1,26 @@
 initial_extensions = [
+    "cogs.help",
+    "cogs.events",
+    "cogs.owners",
 	"cogs.users", 
+    "cogs.roles",
+    "cogs.code_snippets"
 ]
+
+CLIENT_ID="941314754851524639"
 
 owners = [
     "365262543872327681",
 ]
 
 backend = {
-    "Owners": ["365262543872327681",],
-    "Admins": []
-    
+    "Owners": ["Fill",],
+    "Admins": ["FILL",]
 }
 
 # Channels to send logs
-join_channel = 816480943228452895
-event_channel = 816480957288546314
-admin_channel = 816480968830353458
+join_channel = FILL
+admin_channel = FILL
 
 
 guild_perms = [
@@ -65,14 +70,14 @@ key_perms = [
 ]
 
 # Invite strctures
-invite_plain = "https://discord.com/api/oauth2/authorize?client_id=941314754851524639&permissions=1644971950071&scope=bot%20applications.commands"
-invite_hyperlink = f"[Invite Wyvern](invite_plain)"
+invite_plain = "https://discord.com/api/oauth2/authorize?client_id={CLIENT_ID}&permissions=1644971950071&scope=bot%20applications.commands"
+invite_hyperlink = f"[Invite Zupie](invite_plain)"
 
 # Postgres DataBase credentials
 database = {
-    "database": "postgres",
-    "user": "postgres",
-    "password": "onapostitunderthekeyboard",
-    "host": "localhost",
-    "port": 5432
+    "database": "FILL",
+    "user": "FILL",
+    "password": "FILL",
+    "host": "FILL",
+    "port": Fill
 }
