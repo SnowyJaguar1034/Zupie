@@ -6,20 +6,20 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 - [What is Zupie](#what-is-zupie)
 - [Questions](#questions)
 - [Self Hosting](#self-hosting)<br/>
-&nbsp;- [Self Hosting: Prerequisites](#prerequisites)<br/>
-&nbsp;- [Self Hosting: Installing the source](#installing-the-source)<br/>
-&nbsp;- [Self Hosting: Setup](#setup)<br/>
-&nbsp;&nbsp;- [Self Hosting: Setup: `config.py`](https://github.com/SnowyJaguar1034/Zupie#configpy-file)<br/>
-&nbsp;&nbsp;- [Self Hosting: Setup: `.env`](https://github.com/SnowyJaguar1034/Zupie#env-file)<br/>
-&nbsp;&nbsp;- [Self Hosting: Setup: Module Installation](#installing-the-modules)<br/>
-&nbsp;- [Self Hosting: Running the bot](#running-the-bot)<br/>
+&nbsp;- [Prerequisites](#prerequisites)<br/>
+&nbsp;- [Installing the source](#installing-the-source)<br/>
+&nbsp;- [Setup](#setup)<br/>
+&nbsp;&nbsp;- [Setup: `config.py`](https://github.com/SnowyJaguar1034/Zupie#configpy-file)<br/>
+&nbsp;&nbsp;- [Setup: `.env`](https://github.com/SnowyJaguar1034/Zupie#env-file)<br/>
+&nbsp;&nbsp;- [Setup: Module Installation](#installing-the-modules)<br/>
+&nbsp;- [Running the bot](#running-the-bot)<br/>
 - [Contributing](#contributing)
-&nbsp;- [Contributing: Issues & Bugs](#issues-and-bugs)<br/>
-&nbsp;- [Contributing: Pull Requests](#pull-requests)<br/>
-&nbsp;&nbsp;- [Contributing: Pull Requests: Header](#header)<br/>
-&nbsp;&nbsp;- [Contributing: Pull Requests: Body](#body)<br/>
-&nbsp;&nbsp;- [Contributing: Pull Requests: Footer](#footer)<br/>
-&nbsp;- [Contributing: Development Environment](#development-environment)<br/>
+&nbsp;- [Issues & Bugs](#issues-and-bugs)<br/>
+&nbsp;- [Pull Requests](#pull-requests)<br/>
+&nbsp;&nbsp;- [Pull Requests: Header](#header)<br/>
+&nbsp;&nbsp;- [Pull Requests: Body](#body)<br/>
+&nbsp;&nbsp;- [Pull Requests: Footer](#footer)<br/>
+&nbsp;- [Development Environment](#development-environment)<br/>
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
 
