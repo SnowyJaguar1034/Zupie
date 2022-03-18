@@ -172,5 +172,6 @@ self-host the bot, your development environment should more or less be ready.
 
 ## License
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b8170de68c94c58ad9339854cdeabbe)](https://app.codacy.com/gh/SnowyJaguar1034/Zupie?utm_source=github.com&utm_medium=referral&utm_content=SnowyJaguar1034/Zupie&utm_campaign=Badge_Grade_Settings)
 <!-- [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=SnowyJaguar1034)](https://github.com/anuraghazra/github-readme-stats) -->
 
