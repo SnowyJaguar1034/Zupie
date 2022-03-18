@@ -3,6 +3,11 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 <!-- [![Discord](https://discordapp.com/api/guilds/576016832956334080/embed.png)](https://discord.gg/wjWJwJB) -->
 <!-- [![License](https://img.shields.io/github/license/chamburr/modmail.svg)](https://github.com/chamburr/modmail/blob/master/LICENSE) -->
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e531e880aad44149984ee41561918ad2)](https://www.codacy.com/gh/SnowyJaguar1034/Zupie/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SnowyJaguar1034/Zupie&amp;utm_campaign=Badge_Grade)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
+[![](https://github.com/licensee/licensee/workflows/CI/badge.svg)](https://github.com/licensee/licensee/actions?query=workflow%3ACI) 
+[![Maintainability](https://api.codeclimate.com/v1/badges/e3285d0b5cdca4998b2e/maintainability)](https://codeclimate.com/github/SnowyJaguar1034/Zupie/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e3285d0b5cdca4998b2e/test_coverage)](https://codeclimate.com/github/SnowyJaguar1034/Zupie/test_coverage)
+
 ## Table of Contents
 
 - [What is Zupie](#what-is-zupie)
@@ -98,6 +103,9 @@ Congratulations! You have set up everything and you can finally have the bot up 
 ```
 
 ## Contributing
+
+**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://kcd.im/pull-request)
+
 Hi, thanks for your interest in contributing to Zupie! We'd love your help to make Zupie even
 better than it is today. there are many ways you can contribute to this project:
 
@@ -173,6 +181,8 @@ self-host the bot, your development environment should more or less be ready.
 ## Code of Conduct
 
 ## License
+
+This project is licensed under the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
 
 <!-- [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=SnowyJaguar1034)](https://github.com/anuraghazra/github-readme-stats) -->
 
