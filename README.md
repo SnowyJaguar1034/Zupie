@@ -3,10 +3,11 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 <!-- [![Discord](https://discordapp.com/api/guilds/576016832956334080/embed.png)](https://discord.gg/wjWJwJB) -->
 <!-- [![License](https://img.shields.io/github/license/chamburr/modmail.svg)](https://github.com/chamburr/modmail/blob/master/LICENSE) -->
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e531e880aad44149984ee41561918ad2)](https://www.codacy.com/gh/SnowyJaguar1034/Zupie/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SnowyJaguar1034/Zupie&amp;utm_campaign=Badge_Grade)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
-[![](https://github.com/licensee/licensee/workflows/CI/badge.svg)](https://github.com/licensee/licensee/actions?query=workflow%3ACI) 
+[![](https://github.com/SnowyJaguar1034/Zupie/workflows/CI/badge.svg)](https://github.com/licensee/licensee/actions?query=workflow%3ACI) 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e3285d0b5cdca4998b2e/maintainability)](https://codeclimate.com/github/SnowyJaguar1034/Zupie/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/e3285d0b5cdca4998b2e/test_coverage)](https://codeclimate.com/github/SnowyJaguar1034/Zupie/test_coverage)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
+
 
 ## Table of Contents
 
