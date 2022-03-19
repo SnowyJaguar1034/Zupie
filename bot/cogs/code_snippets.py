@@ -83,7 +83,7 @@ class CodeSnippets(Cog):
 
         try:
             try:
-                await bot.instance.wait_for('reaction_add', check=check, timeout=timeout)
+                await message.wait_for('reaction_add', check=check, timeout=timeout)
             except asyncio.TimeoutError:
                 await message.clear_reactions()
             else:
@@ -273,7 +273,7 @@ class CodeSnippets(Cog):
                         f'{error_message} for GET {error.request_info.real_url.human_repr()}',
                         sep="\n"
                     )
-                    ''' 
+                    '''
                     log.log(
                         logging.DEBUG if error.status == 404 else logging.ERROR,
                         f'Failed to fetch code snippet from {match[0]!r}: {error.status} '

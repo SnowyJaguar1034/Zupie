@@ -2,7 +2,7 @@ initial_extensions = [
     "cogs.help",
     "cogs.events",
     "cogs.owners",
-	"cogs.users", 
+	"cogs.users",
     "cogs.roles",
     "cogs.code_snippets",
     "cogs.eval",
@@ -15,7 +15,7 @@ owners = [
 backend = {
     "Owners": ["365262543872327681",],
     "Admins": []
-    
+
 }
 
 # Channels to send logs
@@ -25,49 +25,49 @@ admin_channel = 816480968830353458
 
 
 guild_perms = [
-    "administrator", 
-    "manage_guild", 
-    "manage_webhooks", 
-    "manage_channels", 
-    "manage_roles", 
-    "manage_emojis", 
-    "manage_messages", 
-    "manage_nicknames", 
-    "view_audit_log", 
-    "view_guild_insights", 
-    "kick_members", 
-    "ban_members", 
-    "move_members", 
-    "deafen_members", 
-    "mute_members", 
-    "read_messages", 
-    "send_messages", 
-    "send_tts_messages", 
-    "embed_links", 
-    "attach_files", 
-    "read_message_history", 
-    "add_reactions", 
-    "external_emojis", 
-    "connect", "speak", 
-    "priority_speaker", 
-    "use_voice_activation", 
-    "stream", 
-    "create_instant_invite", 
+    "administrator",
+    "manage_guild",
+    "manage_webhooks",
+    "manage_channels",
+    "manage_roles",
+    "manage_emojis",
+    "manage_messages",
+    "manage_nicknames",
+    "view_audit_log",
+    "view_guild_insights",
+    "kick_members",
+    "ban_members",
+    "move_members",
+    "deafen_members",
+    "mute_members",
+    "read_messages",
+    "send_messages",
+    "send_tts_messages",
+    "embed_links",
+    "attach_files",
+    "read_message_history",
+    "add_reactions",
+    "external_emojis",
+    "connect", "speak",
+    "priority_speaker",
+    "use_voice_activation",
+    "stream",
+    "create_instant_invite",
     "change_nickname",
-    "mention_everyone"
+    "mention_everyone",
 ]
 
 key_perms = [
-    "administrator", 
-    "manage_guild", 
-    "manage_roles", 
-    "manage_channels", 
-    "manage_messages", 
-    "manage_webhooks", 
-    "manage_nicknames", 
-    "manage_emojis", 
-    "kick_members", 
-    "mention_everyone"
+    "administrator",
+    "manage_guild",
+    "manage_roles",
+    "manage_channels",
+    "manage_messages",
+    "manage_webhooks",
+    "manage_nicknames",
+    "manage_emojis",
+    "kick_members",
+    "mention_everyone",
 ]
 
 # Invite strctures

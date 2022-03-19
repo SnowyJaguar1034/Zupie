@@ -13,7 +13,7 @@ from main import bot
 load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
-    
+
 class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Shows all owner related commands"):
     def __init__(self, bot):
         super().__init__()

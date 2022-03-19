@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 default_guild = int(environ.get('DEFAULT_GUILD'))
-    
+
 class Role_Cog(app_commands.Group, commands.Cog, name="role", description="Shows all role related commands, legacy and slash"):
     def __init__(self, bot):
         super().__init__()

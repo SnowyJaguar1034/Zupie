@@ -124,7 +124,7 @@ class Events_Cog(commands.Cog):
         log.info("--------")
         log.info(f"{self.bot.user.name}#{self.bot.user.discriminator} is online!")
         log.info("--------")
-        log.info("\n") 
+        log.info("\n")
         
         trace_config = aiohttp.TraceConfig()
         trace_config.on_request_start.append(self.on_http_request_start)
@@ -141,7 +141,7 @@ class Events_Cog(commands.Cog):
     @commands.Cog.listener()
     async def on_shard_ready(self, shard):
         #self.bot.prom.events.inc({"type": "READY"})
-        embed = Embed(title=f"Shard {shard} Ready", colour=Colour.green(), 
+        embed = Embed(title=f"Shard {shard} Ready", colour=Colour.green(),
         timestamp=datetime.datetime.utcnow(),)
         await self.status_webhook(embed)
 
