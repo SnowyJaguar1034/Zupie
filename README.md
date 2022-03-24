@@ -1,8 +1,8 @@
 # Zupie
 Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 
-![Core Dev](https://dcbadge.vercel.app/api/shield/365262543872327681?theme=clean&logoColor=presence)
-![Zupie](https://dcbadge.vercel.app/api/shield/bot/941314754851524639?theme=clean&logoColor=presence)
+![Core Dev](https://dcbadge.vercel.app/api/shield/365262543872327681?theme=clean&logoColor=presence&compact=true)
+![Zupie](https://dcbadge.vercel.app/api/shield/bot/941314754851524639?theme=clean&logoColor=presence&compact=true)
 <br/>
 [![Discord](https://discord.com/api/guilds/607652789304164362/widget.png)](https://discord.com/api/guilds/607652789304164362/widget.png)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
