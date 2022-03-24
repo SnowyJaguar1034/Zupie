@@ -4,6 +4,8 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 ![Core Dev](https://dcbadge.vercel.app/api/shield/365262543872327681?theme=clean&logoColor=presence)
 ![Zupie](https://dcbadge.vercel.app/api/shield/bot/941314754851524639?theme=clean&logoColor=presence)<br/>
 [![Discord](https://discord.com/api/guilds/607652789304164362/widget.png)](https://discord.com/api/guilds/607652789304164362/widget.png)
+[![Discord](https://discord.com/api/guilds/607652789304164362/name.png)](https://discord.com/api/guilds/607652789304164362/widget.png)
+
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e531e880aad44149984ee41561918ad2)](https://www.codacy.com/gh/SnowyJaguar1034/Zupie/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SnowyJaguar1034/Zupie&amp;utm_campaign=Badge_Grade)
 [![](https://github.com/SnowyJaguar1034/Zupie/workflows/CI/badge.svg)](https://github.com/SnowyJaguar1034/Zupie/actions?query=workflow%3ACI) 
