@@ -1,4 +1,5 @@
-from utils.helpers import Roles, parent
+from utils.helpers import parent
+from utils.helper_roles import info_func, members_func, permissions_func
 
 from discord import Role, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel
 from discord.ext import commands

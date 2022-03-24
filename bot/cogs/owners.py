@@ -1,4 +1,7 @@
-from utils.helpers import Owners, parent, interaction_or_context
+from utils.helpers import parent
+from utils.helper_owners import cog_func
+from subprocess import check_output, STDOUT
+
 
 from discord import Member, User, Interaction, Embed, app_commands, Object, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Colour, Embed
 from discord.ext import commands
@@ -92,6 +95,38 @@ class Owner_Cog(app_commands.Group, commands.Cog, name="owner", description="Sho
         embed.set_footer(text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url)
         await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
         await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
+    
+    @app_commands.command(name="bash", description="executes a bash command")
+    @app_commands.describe(command="the bash command to use")
+    async def bash(self, interaction: Interaction, *, command: str):
+        embed= Embed()
+        try:
+            output = check_output(command.split(), stderr=STDOUT).decode("utf-8")
+            embed.description=f"```py\n{output}\n```"
+            embed.colour=Colour.green()
+        except Exception as error:
+            embed.description=f"```py\n{error.__class__.__name__}: {error}\n```"
+            embed.colour=Colour.red()
+        await interaction.response.send_message(embed=embed)
+    
+    @app_commands.command(name="sql", description="executes a sql query")
+    @app_commands.describe(query="the sql query to query")
+    async def sql(self, interaction: Interaction, *, query: str):
+        embed = Embed()
+        query_plain = query.data.removeprefix('```sql').removesuffix('```')
+        async with self.bot.pool.acquire() as conn:
+            try:
+                res = await conn.fetch(query_plain)
+            except Exception:
+                embed.colour=Colour.red()
+                embed.description=f"```py\n{format_exc()}```"
+                return
+        if res:
+            embed.description=f"```sql\n{res}```"
+            embed.colour=Colour.green()
+        else:
+            embed.description="No results to fetch."
+            embed.colour=Colour.purple()
     
 
 async def setup(bot):

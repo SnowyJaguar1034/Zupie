@@ -111,7 +111,6 @@ class Events_Cog(commands.Cog):
     async def on_ready(self):
         await self.bot.tree.sync(guild=Object(id=default_guild))
         print(
-            'ready event',
             f'Guilds connected to: {len(self.bot.guilds)}',
             f'Running shards: {len(self.bot.shards)}',
             f'Loaded cogs: {len(self.bot.cogs)}',

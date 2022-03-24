@@ -1,5 +1,5 @@
 from main import bot as bot_var
-from helpers import interaction_or_context
+from utils.helpers import interaction_or_context
 
 from typing import Union, Sequence
 from datetime import datetime

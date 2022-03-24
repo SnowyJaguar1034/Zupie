@@ -1,6 +1,6 @@
 import sys, discord, logging, json, asyncio, os, datetime, config, aiohttp, pathlib, traceback
 
-from utils.services import Zupie
+from classes.bot_subclass import Zupie
 #from cogs.users import user
 
 from discord import Activity, app_commands, Webhook
@@ -27,5 +27,5 @@ bot = Zupie(
 if __name__ == '__main__':
     try:
         asyncio.run(bot.main())
-    except RuntimeError as e:
+    except RuntimeError:
         print(traceback.format_exc())
