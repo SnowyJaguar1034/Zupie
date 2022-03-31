@@ -145,13 +145,14 @@ class Evaluate(ui.Modal, title="Evaluate"):
     )
 
     async def on_submit(self, interaction: Interaction):
-        await interaction.response.send_message(
-            f"Processing your code now {interaction.user.mention}", ephemeral=False
-        )
+        # await interaction.response.send_message(
+        # f"Processing your code now {interaction.user.mention}", ephemeral=False
+        # )
         await evaluate(interaction, self.code.value)
 
     async def on_error(self, error: Exception, interaction: Interaction) -> None:
         await interaction.response.send_message(
-            f"Oops! Something went wrong.\n{traceback.format_exc()}", ephemeral=True
+            f"Oops! Something went wrong.\n```py\n{traceback.format_exc()}```",
+            ephemeral=True,
         )
         print(traceback.format_exc())
