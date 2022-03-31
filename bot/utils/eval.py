@@ -1,4 +1,4 @@
-import aiohttp, asyncio, discord
+import discord
 from discord.ext import commands
 
 from main import bot
@@ -25,12 +25,16 @@ class MyMenuPages(ui.View, menus.MenuPages):
         self._source = source
         self.current_page = 0
         self.ctx = None
+        self.interaction = None
         self.message = None
 
-    async def start(self, ctx):
+    async def start(self, transaction):
         await self._source._prepare_once()
-        self.ctx = ctx
-        self.message = await self.send_initial_message(ctx, ctx.channel)
+        if isinstance(transaction, commands.Context):
+            self.ctx = transaction
+        elif isinstance(transaction, Interaction):
+            self.interaction = transaction
+        self.message = await self.send_initial_message(transaction, transaction.channel)
 
     async def _get_kwargs_from_page(self, page):
         value = await super()._get_kwargs_from_page(page)
@@ -42,7 +46,7 @@ class MyMenuPages(ui.View, menus.MenuPages):
         if isinstance(interaction, commands.Context):
             return interaction.user == self.ctx.author
         elif isinstance(interaction, Interaction):
-            return interaction.user == self.user
+            return interaction.user == self.interaction.user
 
     @ui.button(
         emoji="<:before_fast_check:754948796139569224>",
