@@ -2,10 +2,9 @@ initial_extensions = [
     "cogs.help",
     "cogs.events",
     "cogs.owners",
-	"cogs.users",
+    "cogs.users",
     "cogs.roles",
     "cogs.code_snippets",
-    "cogs.eval",
 ]
 
 owners = [
@@ -13,9 +12,10 @@ owners = [
 ]
 
 backend = {
-    "Owners": ["365262543872327681",],
-    "Admins": []
-
+    "Owners": [
+        "365262543872327681",
+    ],
+    "Admins": [],
 }
 
 # Channels to send logs
@@ -48,7 +48,8 @@ guild_perms = [
     "read_message_history",
     "add_reactions",
     "external_emojis",
-    "connect", "speak",
+    "connect",
+    "speak",
     "priority_speaker",
     "use_voice_activation",
     "stream",
@@ -80,6 +81,5 @@ database = {
     "user": "postgres",
     "password": "onapostitunderthekeyboard",
     "host": "localhost",
-    "port": 5432
+    "port": 5432,
 }
-
