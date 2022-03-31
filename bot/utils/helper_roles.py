@@ -8,7 +8,7 @@ from traceback import format_exc
 from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Colour, Object, Message, NotFound
 from discord.ext.commands import Context
 
-async def info_func(self, transaction, role_arg):
+async def info_func(transaction, role_arg):
     role = await interaction_or_context("ROLE", transaction, role_arg)
     has_perm = [perm for perm in bot_var.config.guild_perms if getattr(role.permissions, perm)]
     embed = Embed(title = f"{role.name}", description = f"{role.mention} was created <t:{int(role.created_at.timestamp())}:R>", color = role.colour)
@@ -22,14 +22,14 @@ async def info_func(self, transaction, role_arg):
     embed.add_field(name = f'Permissions', value = ", ".join([perm_format(name) for name, value in has_perm if not value]), inline = False)
     await interaction_or_context("SEND", transaction, embed)
 
-async def members_func(self, transaction, role_arg):
+async def members_func(transaction, role_arg):
     role = await interaction_or_context("ROLE", transaction, role_arg)
     members = [f"{member.mention}, " for member in role.members]
     if len(members) == 0: members.append("No members")
     embed=Embed(title = f"{len(role.members)} Members in `{role}`", description = f" ".join(members))
     await interaction_or_context("SEND", transaction, embed)
 
-async def permissions_func(self, transaction, role_arg):
+async def permissions_func(transaction, role_arg):
     role = await interaction_or_context("ROLE", transaction, role_arg)
     has_perm = [perm[0] for perm in role.permissions if perm[1]]
     if len(has_perm) == 0:

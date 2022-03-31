@@ -56,7 +56,7 @@ async def parent(ctx):
     invocation = response.reference.resolved
     await invocation.delete(delay=30)
 
-async def interaction_or_context(arg_type, transaction, object_arg, ephemeral):
+async def interaction_or_context(arg_type, transaction, object_arg, ephemeral=False):
     if arg_type == "MEMBER":
         if isinstance(transaction, Interaction):
             member = transaction.user if object_arg is None else object_arg

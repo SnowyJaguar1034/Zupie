@@ -1,0 +1,20 @@
+{
+    'thumbnail': {
+        'url': 'https:cdn.discordapp.com/avatars/884558598401818634/add5ead50d6e0f5db38e63524608e4a9.png?size=1024'
+    }, 
+    'author': {
+        'name': 'text input', 
+        'icon_url': 'https:cdn.discordapp.com/avatars/884558598401818634/add5ead50d6e0f5db38e63524608e4a9.png?size=1024'
+    }, 
+    'fields': [
+        {
+            'inline': True, 
+            'name': 'text input', 
+            'value': 'text input'
+        }
+    ], 
+    'color': 3066993, 
+    'type': 'rich', 
+    'description': 'text input', 
+    'title': 'text input'
+}

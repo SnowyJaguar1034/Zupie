@@ -8,7 +8,7 @@ from traceback import format_exc
 from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Colour, Object, Message, NotFound
 from discord.ext.commands import Context
 
-async def cog_func(self, task, transaction, cog):
+async def cog_func(task, transaction, cog):
     embed = Embed(timestamp=datetime.now())
     ephemeral = False
     try:
@@ -32,7 +32,7 @@ async def cog_func(self, task, transaction, cog):
     embed.set_footer(text=f"{transaction.user}", icon_url=transaction.user.display_avatar.url)
     await interaction_or_context("SEND", transaction, embed, ephemeral)
 
-async def cog_error(self, transaction, cog, task):
+async def cog_error(transaction, cog, task):
     embed = Embed(timestamp=datetime.now())
     embed.title=(f"__{task.title()} Error__")
     embed.description=(f"There was an error trying to {task.lower()} `{cog.split('.')[1].title()}`")

@@ -8,19 +8,19 @@ from traceback import format_exc
 from discord import Member, User, Interaction, Embed, app_commands, Role, TextChannel, VoiceChannel, StageChannel, CategoryChannel, Colour, Object, Message, NotFound
 from discord.ext.commands import Context
 
-async def timestamps_func(self, member, embed, avatar):
+async def timestamps_func(member, embed, avatar):
         embed.add_field(name = "Joined Server:", value = f"<t:{int(member.joined_at.timestamp())}:R>", inline = True)
         if avatar == True:
             embed.add_field(name = "Avatar", value = f"[PNG]({member.avatar.with_static_format('png')})", inline = True)
         embed.add_field(name = "Joined Discord:", value = f"<t:{int(member.created_at.timestamp())}:R>", inline = True)
 
-async def info_func(self, transaction, member_arg):
+async def info_func(transaction, member_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     member_status = "No status" if member.activity is None else member.activity.name
     embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
     embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
     embed.set_thumbnail(url = member.avatar.url)
-    await self.timestamps_func(member, embed, True)
+    await timestamps_func(member, embed, True)
     roles = [f"{role.mention}" for role in member.roles]
     if len(roles) == 0: roles.append("No roles")
     has_key = [perm for perm in bot_var.config.key_perms if getattr(member.guild_permissions, perm)]
@@ -29,15 +29,15 @@ async def info_func(self, transaction, member_arg):
     embed.add_field(name =f'Key permissions', value = ", ".join(has_key).replace("_"," ").title(), inline = False)
     await interaction_or_context("SEND", transaction, embed)
 
-async def joined_func(self, transaction, member_arg):
+async def joined_func(transaction, member_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     embed = Embed(title = f"{member}", colour = member.colour)
     embed.set_author(name = f"{member.id}", icon_url = member.avatar.url)
     embed.set_thumbnail(url = member.avatar.url)
-    await self.timestamps_func(member, embed, False)
-    await interaction_or_context("SEND", transaction, embed)
+    await timestamps_func(member, embed, False)
+    await interaction_or_context("SEND", transaction, embed, False)
 
-async def avatar_func(self, transaction, member_arg):
+async def avatar_func(transaction, member_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     embed = Embed(title = f"{member}'s Avatar", colour = member.colour)
     embed.add_field(name = "PNG", value = f"[Link]({member.avatar.with_static_format('png')})", inline = True)
@@ -46,7 +46,7 @@ async def avatar_func(self, transaction, member_arg):
     embed.set_image(url = member.avatar.url)
     await interaction_or_context("SEND", transaction, embed, True)
 
-async def roles_func(self, transaction, member_arg):
+async def roles_func(transaction, member_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     roles = [f"<@&{role.id}>" for role in member.roles]
     if len(roles) == 0:
@@ -54,7 +54,7 @@ async def roles_func(self, transaction, member_arg):
     embed = Embed(title = f"Roles for {member.name}#{member.discriminator}: {len(roles)}", description = "Too many roles to list" if len(" ".join(roles)) > 1000 else " ".join(roles))
     await interaction_or_context("SEND", transaction, embed)
     
-async def status_func(self, transaction, member_arg):
+async def status_func(transaction, member_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     member_status = "No status" if member.activity is None else member.activity.name
     embed = Embed(title = f"{member}", description = f"Status: **{member.status}**\n*{member_status}*", colour = member.colour)
@@ -62,7 +62,7 @@ async def status_func(self, transaction, member_arg):
     embed.set_thumbnail(url = member.avatar.url)
     await interaction_or_context("SEND", transaction, embed) 
         
-async def permissions_func(self, transaction, member_arg, channel_arg):
+async def permissions_func(transaction, member_arg, channel_arg):
     member = await interaction_or_context("MEMBER", transaction, member_arg)
     channel = await interaction_or_context("CHANNEL", transaction, channel_arg)
     permissions = channel.permissions_for(member)
