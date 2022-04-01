@@ -160,7 +160,8 @@ I have this feature on my private bot, it works well so I will probably port it 
 
 ### Logging
 I aim to add a logging plugin to Zupie which will log message deletions/edits, member join/leaves/updates, bot join/leaves etc
-**Note**: All logs will be sent via webhooks for better performance, I don't want to be having to do a API call to fetch a log channel via ID each time I send a log and this also gives the user more control on where they want the logs sent as they can just change the webhook destination channel in their server settings.
+
+Note: All logs will be sent via webhooks for better performance, I don't want to be having to do a API call to fetch a log channel via ID each time I send a log and this also gives the user more control on where they want the logs sent as they can just change the webhook destination channel in their server settings.
 
 ### Moderation
 I'm still on the fence on a full pledged moderation plugin howver the bot will most likley include `ban`, `kick`, `warn` and `timeout` commands.
