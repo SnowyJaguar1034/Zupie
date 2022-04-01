@@ -28,6 +28,7 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 &nbsp;&nbsp;- [Setup: `.env`](https://github.com/SnowyJaguar1034/Zupie#env-file)<br/>
 &nbsp;&nbsp;- [Setup: Module Installation](#installing-the-modules)<br/>
 &nbsp;- [Running the bot](#running-the-bot)<br/>
+- [Planned Plugins](#planned-plugins)
 - [Contributing](#contributing)
 &nbsp;- [Issues & Bugs](#issues-and-bugs)<br/>
 &nbsp;- [Pull Requests](#pull-requests)<br/>
@@ -109,6 +110,72 @@ Congratulations! You have set up everything and you can finally have the bot up 
 ```sh
 (env) <Your source directory>: python main.py
 ```
+## Planned Plugins
+
+### Web Dashboard
+The dashboard will allow users to control almost everyhting about the bot from outside of discord. The dashboard will be written in Python using the FastAPI library.
+### Embed builder
+This will let users create embeds json which will be stored in the db for later use in other plugins. This will mostly take the form of modal/form responses for the discord side of things but will also accept raw json input if someone has built a embed on a different platform and wants to import it. The [Dashbaord](#web-dashboard) will also include a page which connects to the embed builder so users can create their embeds outside of discord if they prefer.
+
+### starboard
+This feature is going to be similar to most starboards in other bots. It's a feature idea that I really quite like so will aim to include in Zupie. I attempted a starboard on my private bot howver it had a few probblems that I just never had time to fix, this is the code if anyones intrestedin taking a look```py
+@commands.Cog.listener()
+async def on_raw_reaction_add(self, payload):
+    data = await self.bot.get_data(payload.guild_id) # Accessing data from main table
+    starboard = self.bot.get_channel(data[27]) # Pulling the starboard ID from main table and making it a channel object
+    stars = await self.bot.get_star(payload.message_id) # Accessing from the starboard table
+    #star_reactions = ["⭐", ":questionable_star:", ":star_struck:", ":star2:", ":StarPiece:", ":purple_star:"] # Listing the approved reactions to watch for
+    reactions_count = stars[3] # Inilizing a reaction count
+    with starboard.typing():
+        for star in self.bot.config.star_reactions: # Checking each option in the approved reactions
+            if payload.emoji.name == star: # Checking if the reaction used is in the approved list
+                stared_message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id) # Getting the the original msg as a message object
+
+                if not stared_message.author.bot and payload.member.id != stared_message.author.id: # Checking the person adding the reaction isn't a bot and/or that they aren't the person who sent the orginal message.
+                    reactions_count = stars[1] + 1
+
+                    # Declaring the Embed to post in the starboard channel
+                    embed = discord.Embed(title = f"Starred message", description = f"{stared_message.content}" or "See attachment", colour = stared_message.author.colour, url = stared_message.jump_url, timestamp = datetime.datetime.utcnow())
+                    if len(stared_message.attachments): # Checking if the orignal message contained a image
+                        embed.set_image(url = stared_message.attachments[0].url) # Add the orginal msgs image to the embed
+                    embed.set_author(name = stared_message.author, icon_url = stared_message.author.avatar_url)
+
+                    if stared_message.id not in stars[0]: # Checking if the orignal message ID is NOT stored in the db
+                        post = await starboard.send(embed = embed, content = f"Stars: {str(reactions_count)}") # Sending the embed to the starboard
+                        async with self.bot.pool.acquire() as conn:
+                            await conn.execute("UPDATE starboard SET Stared=$1 WHERE Post=$2, Count=$3", stared_message.id, post.id, reactions_count)
+                    else:
+                        temp = discord.Object(stars[2])
+                        post = await self.bot.get_channel(starboard.id).fetch_message(temp) # Getting the the post msg as a message object
+                        async with self.bot.pool.acquire() as conn:
+                            await conn.execute("UPDATE starboard SET Count=$1", reactions_count)
+                        await post.edit(embed = embed, content = f"Stars: {str(reactions_count)}")
+                    
+                else:
+                    await stared_message.remove_reaction(payload.emoji, payload.member)```
+### Counting
+I have this feature on my private bot, it works well so I will probably port it over but I'm still on the fence as this will require Zupie having the privledge message intent which I'm sure compllelty sure I want.
+
+### Logging
+I aim to add a logging plugin to Zupie which will log message deletions/edits, member join/leaves/updates, bot join/leaves etc
+
+### Moderation
+I'm still on the fence on a full pledged moderation plugin howver the bot will most likley include `ban`, `kick`, `warn` and `timeout` commands.
+#### Raidmode
+This is a sub feature of the moderation plugin which I have working on my private bot so I'll most likley port this over, maybe with a few tweaks.
+
+### Music & Leveling
+There won't be a music or leveling plugin in Zupie, at least not for while and probarbly not written by me. I think there's more than enough music/leveling bots out there even after Rythm and Grrovy shut down and I really don't think the community needs another one. I've also seen bots have instability issues with music plugins (looking at Mee6 & Carl-bot). If a music plugin was to be added then i think I would want it to be a premium or patron feature to reduce the amount of potential users.
+
+### Reminders
+A reminders plugin is definatly somehting I am intreted in adding to Zupie, I just need to figure out a way to process them that won't purge them if the bot gets restarted however safeguarding the reminders won't be added to the plugin immediately.
+
+### Custom Commands Plugin
+I'm intrested in adding in a feature that lets server owners/admins/mods create custom commands for their servers but I'm not sure how I'm going to implement such a feature. I had a look at how Carl-bot is doing it using [JonSnowbd's](https://github.com/JonSnowbd/TagScript) or [PhenoM4n4n's](https://github.com/phenom4n4n/TagScript) TagScriptEngine and think one of those or somehting like them might be the way to go.
+
+### Premium
+I am definatly intrested in adding some paid for features. I'm not looking to lock entire plugins behind a paywall (other than a [music](#music--leveling) one) but rather premium will give servers addional parts of existing plugins like one or two extra starboards and counting channels and it will give patrons extra features on any server they share with the bot (not sure what those might be yet).
+
 
 ## Contributing
 

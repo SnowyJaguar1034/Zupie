@@ -352,11 +352,11 @@ class CodeSnippets(Cog):
                 # Redirects to authors DMs if the snippet contents are too long
                 await self.bot.wait_until_guild_available()
                 destination = message.guild.get_member(message.author.id)
-
+            """ 
             await destination.send(
                 f'The snippet you tried to send was too long.\nPlease see {destination.mention if isinstance(destination, TextChannel) else "Your DMs"} for the full snippet.'
             )
-
+            """
             await self.wait_for_deletion(
                 await destination.send(message_to_send), (message.author.id,)
             )
