@@ -153,7 +153,8 @@ async def on_raw_reaction_add(self, payload):
                         await post.edit(embed = embed, content = f"Stars: {str(reactions_count)}")
                     
                 else:
-                    await stared_message.remove_reaction(payload.emoji, payload.member)```
+                    await stared_message.remove_reaction(payload.emoji, payload.member)
+```
 ### Counting
 I have this feature on my private bot, it works well so I will probably port it over but I'm still on the fence as this will require Zupie having the privledge message intent which I'm sure compllelty sure I want.
 
