@@ -180,6 +180,9 @@ I'm intrested in adding in a feature that lets server owners/admins/mods create 
 ### Premium
 I am definatly intrested in adding some paid for features. I'm not looking to lock entire plugins behind a paywall (other than a [music](#music--leveling) one) but rather premium will give servers addional parts of existing plugins like one or two extra starboards and counting channels and it will give patrons extra features on any server they share with the bot (not sure what those might be yet).
 
+### Databse
+I actually need to add tables to the databse for all this data, I'm just not sure how I'm going to lay it out so if anyones got any schema suggestions let me know.
+
 
 ## Contributing
 
