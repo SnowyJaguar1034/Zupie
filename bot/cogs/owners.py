@@ -1,3 +1,4 @@
+from classes.cogbase import CogBase
 from utils.helpers import parent
 from utils.eval import Evaluate, evaluate
 from utils.helper_owners import cog_func
@@ -33,13 +34,12 @@ default_guild = int(environ.get("DEFAULT_GUILD"))
 
 
 class Owner_Cog(
-    app_commands.Group,
-    commands.Cog,
+    CogBase,
     name="owner",
     description="Shows all owner related commands",
 ):
     def __init__(self, bot):
-        super().__init__()
+        super().__init__(bot)
         self.bot = bot
 
     eval_slash = app_commands.Group(name="eval", description="Evaluate somehting")

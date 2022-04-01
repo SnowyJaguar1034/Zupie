@@ -120,7 +120,7 @@ async def evaluate(transaction, code):
     except Exception as e:
         result = "".join(traceback.format_exception(e, e, e.__traceback__))
 
-    entries = [result[i : i + 2000] for i in range(0, len(result), 2000)]
+    entries = [result[i : i + 1991] for i in range(0, len(result), 1991)]
 
     formatter = MySource(entries, per_page=1)
     # menu = menus.MenuPages(formatter)
@@ -152,7 +152,11 @@ class Evaluate(ui.Modal, title="Evaluate"):
 
     async def on_error(self, error: Exception, interaction: Interaction) -> None:
         await interaction.response.send_message(
-            f"Oops! Something went wrong.\n```py\n{traceback.format_exc()}```",
+            f"Oops! Something went wrong.",
+            embed=discord.Embed(
+                description=f"```py\n{traceback.format_exc()}```",
+                colour=discord.Colour.red(),
+            ),
             ephemeral=True,
         )
         print(traceback.format_exc())
