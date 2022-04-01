@@ -118,7 +118,8 @@ The dashboard will allow users to control almost everyhting about the bot from o
 This will let users create embeds json which will be stored in the db for later use in other plugins. This will mostly take the form of modal/form responses for the discord side of things but will also accept raw json input if someone has built a embed on a different platform and wants to import it. The [Dashbaord](#web-dashboard) will also include a page which connects to the embed builder so users can create their embeds outside of discord if they prefer.
 
 ### starboard
-This feature is going to be similar to most starboards in other bots. It's a feature idea that I really quite like so will aim to include in Zupie. I attempted a starboard on my private bot howver it had a few probblems that I just never had time to fix, this is the code if anyones intrestedin taking a look```
+This feature is going to be similar to most starboards in other bots. It's a feature idea that I really quite like so will aim to include in Zupie. I attempted a starboard on my private bot howver it had a few probblems that I just never had time to fix, this is the code if anyones intrestedin taking a look
+```py
 @commands.Cog.listener()
 async def on_raw_reaction_add(self, payload):
     data = await self.bot.get_data(payload.guild_id) # Accessing data from main table
