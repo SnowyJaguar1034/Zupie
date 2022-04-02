@@ -6,16 +6,11 @@ from subprocess import check_output, STDOUT
 
 
 from discord import (
-    Member,
-    User,
     Interaction,
+    Object,
     Embed,
     app_commands,
     Object,
-    TextChannel,
-    VoiceChannel,
-    StageChannel,
-    CategoryChannel,
     Colour,
     Embed,
 )
@@ -48,7 +43,7 @@ class Owner_Cog(
     @app_commands.guilds(Object(id=default_guild))
     async def tree(self, interaction: Interaction):
         try:
-            await self.bot.tree.sync(guild=discord.Object(id=interaction.guild_id))
+            await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
         except Exception as e:
             print(f"\Failed to sync tree:\n{format_exc()}\n")
         await interaction.response.send_message(f"Synced the tree.", ephemeral=True)

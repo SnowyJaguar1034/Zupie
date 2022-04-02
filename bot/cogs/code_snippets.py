@@ -1,15 +1,26 @@
 import logging
 import re
+
+from classes.cogbase import CogBase
+
 from textwrap import dedent
 from typing import Any
 from urllib.parse import quote_plus
 from traceback import format_exc
 from typing import Sequence
 from functools import partial
-from asyncio import TimeoutError
+from asyncio import TimeoutError as AsyncTimeoutError
 
 from aiohttp import ClientResponseError
-from discord import TextChannel, Message, NotFound, HTTPException, Reaction
+from discord import (
+    Interaction,
+    Message,
+    NotFound,
+    HTTPException,
+    Reaction,
+    app_commands,
+    Object,
+)
 from discord.abc import User
 from discord.ext.commands import Cog
 
@@ -39,15 +50,13 @@ BITBUCKET_RE = re.compile(
 )
 
 
-class CodeSnippets(Cog):
-    """
-    Cog that parses and sends code snippets to Discord.
-
-    Matches each message against a regex and prints the contents of all matched snippets.
-    """
-
+class CodeSnippets(
+    CogBase,
+    name="code_snippets",
+    description="Cog that parses and sends code snippets to Discord.\nMatches each message against a regex and prints the contents of all matched snippets",
+):
     def __init__(self, bot):
-        """Initializes the cog's bot."""
+        super().__init__(bot)
         self.bot = bot
 
         self.pattern_handlers = [
@@ -91,7 +100,7 @@ class CodeSnippets(Cog):
         self,
         message: Message,
         user_ids: Sequence[int],
-        deletion_emoji: Sequence[str] = ":wastebasket:",
+        deletion_emoji: Sequence[str] = "🗑️",
         timeout: float = 60 * 5,
         attach_emojis: bool = True,
         allow_mods: bool = True,
@@ -125,7 +134,7 @@ class CodeSnippets(Cog):
         try:
             try:
                 await message.wait_for("reaction_add", check=check, timeout=timeout)
-            except TimeoutError:
+            except AsyncTimeoutError:
                 await message.clear_reactions()
             else:
                 await message.delete()
@@ -364,6 +373,13 @@ class CodeSnippets(Cog):
     @Cog.listener()
     async def on_message(self, message):
         await self.send_snippet(message)
+
+    @app_commands.command(
+        name="snippet", description="Sends a snippet of the provided URL."
+    )
+    @app_commands.describe(url="The url to snip.")
+    async def snippet(self, interaction: Interaction, url: str):
+        await self.send_snippet(url)
 
 
 async def setup(bot):
