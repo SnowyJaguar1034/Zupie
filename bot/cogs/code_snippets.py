@@ -16,13 +16,20 @@ from discord import (
     Interaction,
     Message,
     NotFound,
-    HTTPException,
+    Message,
     Reaction,
     app_commands,
     Object,
 )
 from discord.abc import User
 from discord.ext.commands import Cog
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+default_guild = int(os.environ.get("DEFAULT_GUILD"))
 
 # log = get_logger(__name__)
 
@@ -52,8 +59,8 @@ BITBUCKET_RE = re.compile(
 
 class CodeSnippets(
     CogBase,
-    name="code_snippets",
-    description="Cog that parses and sends code snippets to Discord.\nMatches each message against a regex and prints the contents of all matched snippets",
+    name="snippets",
+    description="Cog that parses and sends code snippets to Discord.",
 ):
     def __init__(self, bot):
         super().__init__(bot)
@@ -73,7 +80,7 @@ class CodeSnippets(
         *,
         message_id: int,
         allowed_emoji: Sequence[str],
-        allowed_users: Sequence[int],
+        # allowed_users: Sequence[int],
     ) -> bool:
         """
         Check if a reaction's emoji and author are allowed and the message is `message_id`.
@@ -81,20 +88,21 @@ class CodeSnippets(
         If `allow_mods` is True, allow users with moderator roles even if they're not in `allowed_users`.
         """
         right_reaction = (
-            user != self.bot.instance.user
+            user != self.bot.user
             and reaction.message.id == message_id
             and str(reaction.emoji) in allowed_emoji
         )
         if not right_reaction:
             return False
 
+        """ 
         if user.id in allowed_users:
             # log.trace(f"Allowed reaction {reaction} by {user} on {reaction.message.id}.")
             return True
         else:
             # log.trace(f"Removing reaction {reaction} by {user} on {reaction.message.id}: disallowed user.")
-
-            return False
+            return False 
+        """
 
     async def wait_for_deletion(
         self,
@@ -127,17 +135,22 @@ class CodeSnippets(
             self.reaction_check,
             message_id=message.id,
             allowed_emoji=deletion_emoji,
-            allowed_users=user_ids,
-            allow_mods=allow_mods,
+            # allowed_users=user_ids,
+            # allow_mods=allow_mods,
         )
 
         try:
             try:
-                await message.wait_for("reaction_add", check=check, timeout=timeout)
+                await self.bot.wait_for(
+                    "reaction_add",
+                    check=check,
+                    timeout=timeout,
+                )
             except AsyncTimeoutError:
                 await message.clear_reactions()
             else:
                 await message.delete()
+
         except NotFound:
             string = f"wait_for_deletion: message {message.id} deleted prematurely."
             # log.trace(string)
@@ -334,25 +347,29 @@ class CodeSnippets(
         # Sorts the list of snippets by their match index and joins them into a single message
         return "\n".join(map(lambda x: x[1], sorted(all_snippets)))
 
-    async def send_snippet(self, message):
+    async def send_snippet(self, message, url: str = None):
         """
         Checks if the message has a snippet link, removes the embed, then sends the snippet contents.
         """
-        if message.author.bot:
-            return
+        if isinstance(message, Message):
+            if message.author.bot:
+                return
+        elif isinstance(message, Interaction):
+            if message.user.bot:
+                return
 
-        if message.guild is None:
-            return
+        if url is None:
+            url = message.content
 
-        message_to_send = await self._parse_snippets(message.content)
-        destination = message.channel
+        message_to_send = await self._parse_snippets(url)
 
         if 0 < len(message_to_send) <= 2000 and message_to_send.count("\n") <= 15:
-            try:
-                await message.edit(suppress=True)
-            except NotFound:
-                # Don't send snippets if the original message was deleted.
-                return
+            if isinstance(message, Message):
+                try:
+                    await message.edit(suppress=True)
+                except NotFound:
+                    # Don't send snippets if the original message was deleted.
+                    return
 
             if len(message_to_send) <= 2000:
                 # Send the message to the channel if it's short enough.
@@ -366,8 +383,13 @@ class CodeSnippets(
                 f'The snippet you tried to send was too long.\nPlease see {destination.mention if isinstance(destination, TextChannel) else "Your DMs"} for the full snippet.'
             )
             """
+        if isinstance(message, Message):
             await self.wait_for_deletion(
                 await destination.send(message_to_send), (message.author.id,)
+            )
+        elif isinstance(message, Interaction):
+            await self.wait_for_deletion(
+                await destination.send(message_to_send), (message.user.id,)
             )
 
     @Cog.listener()
@@ -378,10 +400,12 @@ class CodeSnippets(
         name="snippet", description="Sends a snippet of the provided URL."
     )
     @app_commands.describe(url="The url to snip.")
+    @app_commands.guilds(Object(id=default_guild))
     async def snippet(self, interaction: Interaction, url: str):
-        await self.send_snippet(url)
+        await interaction.response.send_message("Responded with snippet.")
+        await self.send_snippet(interaction, url)
 
 
 async def setup(bot):
     """Load the CodeSnippets cog."""
-    await bot.add_cog(CodeSnippets(bot))
+    await bot.add_cog(CodeSnippets(bot), guild=Object(id=default_guild))
