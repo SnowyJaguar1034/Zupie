@@ -33,13 +33,6 @@ class Zupie(commands.AutoShardedBot):
     def config(self):
         return config
 
-    # @property
-    # def helpers(self):
-    #     return helpers
-
-    # @property
-    # def apis(self):
-    #     return apis
     """ 
     @property
     def primary_colour(self):
