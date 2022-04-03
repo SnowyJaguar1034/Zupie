@@ -1,7 +1,9 @@
 from classes.cogbase import CogBase
-from utils.helpers import parent
-from utils.eval import Evaluate, evaluate
-from utils.helper_owners import cog_func
+
+# from utils.helpers import parent
+from utils.eval import Evaluate
+
+# from utils.helper_owners import cog_func
 from subprocess import check_output, STDOUT
 
 
@@ -12,11 +14,11 @@ from discord import (
     app_commands,
     Object,
     Colour,
-    Embed,
 )
-from discord.ext import commands
 
-from typing import Union
+# from discord.ext import commands
+
+# from typing import Union
 from datetime import datetime
 from os import environ
 from traceback import format_exc
@@ -44,7 +46,7 @@ class Owner_Cog(
     async def tree(self, interaction: Interaction):
         try:
             await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
-        except Exception as e:
+        except Exception:
             print(f"\Failed to sync tree:\n{format_exc()}\n")
         await interaction.response.send_message(f"Synced the tree.", ephemeral=True)
 

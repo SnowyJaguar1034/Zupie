@@ -58,7 +58,7 @@ class Role_Cog(
         aliases=["whatis", "ri"],
     )
     async def info_legacy(self, ctx, role: Role = None):
-        await Roles(self).info_func(ctx, role)
+        await info_func(ctx, role)
 
     @app_commands.command(name="info", description=info_description)
     @app_commands.describe(role=role_param)
@@ -68,7 +68,7 @@ class Role_Cog(
         role: Role = None,
         channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None,
     ):
-        await Roles(self).permissions_func(interaction, role, channel)
+        await info_func(interaction, role, channel)
 
     @role_group.command(
         name="members",
@@ -76,7 +76,7 @@ class Role_Cog(
         usage="[role]",
     )
     async def members_legacy(self, ctx, role: Role = None):
-        await Roles(self).members_func(ctx, role)
+        await members_func(ctx, role)
 
     @app_commands.command(name="members", description=members_description)
     @app_commands.describe(role=role_param)
@@ -86,7 +86,7 @@ class Role_Cog(
         role: Role = None,
         channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None,
     ):
-        await Roles(self).permissions_func(interaction, role, channel)
+        await members_func(interaction, role, channel)
 
     @role_group.command(
         name="permissions",
@@ -95,7 +95,7 @@ class Role_Cog(
         aliases=["perms"],
     )
     async def permissions_legacy(self, ctx, role: Role = None):
-        await Roles(self).permissions_func(ctx, role)
+        await permissions_func(ctx, role)
 
     @app_commands.command(name="permissions", description=permissions_description)
     @app_commands.describe(role=role_param)
@@ -106,7 +106,7 @@ class Role_Cog(
         role: Role = None,
         channel: Union[TextChannel, VoiceChannel, StageChannel, CategoryChannel] = None,
     ):
-        await Roles(self).permissions_func(interaction, role, channel)
+        await permissions_func(interaction, role, channel)
 
     @role_group.group(name="edit", description=permissions_description)
     async def edit_legacy(self, ctx, role: Role = None):

@@ -1,26 +1,21 @@
-import discord, datetime, sys, traceback, os, pathlib, asyncio, aiohttp, config, asyncpg
-#import logging, aioredis, asyncpg
-from discord import app_commands, Object
+import discord, datetime, traceback, os, aiohttp, config, asyncpg
+
+# import logging, aioredis
 from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
 
-token = os.environ.get('TOKEN')
-version = os.environ.get('VERSION')
-default_guild = int(os.environ.get('DEFAULT_GUILD'))
+token = os.environ.get("TOKEN")
+version = os.environ.get("VERSION")
+default_guild = int(os.environ.get("DEFAULT_GUILD"))
 
 
-#log = logging.getLogger(__name__)
-
-#COG_PATH = pathlib.Path("../cogs/")
-
+# log = logging.getLogger(__name__)
 class Zupie(commands.AutoShardedBot):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.start_time = datetime.datetime.utcnow()
-        # self.cluster = kwargs.get("cluster_id")
-        # self.cluster_count = kwargs.get("cluster_count")
 
     @property
     def uptime(self):
@@ -32,7 +27,7 @@ class Zupie(commands.AutoShardedBot):
 
     @property
     def default_guild(self):
-        return discord.Object(id=int(os.environ.get('DEFAULT_GUILD')))
+        return discord.Object(id=int(os.environ.get("DEFAULT_GUILD")))
 
     @property
     def config(self):
@@ -45,7 +40,7 @@ class Zupie(commands.AutoShardedBot):
     # @property
     # def apis(self):
     #     return apis
-    ''' 
+    """ 
     @property
     def primary_colour(self):
         return self.config.primary_colour
@@ -125,37 +120,39 @@ class Zupie(commands.AutoShardedBot):
             if line.startswith("redis_version"):
                 self.redis_version = line.split(":")[1]
                 break
-    '''
+    """
+
     async def setup_hook(self) -> None:
         print(
-            '------',
-            f'Logged in as: {self.user}',
-            f'ID: {self.user.id}',
-            f'Version: {self.version}',
-            f'Started at: {datetime.datetime.utcnow()}',
-            '------',
-            sep="\n"
+            "------",
+            f"Logged in as: {self.user}",
+            f"ID: {self.user.id}",
+            f"Version: {self.version}",
+            f"Started at: {datetime.datetime.utcnow()}",
+            "------",
+            sep="\n",
         )
 
     async def main(self):
-        async with asyncpg.create_pool(**self.config.database, max_size=10, command_timeout=60) as pool:
+        async with asyncpg.create_pool(
+            **self.config.database, max_size=10, command_timeout=60
+        ) as pool:
             async with aiohttp.ClientSession() as session:
                 async with self:
                     print(
-                        '------',
-                        'Connected to postgres database',
-                         '------',
-                        sep="\n"
-                        )
+                        "------", "Connected to postgres database", "------", sep="\n"
+                    )
                     for extension in self.config.initial_extensions:
                         try:
                             await self.load_extension(extension)
                             print(f"Loaded {extension.title()}")
                         except Exception:
-                            print(f"\nFailed to Load Extension {extension}\n{traceback.format_exc()}\n")
+                            print(
+                                f"\nFailed to Load Extension {extension}\n{traceback.format_exc()}\n"
+                            )
                     self.pool = pool
                     self.session = session
                     await self.start(token)
 
-            #await self.connect_redis()
-            #await self.connect_prometheus()
+            # await self.connect_redis()
+            # await self.connect_prometheus()

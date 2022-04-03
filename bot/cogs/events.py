@@ -1,29 +1,34 @@
-import asyncio
+# import asyncio
 import datetime
-#import json
-#import logging
-import re
-import io
+
+# import json
+# import logging
+# import re
+# import io
 import aiohttp
-#import discord
-#import psutil
 
-#from .info import Info
+# import discord
+# import psutil
+
+# from .info import Info
 from discord import Webhook, Embed, Colour, Object
-from discord.ext import commands, tasks
-from discord.gateway import DiscordClientWebSocketResponse
+from discord.ext import commands
 
-from os import access, environ
-from itertools import cycle
+# from discord.gateway import DiscordClientWebSocketResponse
+
+from os import environ
+
+# from itertools import cycle
 from dotenv import load_dotenv
 
 load_dotenv()
 
-#log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
 
-webhook_url = environ.get('STATUS_WEBHOOK')
-default_guild = int(environ.get('DEFAULT_GUILD'))
+webhook_url = environ.get("STATUS_WEBHOOK")
+default_guild = int(environ.get("DEFAULT_GUILD"))
 default_guild_obj = Object(id=default_guild)
+
 
 class Events_Cog(commands.Cog):
     def __init__(self, bot):
@@ -32,9 +37,13 @@ class Events_Cog(commands.Cog):
     async def status_webhook(self, embed, name=None):
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(webhook_url, session=session)
-            await webhook.send(wait=True, username=bot.user if name is not None else name, embed=embed)
+            await webhook.send(
+                wait=True,
+                username=self.bot.user if name is not None else name,
+                embed=embed,
+            )
 
-    '''
+    """
     @tasks.loop(minutes = 5) # seconds = 10
     async def status(self):
         await self.bot.change_presence(activity = discord.Game(next(self.statuses)))
@@ -104,27 +113,26 @@ class Events_Cog(commands.Cog):
         if not route.startswith("/"):
             return
         self.bot.prom.http.inc({"method": params.method, "route": route, "status": status})
-    '''
-
+    """
 
     @commands.Cog.listener()
     async def on_ready(self):
         await self.bot.tree.sync(guild=Object(id=default_guild))
         print(
-            f'Guilds connected to: {len(self.bot.guilds)}',
-            f'Running shards: {len(self.bot.shards)}',
-            f'Loaded cogs: {len(self.bot.cogs)}',
-            'Sucessfully synced applications commands',
-            '------',
-            sep='\n'
+            f"Guilds connected to: {len(self.bot.guilds)}",
+            f"Running shards: {len(self.bot.shards)}",
+            f"Loaded cogs: {len(self.bot.cogs)}",
+            "Sucessfully synced applications commands",
+            "------",
+            sep="\n",
         )
-        ''' 
+        """ 
         log.info("\n")
         log.info("--------")
         log.info(f"{self.bot.user.name}#{self.bot.user.discriminator} is online!")
         log.info("--------")
         log.info("\n")
-        
+
         trace_config = aiohttp.TraceConfig()
         trace_config.on_request_start.append(self.on_http_request_start)
         trace_config.on_request_end.append(self.on_http_request_end)
@@ -135,34 +143,49 @@ class Events_Cog(commands.Cog):
         snowyjaguar = await self.bot.fetch_user(self.bot.config.owner)
         await snowyjaguar.send(embed=embed)
         #await self.bot.change_presence(activity=discord.Game(name=self.bot.config.activity))
-    '''
+    """
 
     @commands.Cog.listener()
     async def on_shard_ready(self, shard):
-        #self.bot.prom.events.inc({"type": "READY"})
-        embed = Embed(title=f"Shard {shard} Ready", colour=Colour.green(),
-        timestamp=datetime.datetime.utcnow(),)
+        # self.bot.prom.events.inc({"type": "READY"})
+        embed = Embed(
+            title=f"Shard {shard} Ready",
+            colour=Colour.green(),
+            timestamp=datetime.datetime.utcnow(),
+        )
         await self.status_webhook(embed)
 
     @commands.Cog.listener()
     async def on_shard_connect(self, shard):
-        #self.bot.prom.events.inc({"type": "CONNECT"})
-        embed = Embed(title=f"Shard {shard} Connected",colour=Colour.orange(),timestamp=datetime.datetime.utcnow(),)
+        # self.bot.prom.events.inc({"type": "CONNECT"})
+        embed = Embed(
+            title=f"Shard {shard} Connected",
+            colour=Colour.orange(),
+            timestamp=datetime.datetime.utcnow(),
+        )
         await self.status_webhook(embed)
 
     @commands.Cog.listener()
     async def on_shard_disconnect(self, shard):
-        #self.bot.prom.events.inc({"type": "DISCONNECT"})
-        embed = Embed(title=f"Shard {shard} Disconnected", colour=Colour.red(), timestamp=datetime.datetime.utcnow(),)
+        # self.bot.prom.events.inc({"type": "DISCONNECT"})
+        embed = Embed(
+            title=f"Shard {shard} Disconnected",
+            colour=Colour.red(),
+            timestamp=datetime.datetime.utcnow(),
+        )
         await self.status_webhook(embed)
 
     @commands.Cog.listener()
     async def on_shard_resumed(self, shard):
-        #self.bot.prom.events.inc({"type": "RESUME"})
-        embed = Embed(title=f"Shard {shard} Resumed", colour=Colour.yellow(), timestamp=datetime.datetime.utcnow(),)
+        # self.bot.prom.events.inc({"type": "RESUME"})
+        embed = Embed(
+            title=f"Shard {shard} Resumed",
+            colour=Colour.yellow(),
+            timestamp=datetime.datetime.utcnow(),
+        )
         await self.status_webhook(embed)
 
-    '''
+    """
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         self.bot.prom.guilds_join.inc({})
@@ -417,8 +440,8 @@ class Events_Cog(commands.Cog):
         if user.id in self.bot.config.admins:
             await user.unban(reason = "This account is a test acount for SnowyJaguar#1034")
             await member.send(embed = discord.Embed(description = "A message.", colour = self.bot.primary_colour))
-    '''
+    """
+
 
 async def setup(bot):
     await bot.add_cog(Events_Cog(bot))
-
