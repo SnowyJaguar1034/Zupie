@@ -127,11 +127,11 @@ Activate the virtual environment:
 <br/>
 On Linux
 ```sh
-$ source bot-env/bin/activate
+$ source env/bin/activate
 ```
 On Windows
 ```sh
-$ bot-env\Scripts\activate.bat
+$ env\Scripts\activate.bat
 ```
 Use pip like usual:
 ```sh
