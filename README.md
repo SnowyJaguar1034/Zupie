@@ -124,6 +124,7 @@ $ cd your-bot-source-directory
 $ python3 -m venv env
 ```
 Activate the virtual environment:
+<br/>
 On Linux
 ```sh
 $ source bot-env/bin/activate
