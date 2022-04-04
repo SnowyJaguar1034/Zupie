@@ -30,6 +30,7 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 &nbsp;&nbsp;- [Setup: `.env`](https://github.com/SnowyJaguar1034/Zupie#env-file)<br/>
 &nbsp;&nbsp;- [Setup: Module Installation](#installing-the-modules)<br/>
 &nbsp;- [Running the bot](#running-the-bot)<br/>
+&nbsp;- [Setting up a virtual environment](#setting-up-a-virtual-environment)<br/>
 - [Planned Plugins](#planned-plugins)
 - [Contributing](#contributing)
 &nbsp;- [Issues & Bugs](#issues-and-bugs)<br/>
@@ -58,6 +59,8 @@ In order to run Zupie, you will need to install the following software.
 - [Python 3](https://www.python.org/downloads/)
 - [PostgreSQL](https://www.postgresql.org/download/)
 <!-- - [Redis](https://redis.io/download/)-->
+
+You may also want to [set up a virtual environment](#setting-up-a-virtual-environment) so that Zupies requiremnts don't mess with your base enviroment. 
 ### Installing the source
 
 Please fork this repository so that you can make pull requests. Then, clone your fork.
@@ -70,7 +73,7 @@ Sometimes you may want to merge changes from the upstream repository to your for
 
 ```sh
 git checkout master
-git pull https://github.com/chamburr/modmail.git master
+git pull https://github.com/SnowyJaguar/zupie.git master
 ```
 ### Setup
 
@@ -103,14 +106,35 @@ You should make a copy of `example.env` and rename it to `.env`. All fields mark
 Zupie utilises [discord.py](https://github.com/Rapptz/discord.py) and several other modules to function properly. The list of modules can be found in `requirements.txt` and you can install them with the following command.
 
 ```sh
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 ### Running the bot
 
 Congratulations! You have set up everything and you can finally have the bot up and running. Use the following command to run.
 
 ```sh
-(env) <Your source directory>: python main.py
+<Your source directory>python main.py
+```
+
+### Setting up a virtual environment
+This is useful if you want to run a variety of python projects on a machine but not have version conflicts. I highly recommend doing this even if you only have one project, I didn't understand the appeal when I started using python but after a while I started seeeing the benefits.
+Go to your project’s working directory:
+```sh
+$ cd your-bot-source-directory
+$ python3 -m venv env
+```
+Activate the virtual environment:
+On Linux
+```sh
+$ source bot-env/bin/activate
+```
+On Windows
+```sh
+$ bot-env\Scripts\activate.bat
+```
+Use pip like usual:
+```sh
+$ (env) <Your source directory>pip install -r requirements.txt
 ```
 ## Planned Plugins
 
