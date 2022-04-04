@@ -8,6 +8,7 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e531e880aad44149984ee41561918ad2)](https://www.codacy.com/gh/SnowyJaguar1034/Zupie/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SnowyJaguar1034/Zupie&amp;utm_campaign=Badge_Grade)
+<br/>
 [![](https://github.com/SnowyJaguar1034/Zupie/workflows/CI/badge.svg)](https://github.com/SnowyJaguar1034/Zupie/actions?query=workflow%3ACI) 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e3285d0b5cdca4998b2e/maintainability)](https://codeclimate.com/github/SnowyJaguar1034/Zupie/maintainability)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
