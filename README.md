@@ -184,7 +184,7 @@ I am definatly intrested in adding some paid for features. I'm not looking to lo
 ### Legacy Commands
 I want to make legacy equivilants of all of the commands so that if someone doesn't want to use slash commands then they don't have to. The bots prefix is it's ping and I probarbly won't be adding a specfic prefix like `!` or `?`. 
 
-### Eroor Handler
+### Error Handler
 Don't think this really needs a description as the names pretty obvius on what this is for. I also need to add in support for the `logging` module.
 ### Databse
 I actually need to add tables to the databse for all this data, I'm just not sure how I'm going to lay it out so if anyones got any schema suggestions let me know.
