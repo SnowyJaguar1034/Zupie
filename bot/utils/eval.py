@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from main import bot
+from utils.paginator import paginate
 
 import contextlib, io, os, textwrap, traceback  # Needed for Eval
 from discord.ext import menus  # Needed for Paginator
@@ -12,64 +13,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 default_guild = int(os.environ.get("DEFAULT_GUILD"))
-
-
-class MySource(menus.ListPageSource):
-    async def format_page(self, menu, entries):
-        return f"```py\n{entries}```"
-
-
-class MyMenuPages(ui.View, menus.MenuPages):
-    def __init__(self, source):
-        super().__init__(timeout=60)
-        self._source = source
-        self.current_page = 0
-        self.ctx = None
-        self.interaction = None
-        self.message = None
-
-    async def start(self, transaction):
-        await self._source._prepare_once()
-        if isinstance(transaction, commands.Context):
-            self.ctx = transaction
-        elif isinstance(transaction, Interaction):
-            self.interaction = transaction
-        self.message = await self.send_initial_message(transaction, transaction.channel)
-
-    async def _get_kwargs_from_page(self, page):
-        value = await super()._get_kwargs_from_page(page)
-        if "view" not in value:
-            value.update({"view": self})
-        return value
-
-    async def interaction_check(self, interaction):
-        if isinstance(interaction, commands.Context):
-            return interaction.user == self.ctx.author
-        elif isinstance(interaction, Interaction):
-            return interaction.user == self.interaction.user
-
-    @ui.button(
-        emoji="<:before_fast_check:754948796139569224>",
-        style=ButtonStyle.blurple,
-    )
-    async def first_page(self, button, interaction):
-        await self.show_page(0)
-
-    @ui.button(emoji="<:before_check:754948796487565332>", style=ButtonStyle.blurple)
-    async def before_page(self, button, interaction):
-        await self.show_checked_page(self.current_page - 1)
-
-    @ui.button(emoji="<:stop_check:754948796365930517>", style=ButtonStyle.blurple)
-    async def stop_page(self, button, interaction):
-        self.stop()
-
-    @ui.button(emoji="<:next_check:754948796361736213>", style=ButtonStyle.blurple)
-    async def next_page(self, button, interaction):
-        await self.show_checked_page(self.current_page + 1)
-
-    @ui.button(emoji="<:next_fast_check:754948796391227442>", style=ButtonStyle.blurple)
-    async def last_page(self, button, interaction):
-        await self.show_page(self._source.get_max_pages() - 1)
 
 
 def clean_code(code):
@@ -122,10 +65,7 @@ async def evaluate(transaction, code):
 
     entries = [result[i : i + 1991] for i in range(0, len(result), 1991)]
 
-    formatter = MySource(entries, per_page=1)
-    # menu = menus.MenuPages(formatter)
-    menu = MyMenuPages(formatter)
-    await menu.start(transaction)
+    await paginate(pages=entries, per_page=1, channel=transaction, type="EVAL")
 
     """
     @commands.command(name="eval", alias=["exec"])
@@ -159,4 +99,5 @@ class Evaluate(ui.Modal, title="Evaluate"):
             ),
             ephemeral=True,
         )
+        # see we still get the error in terminal
         print(traceback.format_exc())

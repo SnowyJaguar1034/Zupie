@@ -1,13 +1,34 @@
-from main import bot as bot_var
-
-# from typing import Union, Sequence
-# from datetime import datetime
-# from traceback import format_exc
-
-from discord import Interaction, Embed
+from discord import Interaction, Embed, Webhook
+from discord.http import MultipartParameters
 from discord.ext.commands import Context
 
 from collections import Counter
+from typing import Union
+
+
+async def webhook_constructor(
+    bot, url: str, embed: Embed, name: str = None, edit: bool = False
+):
+    webhook = Webhook.from_url(url, session=bot.session)
+    sent = await webhook.send(
+        wait=True,
+        username=bot.user.name if name is not None else name,
+        embed=embed,
+    )
+    if edit == True:
+        return sent
+
+
+async def send_json(
+    json_: dict,
+    bot,
+    channel_id: int = None,
+    interaction: Union[Interaction, Context] = None,
+):
+    if channel_id is None:
+        channel_id = interaction.channel.id
+    payload = MultipartParameters(payload=json_, files=None, multipart=None)
+    await bot.http.send_message(channel_id, params=payload)
 
 
 def perm_format(perm):
@@ -76,8 +97,6 @@ async def interaction_or_context(arg_type, transaction, object_arg, ephemeral=Fa
             member = transaction.user if object_arg is None else object_arg
         elif isinstance(transaction, Context):
             member = transaction.author if object_arg is None else object_arg
-        else:
-            print("ERROR: interaction_or_context : Hit ele statemnt in 'MEMBER' check")
         return member
     elif arg_type == "ROLE":
         if isinstance(transaction, Interaction):
@@ -86,8 +105,6 @@ async def interaction_or_context(arg_type, transaction, object_arg, ephemeral=Fa
         elif isinstance(transaction, Context):
             # role = object_arg or transaction.user.top_role
             role = transaction.author.top_role if object_arg is None else object_arg
-        else:
-            print("ERROR: interaction_or_context : Hit ele statemnt in 'ROLE' check")
         return role
     elif arg_type == "SEND":
         if isinstance(object_arg, Embed):
@@ -97,23 +114,13 @@ async def interaction_or_context(arg_type, transaction, object_arg, ephemeral=Fa
                 )
             elif isinstance(transaction, Context):
                 await transaction.reply(embed=object_arg)
-            else:
-                print(
-                    "ERROR: interaction_or_context : Hit ele statemnt in 'SEND.EMBED' check'"
-                )
         else:
             if isinstance(transaction, Interaction):
                 await transaction.response.send(content=object_arg, ephemeral=ephemeral)
             elif isinstance(transaction, Context):
                 await transaction.reply(content=object_arg)
-            else:
-                print(
-                    "ERROR: interaction_or_context : Hit ele statemnt in 'SEND.CONTENT' check"
-                )
     elif arg_type == "CHANNEL":
         return transaction.channel if object_arg is None else object_arg
-    else:
-        print("ERROR: interaction_or_context : Hit final eele statemnt")
 
 
 def _emoji_counter_(guild):

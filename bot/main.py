@@ -1,29 +1,31 @@
-import sys, discord, logging, json, asyncio, os, datetime, config, aiohttp, pathlib, traceback
+import logging, asyncio, config, traceback
 
+# Custom Imports
 from classes.zupie import Zupie
 
-# from cogs.users import user
-
-from discord import Activity, app_commands, Webhook
+# Package Imports
+from discord import Activity, ActivityType, Intents
 from discord.ext import commands
+
+# Bulit in Imports
+from os import environ
 from dotenv import load_dotenv
 
 load_dotenv()
 
-version = os.environ.get("VERSION")
-description = os.environ.get("DESCRIPTION")
+intents = Intents.default()
+intents.message_content = True
 
-activity = Activity(name=f"version {version}", type=discord.ActivityType.playing)
 bot = Zupie(
-    intents=discord.Intents.default(),
-    activity=activity,
-    owner_ids=["365262543872327681"],
-    description=description,
+    intents=intents,
+    activity=Activity(
+        name=f"version {environ.get('VERSION')}", type=ActivityType.playing
+    ),
+    owner_ids=config.backend["Owners"],
+    description=environ.get("DESCRIPTION"),
     command_prefix=commands.when_mentioned,
     case_insensitive=True,
 )
-
-# bot.tree.add_command(tree)
 
 if __name__ == "__main__":
     try:

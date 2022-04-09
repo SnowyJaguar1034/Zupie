@@ -5,6 +5,7 @@ initial_extensions = [
     "cogs.users",
     "cogs.roles",
     "cogs.code_snippets",
+    "cogs.source",
 ]
 
 owners = [
@@ -19,8 +20,7 @@ backend = {
 }
 
 # Channels to send logs
-join_channel = 816480943228452895
-event_channel = 816480957288546314
+join_channel = "https://canary.discord.com/api/webhooks/960616206505742398/GdyivwW6_QD9bX0DaCNkvh2SuEtt-TfToJ7A3xSey2sefwp4LUHyaSwiQn6H-GnLd609"
 admin_channel = 816480968830353458
 
 
@@ -83,3 +83,15 @@ database = {
     "host": "localhost",
     "port": 5432,
 }
+
+text = ["Hello", "World"]
+for string in text:
+    if string == "Hello":
+        # do something
+        pass
+    elif string == "World":
+        # do something else
+        pass
+    else:
+        # do something else
+        pass

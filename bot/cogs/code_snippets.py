@@ -21,7 +21,7 @@ from discord import (
     Object,
 )
 from discord.abc import User
-from discord.ext.commands import Cog
+from discord.ext.commands import Cog, Context
 
 from dotenv import load_dotenv
 import os
@@ -350,46 +350,41 @@ class CodeSnippets(
         """
         Checks if the message has a snippet link, removes the embed, then sends the snippet contents.
         """
-        if isinstance(message, Message):
-            if message.author.bot:
-                return
-        elif isinstance(message, Interaction):
+        if isinstance(message, Interaction):
             if message.user.bot:
                 return
+        elif isinstance(message, Context):
+            if message.author.bot:
+                return
+        elif isinstance(message, Message):
+            if message.author.bot:
+                return
+
+        if message.guild is None:
+            return
 
         if url is None:
             url = message.content
-
         message_to_send = await self._parse_snippets(url)
+        destination = message.channel
 
         if 0 < len(message_to_send) <= 2000 and message_to_send.count("\n") <= 15:
-            if isinstance(message, Message):
-                try:
-                    await message.edit(suppress=True)
-                except NotFound:
-                    # Don't send snippets if the original message was deleted.
-                    return
-
-            if len(message_to_send) <= 2000:
-                # Send the message to the channel if it's short enough.
-                destination = message.channel
-            else:
-                # Redirects to authors DMs if the snippet contents are too long
-                await self.bot.wait_until_guild_available()
-                destination = message.guild.get_member(message.author.id)
-            """ 
-            await destination.send(
-                f'The snippet you tried to send was too long.\nPlease see {destination.mention if isinstance(destination, TextChannel) else "Your DMs"} for the full snippet.'
-            )
             """
-        if isinstance(message, Message):
-            await self.wait_for_deletion(
-                await destination.send(message_to_send), (message.author.id,)
-            )
-        elif isinstance(message, Interaction):
-            await self.wait_for_deletion(
-                await destination.send(message_to_send), (message.user.id,)
-            )
+            try:
+                await message.edit(suppress=True)
+            except NotFound:
+                # Don't send snippets if the original message was deleted.
+                return
+            """
+
+            if isinstance(message, Message):
+                await self.wait_for_deletion(
+                    await destination.send(message_to_send), (message.author.id,)
+                )
+            elif isinstance(message, Interaction):
+                await self.wait_for_deletion(
+                    await destination.send(message_to_send), (message.user.id,)
+                )
 
     @Cog.listener()
     async def on_message(self, message):

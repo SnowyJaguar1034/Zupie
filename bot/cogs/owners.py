@@ -40,6 +40,7 @@ class Owner_Cog(
         self.bot = bot
 
     eval_slash = app_commands.Group(name="eval", description="Evaluate somehting")
+    shard_slash = app_commands.Group(name="shard", description="Shard related commands")
 
     @app_commands.command(name="sync-tree", description="Syncs the slash command tree")
     @app_commands.guilds(Object(id=default_guild))
@@ -174,7 +175,80 @@ class Owner_Cog(
 
     @eval_slash.command(name="python", description="evaluates python code")
     async def python_slash(self, interaction: Interaction):
+        await interaction.response.defer()
         await interaction.response.send_modal(Evaluate())
+
+    @shard_slash.command(name="list", description="lists all shards")
+    async def shard_list_slash(self, interaction: Interaction):
+        embed = Embed(timestamp=datetime.now())
+        embed.title = "Shard List"
+        embed.description = "```\n"
+        for shard in self.bot.shards:
+            shard = self.bot.get_shard(shard)
+            embed.description += f"Shard {shard.id} | {shard.latency * 1000:.2f}ms\n"
+        embed.description += "```"
+        embed.colour = Colour.green()
+        await interaction.response.send_message(embed=embed)
+
+    @shard_slash.command(name="connect", description="connects a shard")
+    @app_commands.describe(shard="the shard to connect.")
+    async def connect(self, interaction: Interaction, shard: int):
+        embed = Embed(timestamp=datetime.now())
+        try:
+            await self.bot.shards[shard].connect()
+            embed.color = Colour.green()
+            ephemeral = False
+        except Exception as e:
+            embed.description = f"There was an error trying to {interaction.command.name.lower()} `{shard}`"
+            embed.color = Colour.red()
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral = True
+        embed.title = f"__Shard {interaction.command.name.title()}ed__"
+        embed.set_footer(
+            text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
+
+    @shard_slash.command(name="disconnect", description="disconnects a shard")
+    @app_commands.describe(shard="the shard to disconnect.")
+    async def disconnect(self, interaction: Interaction, shard: int):
+        embed = Embed(timestamp=datetime.now())
+        try:
+            await self.bot.shards[shard].disconnect()
+            embed.color = Colour.green()
+            ephemeral = False
+        except Exception as e:
+            embed.description = f"There was an error trying to {interaction.command.name.lower()} `{shard}`"
+            embed.color = Colour.red()
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral = True
+        embed.title = f"__Shard {interaction.command.name.title()}ed__"
+        embed.set_footer(
+            text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
+
+    @shard_slash.command(name="reconnect", description="reconnects a shard")
+    @app_commands.describe(shard="the shard to reconnect.")
+    async def reconnect(self, interaction: Interaction, shard: int):
+        embed = Embed(timestamp=datetime.now())
+        try:
+            await self.bot.shards[shard].reconnect()
+            embed.color = Colour.green()
+            ephemeral = False
+        except Exception as e:
+            embed.description = f"There was an error trying to {interaction.command.name.lower()} `{shard}`"
+            embed.color = Colour.red()
+            embed.add_field(name="Traceback", value=f"```py\n{format_exc()}```")
+            ephemeral = True
+        embed.title = f"__Shard {interaction.command.name.title()}ed__"
+        embed.set_footer(
+            text=f"{interaction.user}", icon_url=interaction.user.display_avatar.url
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
+        await self.bot.tree.sync(guild=Object(id=interaction.guild_id))
 
 
 async def setup(bot):

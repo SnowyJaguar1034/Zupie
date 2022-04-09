@@ -15,6 +15,7 @@ Zupie is a multipurpose [discord.py](https://github.com/Rapptz/discord.py) bot.
 ![Open pull requests](https://img.shields.io/github/issues-pr/SnowyJaguar1034/Zupie)
 ![Open issues](https://img.shields.io/github/issues/SnowyJaguar1034/Zupie)
 ![Code size in bytes](https://img.shields.io/github/languages/code-size/SnowyJaguar1034/Zupie)
+![GitHub lines of code](https://img.shields.io/tokei/lines/github.com/SnowyJaguar1034/Zupie)
 ![Repo language count](https://img.shields.io/github/languages/count/SnowyJaguar1034/Zupie)
 
 
@@ -201,8 +202,8 @@ There won't be a music or leveling plugin in Zupie, at least not for while and p
 ### Reminders
 A reminders plugin is definatly somehting I am intreted in adding to Zupie, I just need to figure out a way to process them that won't purge them if the bot gets restarted however safeguarding the reminders won't be added to the plugin immediately.
 
-### Custom Commands Plugin
-I'm intrested in adding in a feature that lets server owners/admins/mods create custom commands for their servers but I'm not sure how I'm going to implement such a feature. I had a look at how Carl-bot is doing it using [JonSnowbd's](https://github.com/JonSnowbd/TagScript) or [PhenoM4n4n's](https://github.com/phenom4n4n/TagScript) TagScriptEngine and think one of those or somehting like them might be the way to go.
+### Custom Commands (Tags) Plugin
+I'm intrested in adding in a feature that lets server owners/admins/mods create custom commands (tags) for their servers but I'm not sure how I'm going to implement such a feature. I had a look at how Carl-bot is doing it using [JonSnowbd's](https://github.com/JonSnowbd/TagScript) or [PhenoM4n4n's](https://github.com/phenom4n4n/TagScript) TagScriptEngine and think one of those or somehting like them might be the way to go. There's also [RoboDanny's](https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/tags.py) tags cog which I think is a good place to start and would provide a good basic custom command (tag) system.
 
 ### Premium
 I am definatly intrested in adding some paid for features. I'm not looking to lock entire plugins behind a paywall (other than a [music](#music--leveling) one) but rather premium will give servers addional parts of existing plugins like one or two extra starboards and counting channels and it will give patrons extra features on any server they share with the bot (not sure what those might be yet).
