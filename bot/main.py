@@ -1,19 +1,23 @@
-import logging, asyncio, config, traceback
+import asyncio
+import logging
+import traceback
 
-# Custom Imports
-from classes.zupie import Zupie
+# Bulit in Imports
+from os import environ
 
 # Package Imports
 from discord import Activity, ActivityType, Intents
 from discord.ext import commands
-
-# Bulit in Imports
-from os import environ
 from dotenv import load_dotenv
+
+import config
+
+# Custom Imports
+from classes.zupie import Zupie
 
 load_dotenv()
 
-intents = Intents.default()
+intents = Intents.all()
 intents.message_content = True
 
 bot = Zupie(
@@ -28,7 +32,4 @@ bot = Zupie(
 )
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(bot.main())
-    except RuntimeError:
-        print(traceback.format_exc())
+    asyncio.run(bot.main())

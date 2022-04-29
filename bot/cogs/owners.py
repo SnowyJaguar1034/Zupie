@@ -1,29 +1,21 @@
+# from typing import Union
+from datetime import datetime
+from os import environ
+
+# from utils.helper_owners import cog_func
+from subprocess import STDOUT, check_output
+from traceback import format_exc
+
 from classes.cogbase import CogBase
+from discord import Colour, Embed, Interaction, Object, app_commands
+from dotenv import load_dotenv
+from main import bot
 
 # from utils.helpers import parent
 from utils.eval import Evaluate
 
-# from utils.helper_owners import cog_func
-from subprocess import check_output, STDOUT
-
-
-from discord import (
-    Interaction,
-    Object,
-    Embed,
-    app_commands,
-    Object,
-    Colour,
-)
-
 # from discord.ext import commands
 
-# from typing import Union
-from datetime import datetime
-from os import environ
-from traceback import format_exc
-from dotenv import load_dotenv
-from main import bot
 
 load_dotenv()
 
@@ -68,7 +60,7 @@ class Owner_Cog(
     @app_commands.choices(
         cog=[
             app_commands.Choice(name=cog.split(".")[1].title(), value=cog)
-            for cog in bot.config.initial_extensions
+            for cog in bot.config2.initial_extensions
         ]
     )
     async def load_slash(self, interaction: Interaction, cog: str):
@@ -175,7 +167,6 @@ class Owner_Cog(
 
     @eval_slash.command(name="python", description="evaluates python code")
     async def python_slash(self, interaction: Interaction):
-        await interaction.response.defer()
         await interaction.response.send_modal(Evaluate())
 
     @shard_slash.command(name="list", description="lists all shards")

@@ -1,22 +1,15 @@
-from utils.helpers import webhook_constructor
-from utils.helper_users import timestamps_func
-from discord import (
-    Embed,
-    Colour,
-    Object,
-    Guild,
-    Member,
-    Forbidden,
-    Message,
-)
-from discord.ext import commands
-
 from datetime import datetime, timedelta
-from typing import Optional
-from random import choice as rchoice
-from os import environ
 from io import StringIO
+from os import environ
+from random import choice as rchoice
+from typing import Optional
+
+from discord import Colour, Embed, Forbidden, Guild, Member, Message, Object
+from discord.ext import commands
 from dotenv import load_dotenv
+
+from utils.helper_users import timestamps_func
+from utils.helpers import tag_format, webhook_constructor
 
 load_dotenv()
 
@@ -105,12 +98,6 @@ async def join_leaves(bot, member: Member, event: str, log: str):
     await webhook_constructor(bot=bot, url=log, embed=embed, edit=True)
 
 
-async def greet_or_farewell_member(bot, member: Member, log: int, messages: list):
-    log = bot.get_channel(log)
-    await log.send(rchoice(messages).format(member=member))
-    # f"{member} Welcome to {member.guild.name}, Thank you for joining"
-
-
 async def bot_join(bot, member: Member, log: int, role: Object):
     log = bot.get_channel(log)
     member_status = "No status" if member.activity is None else member.activity.name
@@ -136,9 +123,9 @@ async def shard_events(bot, shard_id, event: str):
         embed.colour = Colour.yellow()
         embed.title = f"Shard {shard_id} Resumed"
     await webhook_constructor(bot=bot, url=status_webhook, embed=embed)
-    for guild in bot.guilds:
-        if guild.shard_id == shard_id:
-            pass
+    # for guild in bot.guilds:
+    # if guild.shard_id == shard_id:
+    # pass
 
 
 async def member_events(bot, member: Member, event: str):
@@ -162,14 +149,20 @@ async def member_events(bot, member: Member, event: str):
                 log=bot.get_log(member.guild.id, 11),
             )
         if data[16] == True and member.bot == False:  # Greet member status
-            await greet_or_farewell_member(bot, member, data[17], data[18])
-        if data[15] == True:  # Assign bot role status
-            await bot_join(
-                bot=bot,
+            log = bot.get_channel(data[17])
+            message = tag_format(
+                payload=rchoice(data[18]),
                 member=member,
-                log=bot.get_log(guild=member.guild.id, log=18),
-                role=[Object(data[14])],
+                guild=member.guild,
             )
+            await log.send(message)
+        if data[15] == True:  # Assign bot role status
+            log = bot.get_channel(bot.get_log(guild=member.guild.id, log=18))
+            role = [Object(data[14])]
+            member_status = (
+                "No status" if member.activity is None else member.activity.name
+            )
+            await member.add_roles(*role, reason=f"{member} is a bot!", atomic=True)
 
         async with bot.pool.acquire() as conn:
             await conn.execute(
@@ -187,12 +180,13 @@ async def member_events(bot, member: Member, event: str):
                 log=bot.get_log(member.guild.id, 11),
             )
         if data[23] == True or data[24] == True:  # Greet member status
-            await greet_or_farewell_member(
-                bot=bot,
+            log = bot.get_channel(bot.get_log(guild=member.guild.id, log=18))
+            message = tag_format(
+                payload=rchoice(data[20]),
                 member=member,
-                log=bot.get_log(guild=member.guild.id, log=18),
-                messages=data[20],
+                guild=member.guild,
             )
+            await log.send(message)
 
 
 async def message_events(

@@ -1,11 +1,12 @@
+from discord import Embed
 from main import bot as bot_var
+
 from utils.helpers import interaction_or_context, perm_format
 
 # from typing import Union, Sequence
 # from datetime import datetime
 # from traceback import format_exc
 
-from discord import Embed
 
 # from discord.ext.commands import Context
 
@@ -77,19 +78,20 @@ async def avatar_func(transaction, member_arg):
     embed = Embed(title=f"{member}'s Avatar", colour=member.colour)
     embed.add_field(
         name="PNG",
-        value=f"[Link]({member.avatar.with_static_format('png')})",
+        value=f"[Link]({member.avatar.with_format('png')})",
         inline=True,
     )
     embed.add_field(
         name="JPG",
-        value=f"[Link]({member.avatar.with_static_format('jpg')})",
+        value=f"[Link]({member.avatar.with_format('jpg')})",
         inline=True,
     )
-    embed.add_field(
-        name="WebP",
-        value=f"[Link]({member.avatar.with_static_format('webp')})",
-        inline=True,
-    )
+    if member.avatar.animated is True:
+        embed.add_field(
+            name="GIF",
+            value=f"[Link]({member.avatar.with_format('gif')})",
+            inline=True,
+        )
     embed.set_image(url=member.avatar.url)
     await interaction_or_context("SEND", transaction, embed, True)
 

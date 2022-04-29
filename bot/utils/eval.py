@@ -85,6 +85,7 @@ class Evaluate(ui.Modal, title="Evaluate"):
     )
 
     async def on_submit(self, interaction: Interaction):
+        await interaction.response.defer()
         # await interaction.response.send_message(
         # f"Processing your code now {interaction.user.mention}", ephemeral=False
         # )

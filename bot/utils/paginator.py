@@ -18,61 +18,6 @@ class EvalSource(ListPageSource):
         return f"```py\n{entries}```"
 
 
-"""
-class MyMenuPages(ui.View, MenuPages):
-    def __init__(self, source):
-        super().__init__(timeout=60)
-        self._source = source
-        self.current_page = 0
-        self.ctx = None
-        self.interaction = None
-        self.message = None
-
-    async def start(self, transaction):
-        await self._source._prepare_once()
-        if isinstance(transaction, commands.Context):
-            self.ctx = transaction
-        elif isinstance(transaction, Interaction):
-            self.interaction = transaction
-        self.message = await self.send_initial_message(transaction, transaction.channel)
-
-    async def _get_kwargs_from_page(self, page):
-        value = await super()._get_kwargs_from_page(page)
-        if "view" not in value:
-            value.update({"view": self})
-        return value
-
-    async def interaction_check(self, interaction):
-        if isinstance(interaction, commands.Context):
-            return interaction.user == self.ctx.author
-        elif isinstance(interaction, Interaction):
-            return interaction.user == self.interaction.user
-
-    @ui.button(
-        emoji="<:before_fast_check:754948796139569224>",
-        style=button_style,
-    )
-    async def first_page(self, button, interaction):
-        await self.show_page(0)
-
-    @ui.button(emoji="<:before_check:754948796487565332>", style=button_style)
-    async def before_page(self, button, interaction):
-        await self.show_checked_page(self.current_page - 1)
-
-    @ui.button(emoji="<:stop_check:754948796365930517>", style=button_style)
-    async def stop_page(self, button, interaction):
-        self.stop()
-
-    @ui.button(emoji="<:next_check:754948796361736213>", style=button_style)
-    async def next_page(self, button, interaction):
-        await self.show_checked_page(self.current_page + 1)
-
-    @ui.button(emoji="<:next_fast_check:754948796391227442>", style=button_style)
-    async def last_page(self, button, interaction):
-        await self.show_page(self._source.get_max_pages() - 1)
-    """
-
-
 class Pager(ui.View, MenuPages):
     def __init__(self, source):
         super().__init__(timeout=60)

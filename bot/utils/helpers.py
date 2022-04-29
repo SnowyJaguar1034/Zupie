@@ -1,9 +1,11 @@
-from discord import Interaction, Embed, Webhook
-from discord.http import MultipartParameters
-from discord.ext.commands import Context
-
 from collections import Counter
-from typing import Union
+from re import findall
+from typing import Optional, Union
+
+from discord import Embed, Guild, Interaction, Member, Role, User, Webhook
+from discord.abc import GuildChannel
+from discord.ext.commands import Context
+from discord.http import MultipartParameters
 
 
 async def webhook_constructor(
@@ -28,51 +30,107 @@ async def send_json(
     if channel_id is None:
         channel_id = interaction.channel.id
     payload = MultipartParameters(payload=json_, files=None, multipart=None)
-    await bot.http.send_message(channel_id, params=payload)
+    await bot.http.send_message(channel_id, payloads=payload)
 
 
 def perm_format(perm):
     return perm.replace("_", " ").replace("guild", "server").title()
 
 
-def shorten_message(message):
-    if len(message) > 2048:
-        return message[:2045] + "..."
+def shorten_message(message, max_length: Optional[int]):
+    if len(message) > max_length:  # 2048
+        return message[:max_length] + "..."
     else:
         return message
 
 
-def user_tag_format(message, member):
+def tag_format(
+    payload: str,
+    member: Union[Member, User],
+    guild: Guild,
+    role: Role,
+    channel: GuildChannel,
+):
     tags = {
-        "{user_name}": member.name,
-        "{user_tag}": member.discriminator,
-        "{user_id}": str(member.id),
-        "{user_mention}": member.mention,
+        # member tags
+        "{member.name}": member.name,
+        "{member.discriminator}": member.discriminator,
+        "{member.id}": str(member.id),
+        "{member.mention}": member.mention,
+        "{member.avatar}": member.avatar.url,
+        "{member.avatar.png}": member.avatar.with_format("png"),
+        "{member.avatar.gif}": member.avatar.with_format("gif"),
+        "{member.avatar.jpeg}": member.avatar.with_format("jpeg"),
+        "{member.display_avatar}": member.display_avatar.url,
+        "{member.display_avatar.png}": member.display_avatar.with_format("png"),
+        "{member.display_avatar.gif}": member.display_avatar.with_format("gif"),
+        "{member.display_avatar.jpeg}": member.display_avatar.with_format("jpeg"),
+        # channel tags
+        "{channel.name}": channel.name,
+        "{channel.id}": str(channel.id),
+        "{channel.mention}": channel.mention,
+        # guild tags
+        "{guild.name}": guild.name,
+        "{guild.id}": str(guild.id),
+        "{guild.mention}": guild.mention,
+        "{guild.owner}": guild.owner,
+        "{guild.owner.mention}": guild.owner.mention,
+        "{guild.owner.name}": guild.owner.name,
+        "{guild.owner.discriminator}": guild.owner.discriminator,
+        "{guild.owner.id}": str(guild.owner.id),
+        "{guild.owner.avatar}": guild.owner.avatar.url,
+        "{guild.owner.avatar.png}": guild.owner.avatar.with_format("png"),
+        "{guild.owner.avatar.gif}": guild.owner.avatar.with_format("gif"),
+        "{guild.owner.avatar.jpeg}": guild.owner.avatar.with_format("jpeg"),
+        "{guild.owner.display_avatar}": guild.owner.display_avatar.url,
+        "{guild.owner.display_avatar.png}": guild.owner.display_avatar.with_format(
+            "png"
+        ),
+        "{guild.owner.display_avatar.gif}": guild.owner.display_avatar.with_format(
+            "gif"
+        ),
+        "{guild.owner.display_avatar.jpeg}": guild.owner.display_avatar.with_format(
+            "jpeg"
+        ),
+        "{guild.icon}": guild.icon_url,
+        "{guild.icon.png}": guild.icon_url.with_format("png"),
+        "{guild.icon.gif}": guild.icon_url.with_format("gif"),
+        "{guild.icon.jpeg}": guild.icon_url.with_format("jpeg"),
+        # role tags
+        "{role.name}": role.name,
+        "{role.id}": str(role.id),
+        "{role.mention}": role.mention,
+        "{role.color}": str(role.color),
+        "{role.color.hex}": role.color.hex(),
+        "{role.created_at}": role.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        "{role.created_at.year}": role.created_at.year,
+        "{role.created_at.month}": role.created_at.month,
+        "{role.created_at.day}": role.created_at.day,
+        "{role.created_at.hour}": role.created_at.hour,
+        "{role.created_at.minute}": role.created_at.minute,
+        "{role.created_at.second}": role.created_at.second,
+        "{role.created_at.microsecond}": role.created_at.microsecond,
+        "{role.created_at.timestamp}": role.created_at.timestamp(),
+        "{role.display_icon}": role.display_icon.url,
+        "{role.display_icon.png}": role.display_icon.with_format("png"),
+        "{role.display_icon.gif}": role.display_icon.with_format("gif"),
+        "{role.display_icon.jpeg}": role.display_icon.with_format("jpeg"),
+        "{role.hoist}": str(role.hoist),
+        "{role.mentionable}": str(role.mentionable),
+        "{role.permissions}": str(role.permissions),
+        "{role.position}": str(role.position),
+        "{role.tags}": str(role.tags),
+        "{role.unicode_emoji}": str(role.unicode_emoji),
+        # message tags
+        "{message.id}": str(payload.id),
+        # emoji tags
+        "{emoji.name}": payload.split(":")[2],
+        "{emoji.id}": payload.split(":")[1],
+        "{emoji.url}": payload.split(":")[0],
     }
     for tag, val in tags.items():
-        message = message.replace(tag, val)
-    return shorten_message(message)
-
-
-def channel_tag_format(message, channel):
-    tags = {
-        "{channel_name}": channel.name,
-        "{channel_id}": str(channel.id),
-        "{channel_mention}": channel.mention,
-    }
-    for tag, val in tags.items():
-        message = message.replace(tag, val)
-    return shorten_message(message)
-
-
-def guild_tag_format(message, guild):
-    tags = {
-        "{guild_name}": guild.name,
-        "{guild_id}": str(guild.id),
-    }
-    for tag, val in tags.items():
-        message = message.replace(tag, val)
-    return shorten_message(message)
+        payload = payload.replace(tag, val)
+    return shorten_message(payload)
 
 
 async def parent(ctx):
