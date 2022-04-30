@@ -268,45 +268,45 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_guild_channel_create(self, channel: GuildChannel):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_channel_delete(self, channel: GuildChannel):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_role_create(self, role: Role):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_role_delete(self, role: Role):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_role_update(self, before: Role, after: Role):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_channel_update(self, before: GuildChannel, after: GuildChannel):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_channel_pins_update(
         self, channel: TextChannel, last_pin: datetime
     ):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_emojis_update(
         self, guild: Guild, before: list[Emoji], after: list[Emoji]
     ):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_sticker_update(
         self, guild: Guild, before: list[GuildSticker], after: list[GuildSticker]
     ):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -322,23 +322,23 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_member_update(self, before: Member, after: Member):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_user_update(self, before: User, after: User):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_presence_update(self, before: Member, after: Member):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_member_ban(self, guild: Guild, user: User):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_member_unban(self, guild: Guild, user: User):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -346,7 +346,7 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_messsage(self, message: Message):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_message_edit(self, before: Message, after: Message):
@@ -517,11 +517,11 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_invite_create(self, invite: Invite):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_invite_delete(self, invite: Invite):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -529,23 +529,23 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_intergration_create(self, integration: Integration):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_intergration_update(self, before: Integration, after: Integration):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_guild_integration_update(self, guild: Guild, integration: Integration):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_webhook_update(self, before: Webhook, after: Webhook):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_interaction(self, interaction: Interaction):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -553,25 +553,25 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_scheduled_event_create(self, event: ScheduledEvent):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_scheduled_event_delete(self, event: ScheduledEvent):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_scheduled_event_update(
         self, before: ScheduledEvent, after: ScheduledEvent
     ):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_scheduled_event_user_add(self, event: ScheduledEvent, user: User):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_scheduled_event_user_remove(self, event: ScheduledEvent, user: User):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -579,17 +579,17 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_stage_instance_create(self, stage_instance: StageInstance):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_stage_instance_delete(self, stage_instance: StageInstance):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_stage_instance_update(
         self, before: StageInstance, after: StageInstance
     ):
-        pass
+        print("filler")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -597,27 +597,27 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_thread_create(self, thread: Thread):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_thread_delete(self, thread: Thread):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_thread_update(self, before: Thread, after: Thread):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_thread_remove(self, thread: Thread):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_thread_member_join(self, member: ThreadMember):
-        pass
+        print("filler")
 
     @Cog.listener()
     async def on_thread_member_remove(self, member: ThreadMember):
-        pass
+        print("filler")
 
 
 async def setup(bot):

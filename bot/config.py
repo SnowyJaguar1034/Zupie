@@ -19,10 +19,6 @@ backend = {
     "Admins": [],
 }
 
-# Channels to send logs
-join_channel = "https://canary.discord.com/api/webhooks/960616206505742398/GdyivwW6_QD9bX0DaCNkvh2SuEtt-TfToJ7A3xSey2sefwp4LUHyaSwiQn6H-GnLd609"
-admin_channel = 816480968830353458
-
 
 guild_perms = [
     "administrator",
@@ -74,15 +70,6 @@ key_perms = [
 # Invite strctures
 invite_plain = "https://discord.com/api/oauth2/authorize?client_id=941314754851524639&permissions=1644971950071&scope=bot%20applications.commands"
 invite_hyperlink = f"[Invite Wyvern](invite_plain)"
-
-# Postgres DataBase credentials
-database = {
-    "database": "postgres",
-    "user": "postgres",
-    "password": "onapostitunderthekeyboard",
-    "host": "localhost",
-    "port": 5432,
-}
 
 text = ["Hello", "World"]
 for string in text:
