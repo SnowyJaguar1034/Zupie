@@ -1,30 +1,29 @@
-from classes.cogbase import CogBase
-from utils.helpers import parent
-from utils.helper_users import (
-    info_func,
-    joined_func,
-    avatar_func,
-    roles_func,
-    status_func,
-    permissions_func,
-)
+from os import environ
+from typing import Union
 
 from discord import (
-    Member,
-    User,
-    Interaction,
-    app_commands,
-    Object,
-    TextChannel,
-    VoiceChannel,
-    StageChannel,
     CategoryChannel,
+    Interaction,
+    Member,
+    Object,
+    StageChannel,
+    TextChannel,
+    User,
+    VoiceChannel,
+    app_commands,
 )
 from discord.ext import commands
-
-from typing import Union
-from os import environ
+from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
+from utils.helper_users import (
+    avatar_func,
+    info_func,
+    joined_func,
+    permissions_func,
+    roles_func,
+    status_func,
+)
+from utils.helpers import parent
 
 # from main import bot
 
@@ -34,12 +33,12 @@ default_guild = int(environ.get("DEFAULT_GUILD"))
 
 
 class User_Cog(
-    CogBase,
+    GroupCog,
     name="user",
     description="Shows all user related commands, legacy and slash",
 ):
     def __init__(self, bot):
-        super().__init__(bot)
+        # super().__init__(bot)
         self.bot = bot
 
     # slash_user_group = app_commands.Group(name="users", description="Check User stuff.", guild_ids=[default_guild])

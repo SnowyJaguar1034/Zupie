@@ -2,20 +2,24 @@ initial_extensions = [
     "cogs.help",
     "cogs.events",
     "cogs.owners",
-	"cogs.users",
+    "cogs.users",
     "cogs.roles",
     "cogs.code_snippets",
 ]
 
-CLIENT_ID="941314754851524639"
+CLIENT_ID = "941314754851524639"
 
 owners = [
     "365262543872327681",
 ]
 
 backend = {
-    "Owners": ["Fill",],
-    "Admins": ["FILL",]
+    "Owners": [
+        "Fill",
+    ],
+    "Admins": [
+        "FILL",
+    ],
 }
 
 # Channels to send logs
@@ -47,7 +51,8 @@ guild_perms = [
     "read_message_history",
     "add_reactions",
     "external_emojis",
-    "connect", "speak",
+    "connect",
+    "speak",
     "priority_speaker",
     "use_voice_activation",
     "stream",
@@ -79,5 +84,5 @@ database = {
     "user": "FILL",
     "password": "FILL",
     "host": "FILL",
-    "port": Fill
+    "port": Fill,
 }

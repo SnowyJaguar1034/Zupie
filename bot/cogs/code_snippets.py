@@ -1,30 +1,18 @@
 import logging
+import os
 import re
-
-from classes.cogbase import CogBase
-
-from textwrap import dedent
-from typing import Any
-from urllib.parse import quote_plus
-from traceback import format_exc
-from typing import Sequence
-from functools import partial
 from asyncio import TimeoutError as AsyncTimeoutError
+from functools import partial
+from textwrap import dedent
+from traceback import format_exc
+from typing import Any, Sequence
+from urllib.parse import quote_plus
 
 from aiohttp import ClientResponseError
-from discord import (
-    Interaction,
-    Message,
-    NotFound,
-    Reaction,
-    app_commands,
-    Object,
-)
+from discord import Interaction, Message, NotFound, Object, Reaction, app_commands
 from discord.abc import User
-from discord.ext.commands import Cog, Context
-
+from discord.ext.commands import Cog, Context, GroupCog
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -57,12 +45,12 @@ BITBUCKET_RE = re.compile(
 
 
 class CodeSnippets(
-    CogBase,
+    GroupCog,
     name="snippets",
     description="Cog that parses and sends code snippets to Discord.",
 ):
     def __init__(self, bot):
-        super().__init__(bot)
+        # super().__init__(bot)
         self.bot = bot
 
         self.pattern_handlers = [

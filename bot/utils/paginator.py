@@ -1,16 +1,16 @@
-from discord.ext import commands
-from discord.ext.menus import (
-    MenuPages,
-    ListPageSource,
-)  # The latter is being imported so that I can import it from the `bulk message delete` event file.
 from discord import (
-    ui,
-    Interaction,
     ButtonStyle,
-    TextChannel,
-    utils,
     Embed,
-)  # Needed for Buttons
+    Interaction,  # Needed for Buttons
+    TextChannel,
+    ui,
+    utils,
+)
+from discord.ext import commands
+from discord.ext.menus import (  # The latter is being imported so that I can import it from the `bulk message delete` event file.
+    ListPageSource,
+    MenuPages,
+)
 
 
 class EvalSource(ListPageSource):

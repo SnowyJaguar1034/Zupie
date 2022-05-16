@@ -1,3 +1,5 @@
+from discord import Embed
+
 from main import bot as bot_var
 from utils.helpers import interaction_or_context, perm_format
 
@@ -6,7 +8,6 @@ from utils.helpers import interaction_or_context, perm_format
 
 # from traceback import format_exc
 
-from discord import Embed
 
 # from discord.ext.commands import Context
 
@@ -14,7 +15,9 @@ from discord import Embed
 async def info_func(transaction, role_arg):
     role = await interaction_or_context("ROLE", transaction, role_arg)
     has_perm = [
-        perm for perm in bot_var.config.guild_perms if getattr(role.permissions, perm)
+        perm
+        for perm in bot_var.configuration.guild_perms
+        if getattr(role.permissions, perm)
     ]
     embed = Embed(
         title=f"{role.name}",

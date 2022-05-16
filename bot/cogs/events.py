@@ -268,45 +268,47 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_guild_channel_create(self, channel: GuildChannel):
-        print("filler")
+        print(f"Channel {channel.name} was created in {channel.guild.name}")
 
     @Cog.listener()
     async def on_guild_channel_delete(self, channel: GuildChannel):
-        print("filler")
-
-    @Cog.listener()
-    async def on_guild_role_create(self, role: Role):
-        print("filler")
-
-    @Cog.listener()
-    async def on_guild_role_delete(self, role: Role):
-        print("filler")
-
-    @Cog.listener()
-    async def on_guild_role_update(self, before: Role, after: Role):
-        print("filler")
+        print(f"Channel {channel.name} was deleted in {channel.guild.name}")
 
     @Cog.listener()
     async def on_guild_channel_update(self, before: GuildChannel, after: GuildChannel):
-        print("filler")
+        print(f"Channel {before.name} was updated in {before.guild.name}")
 
     @Cog.listener()
     async def on_guild_channel_pins_update(
         self, channel: TextChannel, last_pin: datetime
     ):
-        print("filler")
+        print(
+            f"New pin was added to {channel.name} at <t:{int(last_pin.timestamp())}:R>"
+        )
+
+    @Cog.listener()
+    async def on_guild_role_create(self, role: Role):
+        print(f"Role {role.name} was created in {role.guild.name}")
+
+    @Cog.listener()
+    async def on_guild_role_delete(self, role: Role):
+        print(f"Role {role.name} was deleted in {role.guild.name}")
+
+    @Cog.listener()
+    async def on_guild_role_update(self, before: Role, after: Role):
+        print(f"Role {before.name} was updated in {before.guild.name}")
 
     @Cog.listener()
     async def on_guild_emojis_update(
         self, guild: Guild, before: list[Emoji], after: list[Emoji]
     ):
-        print("filler")
+        print(f"Emojis were updated in {guild.name}")
 
     @Cog.listener()
     async def on_guild_sticker_update(
         self, guild: Guild, before: list[GuildSticker], after: list[GuildSticker]
     ):
-        print("filler")
+        print(f"Stickers were updated in {guild.name}")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -322,23 +324,23 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_member_update(self, before: Member, after: Member):
-        print("filler")
+        print(f"Member {before.name} was updated in {before.guild.name}")
 
     @Cog.listener()
     async def on_user_update(self, before: User, after: User):
-        print("filler")
+        print(f"User {before.name} was updated in {before.guild.name}")
 
     @Cog.listener()
     async def on_presence_update(self, before: Member, after: Member):
-        print("filler")
+        print(f"{before.name}'s presence was updated in {before.guild.name}")
 
     @Cog.listener()
     async def on_member_ban(self, guild: Guild, user: User):
-        print("filler")
+        print(f"{user.name} was banned from {guild.name}")
 
     @Cog.listener()
     async def on_member_unban(self, guild: Guild, user: User):
-        print("filler")
+        print(f"{user.name} was unbanned from {guild.name}")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -346,7 +348,7 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_messsage(self, message: Message):
-        print("filler")
+        print(f"Message {message.content} was sent in {message.guild.name}")
 
     @Cog.listener()
     async def on_message_edit(self, before: Message, after: Message):
@@ -517,11 +519,11 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_invite_create(self, invite: Invite):
-        print("filler")
+        print(f"{invite.code} created by {invite.guild.name}")
 
     @Cog.listener()
     async def on_invite_delete(self, invite: Invite):
-        print("filler")
+        print(f"{invite.code} deleted by {invite.guild.name}")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -529,19 +531,19 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_intergration_create(self, integration: Integration):
-        print("filler")
+        print(f"{integration.name} created by {integration.guild.name}")
 
     @Cog.listener()
     async def on_intergration_update(self, before: Integration, after: Integration):
-        print("filler")
+        print(f"{before.name} updated by {before.guild.name}")
 
     @Cog.listener()
     async def on_guild_integration_update(self, guild: Guild, integration: Integration):
-        print("filler")
+        print(f"{integration.name} updated by {guild.name}")
 
     @Cog.listener()
     async def on_webhook_update(self, before: Webhook, after: Webhook):
-        print("filler")
+        print(f"{before.name} updated by {before.guild.name}")
 
     @Cog.listener()
     async def on_interaction(self, interaction: Interaction):
@@ -553,25 +555,25 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_scheduled_event_create(self, event: ScheduledEvent):
-        print("filler")
+        print(f"{event.name} created by {event.guild.name}")
 
     @Cog.listener()
     async def on_scheduled_event_delete(self, event: ScheduledEvent):
-        print("filler")
+        print(f"{event.name} deleted by {event.guild.name}")
 
     @Cog.listener()
     async def on_scheduled_event_update(
         self, before: ScheduledEvent, after: ScheduledEvent
     ):
-        print("filler")
+        print(f"{before.name} updated by {before.guild.name}")
 
     @Cog.listener()
     async def on_scheduled_event_user_add(self, event: ScheduledEvent, user: User):
-        print("filler")
+        print(f"{user.name} added to {event.name} by {event.guild.name}")
 
     @Cog.listener()
     async def on_scheduled_event_user_remove(self, event: ScheduledEvent, user: User):
-        print("filler")
+        print(f"{user.name} removed from {event.name} by {event.guild.name}")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -579,17 +581,17 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_stage_instance_create(self, stage_instance: StageInstance):
-        print("filler")
+        print(f"{stage_instance.name} created by {stage_instance.guild.name}")
 
     @Cog.listener()
     async def on_stage_instance_delete(self, stage_instance: StageInstance):
-        print("filler")
+        print(f"{stage_instance.name} deleted by {stage_instance.guild.name}")
 
     @Cog.listener()
     async def on_stage_instance_update(
         self, before: StageInstance, after: StageInstance
     ):
-        print("filler")
+        print(f"{before.name} updated by {before.guild.name}")
 
     # ------------------------------------------------------------------------------------------------------------ #
 
@@ -597,27 +599,29 @@ class Events_Cog(Cog):
 
     @Cog.listener()
     async def on_thread_create(self, thread: Thread):
-        print("filler")
+        print(f"{thread.name} created by {thread.guild.name}")
 
     @Cog.listener()
     async def on_thread_delete(self, thread: Thread):
-        print("filler")
+        print(f"{thread.name} deleted by {thread.guild.name}")
 
     @Cog.listener()
     async def on_thread_update(self, before: Thread, after: Thread):
-        print("filler")
+        print(f"{before.name} updated by {before.guild.name}")
 
     @Cog.listener()
     async def on_thread_remove(self, thread: Thread):
-        print("filler")
+        print(f"{thread.name} removed by {thread.guild.name}")
 
     @Cog.listener()
     async def on_thread_member_join(self, member: ThreadMember):
-        print("filler")
+        print(
+            f"{member.name} joined {member.thread.name} by {member.thread.guild.name}"
+        )
 
     @Cog.listener()
     async def on_thread_member_remove(self, member: ThreadMember):
-        print("filler")
+        print(f"{member.name} left {member.thread.name} by {member.thread.guild.name}")
 
 
 async def setup(bot):

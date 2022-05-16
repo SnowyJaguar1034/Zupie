@@ -10,7 +10,8 @@ from discord import Activity, ActivityType, Intents
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import config
+from configuration import backend, activity
+from classes.config import Config
 
 # Custom Imports
 from classes.zupie import Zupie
@@ -22,11 +23,9 @@ intents.message_content = True
 
 bot = Zupie(
     intents=intents,
-    activity=Activity(
-        name=f"version {environ.get('VERSION')}", type=ActivityType.playing
-    ),
-    owner_ids=config.backend["Owners"],
-    description=environ.get("DESCRIPTION"),
+    activity=Activity(name=activity, type=ActivityType.playing),
+    owner_ids=backend["Owners"],
+    description=Config().DESCRIPTION,
     command_prefix=commands.when_mentioned,
     case_insensitive=True,
 )

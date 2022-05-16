@@ -6,8 +6,8 @@ from os import environ
 from subprocess import STDOUT, check_output
 from traceback import format_exc
 
-from classes.cogbase import CogBase
 from discord import Colour, Embed, Interaction, Object, app_commands
+from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
 from main import bot
 
@@ -23,12 +23,12 @@ default_guild = int(environ.get("DEFAULT_GUILD"))
 
 
 class Owner_Cog(
-    CogBase,
+    GroupCog,
     name="owner",
     description="Shows all owner related commands",
 ):
     def __init__(self, bot):
-        super().__init__(bot)
+        # super().__init__(bot)
         self.bot = bot
 
     eval_slash = app_commands.Group(name="eval", description="Evaluate somehting")
@@ -60,7 +60,7 @@ class Owner_Cog(
     @app_commands.choices(
         cog=[
             app_commands.Choice(name=cog.split(".")[1].title(), value=cog)
-            for cog in bot.config2.initial_extensions
+            for cog in bot.configuration.initial_extensions
         ]
     )
     async def load_slash(self, interaction: Interaction, cog: str):
@@ -86,7 +86,7 @@ class Owner_Cog(
     @app_commands.choices(
         cog=[
             app_commands.Choice(name=cog.split(".")[1].title(), value=cog)
-            for cog in bot.config.initial_extensions
+            for cog in bot.configuration.initial_extensions
         ]
     )
     async def unload_slash(self, interaction: Interaction, cog: str):
@@ -112,7 +112,7 @@ class Owner_Cog(
     @app_commands.choices(
         cog=[
             app_commands.Choice(name=cog.split(".")[1].title(), value=cog)
-            for cog in bot.config.initial_extensions
+            for cog in bot.configuration.initial_extensions
         ]
     )
     async def reload_slash(self, interaction: Interaction, cog: str):

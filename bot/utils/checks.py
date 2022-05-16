@@ -1,6 +1,6 @@
 import logging
-import discord
 
+import discord
 from discord.ext import commands
 
 log = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 def is_bot_owner():
     def predicate(ctx):
-        if ctx.author.id not in ctx.bot.config.owners:
+        if ctx.author.id not in ctx.bot.configuration.owners:
             raise commands.NotOwner()
         else:
             return True
@@ -18,7 +18,7 @@ def is_bot_owner():
 
 def is_bot_admin():
     def predicate(ctx):
-        if ctx.author.id not in ctx.bot.config.admins and ctx.author.id not in ctx.bot.config.owners:
+        if ctx.author.id not in ctx.bot.configuration.admins and ctx.author.id not in ctx.bot.configuration.owners:
             raise commands.NotOwner()
         else:
             return True
@@ -98,7 +98,7 @@ def in_database():
 
 def is_premium():
     async def predicate(ctx):
-        if not ctx.bot.config.main_server:
+        if not ctx.bot.configuration.main_server:
             return True
         async with ctx.bot.pool.acquire() as conn:
             res = await conn.fetch("SELECT guild FROM premium")

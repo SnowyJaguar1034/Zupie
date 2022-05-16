@@ -4,15 +4,14 @@ import traceback
 
 import aiohttp
 import asyncpg
-import config as cfg
+import configuration
 import discord
 
 # import logging, aioredis
 from discord.ext import commands
+from redis import asyncio as asyncredis
 
-from .configenv import Config
-
-# from redis import asyncio as aioredis
+from .config import Config
 
 
 # log = logging.getLogger(__name__)
@@ -36,15 +35,15 @@ class Zupie(commands.AutoShardedBot):
 
     @property
     def default_guild(self):
-        return discord.Object(id=int(os.environ.get("DEFAULT_GUILD")))
+        return discord.Object(id=int(Config().DEFAULT_GUILD))
 
     @property
     def config(self):
         return Config()
 
     @property
-    def config2(self):
-        return cfg
+    def configuration(self):
+        return configuration
 
     async def get_data(self, guild):
         async with self.pool.acquire() as conn:
@@ -106,9 +105,9 @@ class Zupie(commands.AutoShardedBot):
         return banned_guilds, banned_users
 
     async def connect_redis(self):
-        self.redis = await aioredis.from_url(
-            "redis://localhost", encoding="utf-8", decode_responses=True
-        )
+        self.redis = await asyncredis.Redis()
+        print(f"Pinging redis: {await self.redis.ping()}")
+        await self.redis.close()
         # for line in info.split("\n"):
         #     if line.startswith("redis_version"):
         #         self.redis_version = line.split(":")[1]
@@ -144,7 +143,7 @@ class Zupie(commands.AutoShardedBot):
                     print(
                         "------", "Connected to postgres database", "------", sep="\n"
                     )
-                    for extension in cfg.initial_extensions:
+                    for extension in configuration.initial_extensions:
                         try:
                             await self.load_extension(extension)
                             print(f"Loaded {extension.title()}")

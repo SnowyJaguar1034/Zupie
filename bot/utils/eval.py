@@ -1,14 +1,17 @@
+import contextlib  # Needed for Eval
+import io
+import os
+import textwrap
+import traceback
+
 import discord
+from discord import ButtonStyle, Interaction, TextStyle, ui  # Needed for Buttons
+from discord.ext import menus  # Needed for Paginator
 from discord.ext import commands
+from dotenv import load_dotenv
 
 from main import bot
 from utils.paginator import paginate
-
-import contextlib, io, os, textwrap, traceback  # Needed for Eval
-from discord.ext import menus  # Needed for Paginator
-from discord import ui, Interaction, TextStyle, ButtonStyle  # Needed for Buttons
-
-from dotenv import load_dotenv
 
 load_dotenv()
 

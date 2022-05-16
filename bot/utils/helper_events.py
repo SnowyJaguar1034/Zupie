@@ -33,8 +33,8 @@ async def guild_events(bot, guild: Guild, event: str):
     elif event == "LEAVE":
         embed.colour = Colour.red()
     embed.set_footer(text=f"{len(bot.guilds)} servers")
-    if bot.config.join_channel:
-        await webhook_constructor(bot=bot, url=bot.config.join_channel, embed=embed)
+    if bot.config.JOIN_ChANNEL:
+        await webhook_constructor(bot=bot, url=bot.config.JOIN_ChANNEL, embed=embed)
 
 
 async def raidmode(

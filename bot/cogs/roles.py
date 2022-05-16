@@ -1,22 +1,21 @@
-from classes.cogbase import CogBase
-from utils.helpers import parent
-from utils.helper_roles import info_func, members_func, permissions_func
+from os import environ
+from typing import Union
 
 from discord import (
-    Role,
+    CategoryChannel,
     Interaction,
-    app_commands,
     Object,
+    Role,
+    StageChannel,
     TextChannel,
     VoiceChannel,
-    StageChannel,
-    CategoryChannel,
+    app_commands,
 )
 from discord.ext import commands
-
-from typing import Union
-from os import environ
+from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
+from utils.helper_roles import info_func, members_func, permissions_func
+from utils.helpers import parent
 
 # from main import bot
 
@@ -26,12 +25,12 @@ default_guild = int(environ.get("DEFAULT_GUILD"))
 
 
 class Role_Cog(
-    CogBase,
+    GroupCog,
     name="role",
     description="Shows all role related commands, legacy and slash",
 ):
     def __init__(self, bot):
-        super().__init__(bot)
+        # super().__init__(bot)
         self.bot = bot
 
     edit_role = app_commands.Group(

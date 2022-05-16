@@ -1,5 +1,16 @@
 # import asyncio
 import datetime
+from os import environ
+
+# from discord.gateway import DiscordClientWebSocketResponse
+from aiohttp import ClientSession
+
+# from .info import Info
+from discord import Colour, Embed, Object, Webhook
+from discord.ext import commands
+
+# from itertools import cycle
+from dotenv import load_dotenv
 
 # import json
 # import logging
@@ -9,17 +20,6 @@ import datetime
 # import discord
 # import psutil
 
-# from .info import Info
-from discord import Webhook, Embed, Colour, Object
-from discord.ext import commands
-
-# from discord.gateway import DiscordClientWebSocketResponse
-from aiohttp import ClientSession
-
-from os import environ
-
-# from itertools import cycle
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -52,7 +52,7 @@ class Events_Cog(commands.Cog):
         await self.bot.wait_until_ready()
         data = await self.bot.get_data(448405740797952010)
         users = sum(await self.bot.comm.handler("user_count", self.bot.cluster_count))
-        self.statuses = cycle([f'/help | {self.bot.config.default_prefix}help', f'{self.bot.config.activity}', f'{data[13]} is the current count', f'RaidMode is {"Enabled" if data[14] is True else "Disabled"}', f'{data[15]} is the required age for new accounts when raidmode is enabled.', f'Latency: {round(self.bot.latency * 1000, 2)}ms.', f'CPU Usage: {psutil.cpu_percent(interval=None)}%', f'RAM Usage: {psutil.virtual_memory().percent}%', f'I can see {str(users)} users', f'Python Version: {platform.python_version()}', f'Discord.py Version: {discord.__version__}', 'I support slash commands', ])
+        self.statuses = cycle([f'/help | {self.bot.config.DEFAULT_PREFIX}help', f'{self.bot.config.ACTIVITY}', f'{data[13]} is the current count', f'RaidMode is {"Enabled" if data[14] is True else "Disabled"}', f'{data[15]} is the required age for new accounts when raidmode is enabled.', f'Latency: {round(self.bot.latency * 1000, 2)}ms.', f'CPU Usage: {psutil.cpu_percent(interval=None)}%', f'RAM Usage: {psutil.virtual_memory().percent}%', f'I can see {str(users)} users', f'Python Version: {platform.python_version()}', f'Discord.py Version: {discord.__version__}', 'I support slash commands', ])
 
     @tasks.loop(minutes = 60) # seconds = 10
     async def moderation_logs(self):

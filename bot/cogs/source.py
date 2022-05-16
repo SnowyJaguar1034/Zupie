@@ -4,17 +4,17 @@ from typing import Optional, Tuple, Union
 
 from discord import Embed
 from discord.ext import commands
-from discord.utils import escape_markdown
 from discord.ext.commands import (
     BadArgument,
     Bot,
+    Cog,
+    Command,
     Context,
     Converter,
-    HelpCommand,
-    Command,
-    Cog,
     ExtensionNotLoaded,
+    HelpCommand,
 )
+from discord.utils import escape_markdown
 
 SourceType = Union[
     HelpCommand,

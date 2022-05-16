@@ -1,3 +1,21 @@
+from os import getenv
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+activity = f"Version {getenv('VERSION')}"
+
+backend = {
+    "Owners": [
+        "365262543872327681",
+    ],
+    "Admins": [],
+}
+
+invite_plain = f"https://discord.com/api/oauth2/authorize?client_id={getenv('CLIENT_ID')}&permissions=1644971950071&scope=bot%20applications.commands"
+invite_hyperlink = f"[Invite Zupie](invite_plain)"
+
 initial_extensions = [
     "cogs.help",
     "cogs.events",
@@ -7,17 +25,6 @@ initial_extensions = [
     "cogs.code_snippets",
     "cogs.source",
 ]
-
-owners = [
-    "365262543872327681",
-]
-
-backend = {
-    "Owners": [
-        "365262543872327681",
-    ],
-    "Admins": [],
-}
 
 
 guild_perms = [
@@ -66,19 +73,3 @@ key_perms = [
     "kick_members",
     "mention_everyone",
 ]
-
-# Invite strctures
-invite_plain = "https://discord.com/api/oauth2/authorize?client_id=941314754851524639&permissions=1644971950071&scope=bot%20applications.commands"
-invite_hyperlink = f"[Invite Wyvern](invite_plain)"
-
-text = ["Hello", "World"]
-for string in text:
-    if string == "Hello":
-        # do something
-        pass
-    elif string == "World":
-        # do something else
-        pass
-    else:
-        # do something else
-        pass

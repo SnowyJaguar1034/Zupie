@@ -1,6 +1,6 @@
 from discord import Embed
-from main import bot as bot_var
 
+from main import bot as bot_var
 from utils.helpers import interaction_or_context, perm_format
 
 # from typing import Union, Sequence
@@ -46,7 +46,7 @@ async def info_func(transaction, member_arg):
         roles.append("No roles")
     has_key = [
         perm
-        for perm in bot_var.config.key_perms
+        for perm in bot_var.configuration.key_perms
         if getattr(member.guild_permissions, perm)
     ]
     if len(has_key) == 0:
