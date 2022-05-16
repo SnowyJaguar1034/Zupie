@@ -80,27 +80,35 @@ git pull https://github.com/SnowyJaguar/zupie.git master
 
 Configuration is done through a `config.py` and `.env` file. 
 
-#### `config.py` file
-
-You should make a copy of `config-example.py` and rename it to `config.py`. All fields marked with`FILL` must be filled in with the type specfied below:
-- `CLIENT_ID` : Your bot client secret as found on the [Discord Developer Portal](https://discord.com/developers/applications)
-- `backend : Owners` : The ID(s) of the bots owners, these members have access to owner specfic commands
-- `backend : Admins` : The ID(s) of the bots admins, these members have access to admin specfic commands
-- `join_channel` : The channel ID of where the bot will send logs of it  joining/leaving a server.
-- `admin_channel` : The channel ID of where the bot will send logs when Admins/Owners use a backend command.
-- `database : database` : The name of your postgres database
-- `database : user` : The name of user account the bot can use to access your postgres database.
-- `database : host` : The host addresses of your databse, if it's running on your local machine this will be `localhost`
-- `database : port` : The network port of your postgres database, postgres defualts to `5432`.
-
 #### `.env` file
 
 You should make a copy of `example.env` and rename it to `.env`. All fields marked with`FILL` must be filled in with the type specfied below:
 - `TOKEN` : Your bots token as found on the [Discord Developer Portal](https://discord.com/developers/applications)
 - `CLIENT_ID` : Your bot client ID as found on the [Discord Developer Portal](https://discord.com/developers/applications)
+- `CLIENT_SECRET` : Your bot client secret as found on the [Discord Developer Portal](https://discord.com/developers/applications)
 - `DEFAULT_GUILD` : The ID of your bots default guild / the ID of the only guild it's in
-- `ACTIVITY`: The message you want your bot to show on it's profile
+- `DEFAULT_PREFIX` : The prefix that will be used for commands
 - `STATUS_WEBHOOK` : The URL of the webhook your bot will use to send status updates (shard connections/disconnections/restarts)
+- `DESCRIPTION` : The description of your bot
+- `JOIN_CHANNEL` : The URL of the webhook your bot will use to send it's guild join/leave messages
+- `ADMIN_CHANNEL` : The URL of the webhook your bot will use to send it's admin logs (the messages that are sent when a owner/admin usees a admin/owner command)
+- `POSTGRES_DATABASE` : The name of the postgres database your bot will use
+- `POSTGRES_USERNAME` : The name of the user your bot will use to connect to the postgres database
+- `POSTGRES_PASSWORD` : The password of the user your bot will use to connect to the postgres database
+- `POSTGRES_HOST` : The host addresses of your databse, if it's running on your local machine this will be `localhost`
+The network port of your postgres database, postgres defualts to `5432`.- `REDIS_HOST` : The host of the redis database your bot will use
+- `REDIS_PORT` : The port of the redis database your bot will use
+- `REDIS_PASSWORD` : The password of the redis database your bot will use
+- `MONGO_USERNAME` : The name of the user your bot will use to connect to the mongo database
+- `MONGO_PASSWORD` : The password of the user your bot will use to connect to the mongo database
+- `MONGO_CLUSTER` : The name of the cluster your bot will use to connect to the mongo database
+- `MONGO_DATABASE` : The name of the mongo database your bot will use
+#### `configuration.py` file
+
+You should make a copy of `config-example.py` and rename it to `config.py`. All fields marked with`FILL` must be filled in with the type specfied below:
+- `activity` : The activity your bot will show on it's profile
+- `backend : Owners` : The ID(s) of the bots owners, these members have access to owner specfic commands
+- `backend : Admins` : The ID(s) of the bots admins, these members have access to admin specfic commands
 
 #### Installing the Modules
 
@@ -138,6 +146,31 @@ Use pip like usual:
 ```sh
 $ (env) <Your source directory>pip install -r requirements.txt
 ```
+
+### Setting up Redis and Redis-Py
+#### Installing Redis on Windows
+Redis is not officially supported on Windows. However, you can install Redis on Windows by using WSL (Windows Subsystem for Linux).
+Read [this](https://docs.microsoft.com/en-us/windows/wsl/about/subsystem-for-linux) to learn more about setting up a Linux enviroment using WSL.
+
+#### Installing redis on Linux
+Once you have a Linux enviroment, you can install Redis and Redis-Py with the commands found [here](https://redis.io/docs/getting-started/installation/install-redis-on-windows/) or with the following commands.
+```sh
+sudo apt-add-repository ppa:redislabs/redis
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install redis-server
+```
+#### Starting the redis server
+```sh
+sudo service redis-server start
+```
+You can check that your redis server is running by using the Redis CLI
+```sh
+redis-cli 
+127.0.0.1:6379> ping
+PONG
+```
+
 ## Planned Plugins
 
 ### Web Dashboard

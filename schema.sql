@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS public.guild
     bot_farewell_channel bigint,
     has_bot_role boolean NOT NULL DEFAULT False,
     bot_role bigint,
+    has_thread_logs boolean NOT NULL DEFAULT False,
+    thread_log_webhook text,
     PRIMARY KEY (guild_id)
 );
 
