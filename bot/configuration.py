@@ -24,6 +24,15 @@ initial_extensions = [
     "cogs.roles",
     "cogs.code_snippets",
     "cogs.source",
+    "cogs.events.events",
+    "cogs.events.guilds",
+    "cogs.events.intergrations",
+    "cogs.events.invites",
+    "cogs.events.messages",
+    "cogs.events.shards",
+    "cogs.events.threads",
+    "cogs.events.users",
+    "cogs.events.voices",
 ]
 
 

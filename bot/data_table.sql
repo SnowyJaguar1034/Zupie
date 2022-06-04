@@ -1,4 +1,4 @@
-guild_id bigint NOT NULL DEFAULT 000000000000000000,
+guild_id bigint NOT NULL DEFAULT,
 default_log_webhook text,
 is_premium boolean NOT NULL DEFAULT False,
 required_age smallint NOT NULL DEFAULT 7,
