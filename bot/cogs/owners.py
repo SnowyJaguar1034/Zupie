@@ -1,7 +1,6 @@
 # from typing import Union
 from datetime import datetime
 from os import environ
-
 # from utils.helper_owners import cog_func
 from subprocess import STDOUT, check_output
 from traceback import format_exc
@@ -9,8 +8,8 @@ from traceback import format_exc
 from discord import Colour, Embed, Interaction, Object, app_commands
 from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
-from main import bot
 
+from main import bot
 # from utils.helpers import parent
 from utils.eval import Evaluate
 

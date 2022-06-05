@@ -9,7 +9,8 @@ from typing import Any, Sequence
 from urllib.parse import quote_plus
 
 from aiohttp import ClientResponseError
-from discord import Interaction, Message, NotFound, Object, Reaction, app_commands
+from discord import (Interaction, Message, NotFound, Object, Reaction,
+                     app_commands)
 from discord.abc import User
 from discord.ext.commands import Cog, Context, GroupCog
 from dotenv import load_dotenv

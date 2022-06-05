@@ -1,5 +1,4 @@
 import asyncio
-
 # from discord.gateway import DiscordClientWebSocketResponse
 from datetime import datetime, timedelta
 from io import StringIO
@@ -7,42 +6,18 @@ from os import environ
 from random import choice as rchoice
 from typing import Optional
 
-from discord import (
-    AuditLogEntry,
-    Colour,
-    Embed,
-    Emoji,
-    File,
-    Guild,
-    GuildSticker,
-    Integration,
-    Interaction,
-    Invite,
-    Member,
-    Message,
-    Object,
-    Role,
-    ScheduledEvent,
-    StageChannel,
-    StageInstance,
-    TextChannel,
-    Thread,
-    ThreadMember,
-    User,
-    VoiceChannel,
-    VoiceState,
-    Webhook,
-)
+from discord import (AuditLogEntry, Colour, Embed, Emoji, File, Guild,
+                     GuildSticker, Integration, Interaction, Invite, Member,
+                     Message, Object, Role, ScheduledEvent, StageChannel,
+                     StageInstance, TextChannel, Thread, ThreadMember, User,
+                     VoiceChannel, VoiceState, Webhook)
 from discord.abc import GuildChannel
 from discord.ext.commands import Cog
 from dotenv import load_dotenv
 from humanfriendly import format_timespan
-from utils.helper_events import (
-    guild_events,
-    member_events,
-    message_events,
-    shard_events,
-)
+
+from utils.helper_events import (guild_events, member_events, message_events,
+                                 shard_events)
 from utils.helper_users import timestamps_func
 from utils.helpers import send_json, shorten_message, webhook_constructor
 from utils.paginator import paginate

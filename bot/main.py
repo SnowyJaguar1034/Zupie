@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import traceback
-
 # Bulit in Imports
 from os import environ
 
@@ -10,11 +9,10 @@ from discord import Activity, ActivityType, Intents
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from configuration import backend, activity
 from classes.config import Config
-
 # Custom Imports
 from classes.zupie import Zupie
+from configuration import activity, backend
 
 load_dotenv()
 

@@ -4,12 +4,12 @@ import traceback
 
 import aiohttp
 import asyncpg
-import configuration
 import discord
-
 # import logging, aioredis
 from discord.ext import commands
 from redis import asyncio as asyncredis
+
+import configuration
 
 from .config import Config
 

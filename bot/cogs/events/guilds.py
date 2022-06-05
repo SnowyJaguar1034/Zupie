@@ -1,5 +1,4 @@
 import asyncio
-
 # from discord.gateway import DiscordClientWebSocketResponse
 from datetime import datetime, timedelta
 from io import StringIO
@@ -7,43 +6,19 @@ from os import environ
 from random import choice as rchoice
 from typing import Optional
 
-from classes.embeds import LogEmbed, NegativeEmbed, NeutralEmbed, PositiveEmbed
-from discord import (
-    AuditLogEntry,
-    Colour,
-    Embed,
-    Emoji,
-    File,
-    Guild,
-    GuildSticker,
-    Integration,
-    Interaction,
-    Invite,
-    Member,
-    Message,
-    Object,
-    Role,
-    ScheduledEvent,
-    StageChannel,
-    StageInstance,
-    TextChannel,
-    Thread,
-    ThreadMember,
-    User,
-    VoiceChannel,
-    VoiceState,
-    Webhook,
-)
+from discord import (AuditLogEntry, Colour, Embed, Emoji, File, Guild,
+                     GuildSticker, Integration, Interaction, Invite, Member,
+                     Message, Object, Role, ScheduledEvent, StageChannel,
+                     StageInstance, TextChannel, Thread, ThreadMember, User,
+                     VoiceChannel, VoiceState, Webhook)
 from discord.abc import GuildChannel
 from discord.ext.commands import Cog
 from dotenv import load_dotenv
 from humanfriendly import format_timespan
-from utils.helper_events import (
-    guild_events,
-    member_events,
-    message_events,
-    shard_events,
-)
+
+from classes.embeds import LogEmbed, NegativeEmbed, NeutralEmbed, PositiveEmbed
+from utils.helper_events import (guild_events, member_events, message_events,
+                                 shard_events)
 from utils.helper_users import timestamps_func
 from utils.helpers import send_json, shorten_message, webhook_constructor
 from utils.paginator import paginate
@@ -247,7 +222,10 @@ class GuildEvents(Cog):
             name="Channel position",
             value=f"Top: 0, Bottom: 500 - Position: {channel.position}",
         )
-        embed.add_field(name="Channel creation time", value=f"{channel.created_at}")
+        embed.add_field(
+            name="Channel creation time",
+            value=f"<t:{int(channel.created_at.timestamp())}:R>",
+        )
         embed.add_field(
             name="Channel permission overwrites",
             value=f"{channel.overwrites}",
@@ -282,7 +260,10 @@ class GuildEvents(Cog):
             name="Channel position",
             value=f"Top: 0, Bottom: 500 - Position: {channel.position}",
         )
-        embed.add_field(name="Channel creation time", value=f"{channel.created_at}")
+        embed.add_field(
+            name="Channel creation time",
+            value=f"<t:{int(channel.created_at.timestamp())}:R>",
+        )
         embed.add_field(
             name="Channel permission overwrites",
             value=f"{channel.overwrites}",
@@ -346,40 +327,178 @@ class GuildEvents(Cog):
             )
         await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
-        print(f"Channel {before.name} was updated in {before.guild.name}")
-
     @Cog.listener()
     async def on_guild_channel_pins_update(
         self, channel: TextChannel, last_pin: datetime
     ):
-        print(
-            f"New pin was added to {channel.name} at <t:{int(last_pin.timestamp())}:R>"
+        embed = NeutralEmbed(
+            title=f"Pinned messages updated for {channel.mention}",
+            description=f"Pins updated <t:{int(last_pin.timestamp())}:R>",
         )
+        embed.set_footer(text=f"Channel ID: {channel.id}")
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
     @Cog.listener()
     async def on_guild_role_create(self, role: Role):
-        print(f"Role {role.name} was created in {role.guild.name}")
+        embed = PositiveEmbed(
+            title=f"Role {role.name} created",
+        )
+        embed.set_footer(text=f"Role ID: {role.id}")
+        if role.display_icon is not None:
+            embed.set_thumbnail(url=role.display_icon.url)
+        embed.add_field(name="Role colour", value=f"{role.colour}")
+        embed.add_field(
+            name="Role creation time", value=f"<t:{int(role.created_at.timestamp())}:R>"
+        )
+        embed.add_field(
+            name="Role mentionability",
+            value="Mentionable"
+            if role.mentionable is True
+            else "Not mentionable",
+        )
+        embed.add_field(
+            name="Role hoist",
+            value="Hoisted"
+            if role.hoist is True
+            else "Not hoisted",
+        )
+        embed.add_field(
+            name="Role permissions",
+            value=", ".join([permission for permission in role.permissions if role.permissions is not None else "No permissions set"]),
+        )
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
     @Cog.listener()
     async def on_guild_role_delete(self, role: Role):
-        print(f"Role {role.name} was deleted in {role.guild.name}")
+        embed = NegativeEmbed(
+            title=f"Role {role.name} deleted",
+        )
+        embed.set_footer(text=f"Role ID: {role.id}")
+        if role.display_icon is not None:
+            embed.set_thumbnail(url=role.display_icon.url)
+        embed.add_field(name="Role colour", value=f"{role.colour}")
+        embed.add_field(
+            name="Role creation time", value=f"<t:{int(role.created_at.timestamp())}:R>"
+        )
+        embed.add_field(
+            name="Role mentionability",
+            value="Mentionable"
+            if role.mentionable is True
+            else "Not mentionable",
+        )
+        embed.add_field(
+            name="Role hoist",
+            value="Hoisted"
+            if role.hoist is True
+            else "Not hoisted",
+        )
+        embed.add_field(
+            name="Role permissions",
+            value=", ".join([permission for permission in role.permissions if role.permissions is not None else "No permissions set"]),
+        )
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
     @Cog.listener()
     async def on_guild_role_update(self, before: Role, after: Role):
-        print(f"Role {before.name} was updated in {before.guild.name}")
+        embed = NeutralEmbed(title="Role updated")
+        embed.set_footer(text=f"Role ID: {after.id}")
+        if before.name is not after.name:
+            embed.description = f"{before.mention} -> {after.mention}"
+        else:
+            embed.description = f"{before.mention}"
+        if before.colour is not after.colour:
+            embed.add_field(name="Role colour", value=f"{before.colour} -> {after.colour}")
+        if before.mentionable is not after.mentionable:
+            embed.add_field(
+                name="Role mentionability",
+                value="Mentionable"
+                if after.mentionable is True
+                else "Not mentionable",
+            )
+        if before.hoist is not after.hoist:
+            embed.add_field(
+                name="Role hoist",
+                value="Hoisted"
+                if after.hoist is True
+                else "Not hoisted",
+            )
+        if before.permissions is not after.permissions:
+            embed.add_field(
+                name="Role permissions",
+                value=", ".join([permission for permission in after.permissions if after.permissions is not None else "No permissions set"]),
+            )
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
     @Cog.listener()
-    async def on_guild_emojis_update(
-        self, guild: Guild, before: list[Emoji], after: list[Emoji]
-    ):
-        print(f"Emojis were updated in {guild.name}")
+    async def on_guild_emojis_update(self, guild: Guild, before: List[Emoji], after: List[Emoji]):
+        embed = NeutralEmbed(title="Emojis updated")
+        embed.set_footer(text=f"Guild ID: {guild.id}")
+        if len(before) > len(after):
+            embed.description = f"{len(before) - len(after)} emoji(s) deleted"
+        elif len(before) < len(after):
+            embed.description = f"{len(after) - len(before)} emoji(s) created"
+        else:
+            embed.description = "No emoji changes"
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
     @Cog.listener()
-    async def on_guild_sticker_update(
-        self, guild: Guild, before: list[GuildSticker], after: list[GuildSticker]
-    ):
-        print(f"Stickers were updated in {guild.name}")
+    async def on_guild_emoji_create(self, emoji: Emoji):
+        embed = PositiveEmbed(
+            title=f"Emoji {emoji.name} created",
+        )
+        embed.set_footer(text=f"Emoji ID: {emoji.id}")
+        if emoji.url is not None:
+            embed.set_image(url=emoji.url)
+        embed.add_field(
+            name="Emoji creation time", value=f"<t:{int(emoji.created_at.timestamp())}:R>"
+        )
+        embed.add_field(
+            name="Emoji require_colons",
+            value="Requires colons"
+            if emoji.require_colons is True
+            else "No colons required",
+        )
+        embed.add_field(
+            name="Emoji managed",
+            value="Managed"
+            if emoji.managed is True
+            else "Not managed",
+        )
+        embed.add_field(
+            name="Emoji animated",
+            value="Animated"
+            if emoji.animated is True
+            else "Not animated",
+        )
+        embed.add_field(
+            name="Emoji available",
+            value="Available"
+            if emoji.available is True
+            else "Not available",
+        )
+        embed.add_field(
+            name="Emoji name", value=emoji.name,
+        )
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
+    @Cog.listener()
+    async def on_guild_emoji_delete(self, emoji: Emoji):
+        embed = NegativeEmbed(
+            title=f"Emoji {emoji.name} deleted",
+        )
+        embed.set_footer(text=f"Emoji ID: {emoji.id}")
+        if emoji.url is not None:
+            embed.set_image(url=emoji.url)
+        embed.add_field(
+            name="Emoji creation time", value=f"<t:{int(emoji.created_at.timestamp())}:R>"
+        )
+        embed.add_field(
+            name="Emoji require_colons",
+            value="Require colons"
+            if emoji.require_colons is True
+            else "No colons required",
+        )
+        await webhook_constructor(bot=self.bot, url=SQL_NEEDED, embed=embed)
 
 async def setup(bot):
     await bot.add_cog(GuildEvents(bot))
