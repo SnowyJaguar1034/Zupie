@@ -4,14 +4,16 @@ from os import environ
 
 # from discord.gateway import DiscordClientWebSocketResponse
 from aiohttp import ClientSession
+
 # from .info import Info
 from discord import Colour, Embed, Object, Webhook
 from discord.ext import commands
+
 # from itertools import cycle
 from dotenv import load_dotenv
 
 # import json
-# import logging
+
 # import re
 # import io
 
@@ -21,7 +23,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# log = logging.getLogger(__name__)
+from logging import getLogger
+
+log = getLogger(__name__)
 
 webhook_url = environ.get("STATUS_WEBHOOK")
 default_guild = int(environ.get("DEFAULT_GUILD"))
