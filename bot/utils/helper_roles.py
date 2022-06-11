@@ -30,9 +30,10 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+from logging import getLogger
+
 from discord import Embed
 from main import bot as bot_var
-
 from utils.helpers import interaction_or_context, perm_format
 
 # from typing import Union, Sequence
@@ -42,6 +43,9 @@ from utils.helpers import interaction_or_context, perm_format
 
 
 # from discord.ext.commands import Context
+
+
+log = getLogger(__name__)
 
 
 async def info_func(transaction, role_arg):

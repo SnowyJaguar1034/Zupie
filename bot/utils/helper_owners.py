@@ -31,29 +31,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from datetime import datetime
+from logging import getLogger
 from traceback import format_exc
 from typing import Sequence, Union
 
-from discord import (
-    CategoryChannel,
-    Colour,
-    Embed,
-    Interaction,
-    Member,
-    Message,
-    NotFound,
-    Object,
-    Role,
-    StageChannel,
-    TextChannel,
-    User,
-    VoiceChannel,
-    app_commands,
-)
+from discord import (CategoryChannel, Colour, Embed, Interaction, Member,
+                     Message, NotFound, Object, Role, StageChannel,
+                     TextChannel, User, VoiceChannel, app_commands)
 from discord.ext.commands import Context
 from main import bot as bot_var
-
 from utils.helpers import interaction_or_context
+
+log = getLogger(__name__)
 
 
 async def cog_func(task, transaction, cog):

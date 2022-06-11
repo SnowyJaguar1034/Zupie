@@ -33,16 +33,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from os import environ
 from typing import Union
 
-from discord import (
-    CategoryChannel,
-    Interaction,
-    Object,
-    Role,
-    StageChannel,
-    TextChannel,
-    VoiceChannel,
-    app_commands,
-)
+from discord import (CategoryChannel, Interaction, Object, Role, StageChannel,
+                     TextChannel, VoiceChannel, app_commands)
 from discord.ext import commands
 from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
@@ -52,6 +44,10 @@ from utils.helpers import parent
 # from main import bot
 
 load_dotenv()
+
+from logging import getLogger
+
+log = getLogger(__name__)
 
 default_guild = int(environ.get("DEFAULT_GUILD"))
 

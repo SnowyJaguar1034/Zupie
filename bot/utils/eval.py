@@ -37,15 +37,19 @@ import textwrap
 import traceback
 
 import discord
-from discord import ButtonStyle, Interaction, TextStyle, ui  # Needed for Buttons
+from discord import (ButtonStyle, Interaction, TextStyle,  # Needed for Buttons
+                     ui)
 from discord.ext import menus  # Needed for Paginator
 from discord.ext import commands
 from dotenv import load_dotenv
 from main import bot
-
 from utils.paginator import paginate
 
 load_dotenv()
+
+from logging import getLogger
+
+log = getLogger(__name__)
 
 default_guild = int(os.environ.get("DEFAULT_GUILD"))
 

@@ -30,8 +30,12 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+from logging import getLogger
+
 from discord import Embed
 from discord.ext.commands import Cog, MinimalHelpCommand
+
+log = getLogger(__name__)
 
 
 class MyNewHelp(MinimalHelpCommand):

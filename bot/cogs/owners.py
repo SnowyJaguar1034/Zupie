@@ -32,8 +32,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # from typing import Union
 from datetime import datetime
+from logging import getLogger
 from os import environ
-
 # from utils.helper_owners import cog_func
 from subprocess import STDOUT, check_output
 from traceback import format_exc
@@ -42,12 +42,13 @@ from discord import Colour, Embed, Interaction, Object, app_commands
 from discord.ext.commands import GroupCog
 from dotenv import load_dotenv
 from main import bot
-
 # from utils.helpers import parent
 from utils.eval import Evaluate
 
 # from discord.ext import commands
 
+
+log = getLogger(__name__)
 
 load_dotenv()
 

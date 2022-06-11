@@ -7,5 +7,4 @@ from discord import (CategoryChannel, Colour, Embed, Interaction, Member,
                      TextChannel, User, VoiceChannel, app_commands)
 from discord.ext.commands import Context
 from helpers import interaction_or_context
-
 from main import bot as bot_var

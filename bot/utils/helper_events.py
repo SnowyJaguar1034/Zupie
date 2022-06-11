@@ -39,7 +39,6 @@ from typing import Optional
 from discord import Colour, Embed, Forbidden, Guild, Member, Message, Object
 from discord.ext import commands
 from dotenv import load_dotenv
-
 from utils.helper_users import timestamps_func
 from utils.helpers import tag_format, webhook_constructor
 

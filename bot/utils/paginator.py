@@ -30,13 +30,15 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+from logging import getLogger
+
 from discord import Interaction  # Needed for Buttons
 from discord import ButtonStyle, Embed, TextChannel, ui, utils
 from discord.ext import commands
 from discord.ext.menus import (  # The latter is being imported so that I can import it from the `bulk message delete` event file.
-    ListPageSource,
-    MenuPages,
-)
+    ListPageSource, MenuPages)
+
+log = getLogger(__name__)
 
 
 class EvalSource(ListPageSource):

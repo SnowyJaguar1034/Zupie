@@ -4,11 +4,9 @@ from os import environ
 
 # from discord.gateway import DiscordClientWebSocketResponse
 from aiohttp import ClientSession
-
 # from .info import Info
 from discord import Colour, Embed, Object, Webhook
 from discord.ext import commands
-
 # from itertools import cycle
 from dotenv import load_dotenv
 

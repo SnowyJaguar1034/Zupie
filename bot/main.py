@@ -34,20 +34,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import asyncio
 import logging
 import traceback
-
 # Bulit in Imports
 from os import environ
 
+from classes.config import Config
+# Custom Imports
+from classes.zupie import Zupie
+from configuration import activity, backend
 # Package Imports
 from discord import Activity, ActivityType, Intents
 from discord.ext import commands
 from dotenv import load_dotenv
-
-from classes.config import Config
-
-# Custom Imports
-from classes.zupie import Zupie
-from configuration import activity, backend
 
 load_dotenv()
 

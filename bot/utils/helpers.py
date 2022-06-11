@@ -31,6 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from collections import Counter
+from logging import getLogger
 from re import findall
 from typing import Optional, Union
 
@@ -38,6 +39,8 @@ from discord import Embed, Guild, Interaction, Member, Role, User, Webhook
 from discord.abc import GuildChannel
 from discord.ext.commands import Context
 from discord.http import MultipartParameters
+
+log = getLogger(__name__)
 
 
 async def webhook_constructor(

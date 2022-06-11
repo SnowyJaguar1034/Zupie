@@ -31,22 +31,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import inspect
+from logging import getLogger
 from pathlib import Path
 from typing import Optional, Tuple, Union
 
 from discord import Embed
 from discord.ext import commands
-from discord.ext.commands import (
-    BadArgument,
-    Bot,
-    Cog,
-    Command,
-    Context,
-    Converter,
-    ExtensionNotLoaded,
-    HelpCommand,
-)
+from discord.ext.commands import (BadArgument, Bot, Cog, Command, Context,
+                                  Converter, ExtensionNotLoaded, HelpCommand)
 from discord.utils import escape_markdown
+
+log = getLogger(__name__)
 
 SourceType = Union[
     HelpCommand,

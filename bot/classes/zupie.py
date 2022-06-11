@@ -39,7 +39,6 @@ import aiohttp
 import asyncpg
 import configuration
 import discord
-
 # import aioredis
 from discord.ext import commands
 from redis import asyncio as asyncredis
