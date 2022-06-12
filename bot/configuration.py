@@ -56,7 +56,7 @@ initial_extensions = [
     "cogs.roles",
     "cogs.code_snippets",
     "cogs.source",
-    "cogs.events.events",
+    "cogs.events.calendar",
     "cogs.events.guilds",
     "cogs.events.intergrations",
     "cogs.events.invites",

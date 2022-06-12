@@ -34,53 +34,23 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import asyncio
 import logging
 import traceback
+from logging.handlers import SMTPHandler
+
 # Bulit in Imports
 from os import environ
 
-from classes.config import Config
-# Custom Imports
-from classes.zupie import Zupie
-from configuration import activity, backend
 # Package Imports
 from discord import Activity, ActivityType, Intents
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from classes.config import Config
+
+# Custom Imports
+from classes.zupie import Zupie
+from configuration import activity, backend
+
 load_dotenv()
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename=f"zupie.log", encoding="utf-8", mode="w")
-console = logging.StreamHandler()
-console.setLevel(logging.WARNING)
-# mailer = logging.SMTPHandler(
-#     mailhost=Config.MAIL_HOST,
-#     fromaddr=Config.MAIL_FROM,
-#     toaddrs=Config.MAIL_TO,
-#     subject=Config.MAIL_SUBJECT,
-#     credentials=(Config.MAIL_USER, Config.MAIL_PASS),
-#     secure=Config.MAIL_SECURE,
-#     timeout=Config.MAIL_TIMEOUT,
-# )
-# mailer.setLevel(logging.ERROR)
-formatter = logging.Formatter("%(asctime)s: %(levelname)s: %(name)s: %(message)s")
-test = logging.Formatter(
-    """
-    Time: %(asctime)s: 
-    Level: %(levelname)s: 
-    Logger: %(name)s: 
-    Message: %(message)s
-   """
-)
-handler.setFormatter(test)
-console.setFormatter(formatter)
-# mailer.setFormatter(formatter)
-logger.addHandler(handler)
-logger.addHandler(console)
-# logger.addHandler(mailer)
-
-log = logging.getLogger(__name__)
 
 intents = Intents.all()
 intents.message_content = True
@@ -93,6 +63,61 @@ bot = Zupie(
     command_prefix=commands.when_mentioned,
     case_insensitive=True,
 )
+
+recipients = Config().RECIPIENTS.strip(" ").split(",")
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
+# logger.setLevel(logging.DEBUG)
+file = logging.FileHandler(filename="zupie.log", encoding="utf-8", mode="w")
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+mailer = SMTPHandler(
+    mailhost=(Config().MAIL_HOST, Config().MAIL_PORT),
+    fromaddr=Config().MAIL_FROM,
+    toaddrs=recipients,
+    subject=Config().MAIL_SUBJECT or f"{bot.user} - Error",
+    credentials=(Config().MAIL_USER, Config().MAIL_PASS),
+    secure=(),
+    timeout=Config().MAIL_TIMEOUT,
+)
+mailer.setLevel(logging.ERROR)
+
+file.setFormatter(
+    logging.Formatter(
+        """
+      Time: %(asctime)s: 
+      Level: %(levelname)s: 
+      Logger: %(name)s: 
+      Path: %(pathname)s: 
+      Line: %(lineno)d:
+      Function: %(funcName)s:
+      Message: %(message)s
+      """
+    )
+)
+console.setFormatter(
+    logging.Formatter(
+        "%(asctime)s: %(levelname)s: %(name)s: (%(funcName)): %(message)s"
+    )
+)
+mailer.setFormatter(
+    logging.Formatter(
+        """
+      Time: %(asctime)s: 
+      Level: %(levelname)s: 
+      Logger: %(name)s: 
+      Path: %(pathname)s:
+      Function: %(funcName)s:
+      Message: %(message)s
+      """
+    )
+)
+logger.addHandler(file)
+logger.addHandler(console)
+logger.addHandler(mailer)
+
+log = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     asyncio.run(bot.main())
