@@ -32,12 +32,25 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 import asyncio
-import logging
 import traceback
+from logging import (
+    CRITICAL,
+    DEBUG,
+    ERROR,
+    INFO,
+    WARN,
+    FileHandler,
+    Formatter,
+    StreamHandler,
+    basicConfig,
+    getLogger,
+)
 from logging.handlers import SMTPHandler
 
 # Bulit in Imports
 from os import environ
+
+import rust
 
 # Package Imports
 from discord import Activity, ActivityType, Intents
@@ -64,27 +77,14 @@ bot = Zupie(
     case_insensitive=True,
 )
 
-recipients = Config().RECIPIENTS.strip(" ").split(",")
+# recipients = Config().RECIPIENTS.strip(" ").split(",")
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+basicConfig(level=DEBUG)
+logger = getLogger()
 # logger.setLevel(logging.DEBUG)
-file = logging.FileHandler(filename="zupie.log", encoding="utf-8", mode="w")
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-mailer = SMTPHandler(
-    mailhost=(Config().MAIL_HOST, Config().MAIL_PORT),
-    fromaddr=Config().MAIL_FROM,
-    toaddrs=recipients,
-    subject=Config().MAIL_SUBJECT or f"{bot.user} - Error",
-    credentials=(Config().MAIL_USER, Config().MAIL_PASS),
-    secure=(),
-    timeout=Config().MAIL_TIMEOUT,
-)
-mailer.setLevel(logging.ERROR)
-
+file = FileHandler(filename="zupie.log", encoding="utf-8", mode="w")
 file.setFormatter(
-    logging.Formatter(
+    Formatter(
         """
       Time: %(asctime)s: 
       Level: %(levelname)s: 
@@ -96,13 +96,23 @@ file.setFormatter(
       """
     )
 )
+console = StreamHandler()
+console.setLevel(INFO)
 console.setFormatter(
-    logging.Formatter(
-        "%(asctime)s: %(levelname)s: %(name)s: (%(funcName)): %(message)s"
-    )
+    Formatter("%(asctime)s: %(levelname)s: %(name)s: (%(funcName)): %(message)s")
 )
+mailer = SMTPHandler(
+    mailhost=(Config().MAIL_HOST, Config().MAIL_PORT),
+    fromaddr=Config().MAIL_FROM,
+    toaddrs=Config().RECIPIENTS.strip(" ").split(","),  # recipients,
+    subject=Config().MAIL_SUBJECT or f"Zupie encountered an error",
+    credentials=(Config().MAIL_USER, Config().MAIL_PASS),
+    secure=(),
+    timeout=Config().MAIL_TIMEOUT,
+)
+mailer.setLevel(INFO)
 mailer.setFormatter(
-    logging.Formatter(
+    Formatter(
         """
       Time: %(asctime)s: 
       Level: %(levelname)s: 
@@ -110,6 +120,12 @@ mailer.setFormatter(
       Path: %(pathname)s:
       Function: %(funcName)s:
       Message: %(message)s
+      <!DOCTYPE html>
+      <html>
+         <body>
+            <h1 style="color:SlateGray;">This is an HTML Email!</h1>
+         </body>
+      </html>
       """
     )
 )
@@ -117,7 +133,7 @@ logger.addHandler(file)
 logger.addHandler(console)
 logger.addHandler(mailer)
 
-log = logging.getLogger(__name__)
+log = getLogger(__name__)
 
 if __name__ == "__main__":
     asyncio.run(bot.main())

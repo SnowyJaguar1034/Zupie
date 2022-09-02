@@ -38,29 +38,28 @@ from discord import Colour, Embed
 log = getLogger(__name__)
 
 
+class BaseEmbed(Embed):
+    def __init__(self, arg_dict: dict, *args, **kwargs):
+        if arg_dict.key() not in kwargs:
+            kwargs[arg_dict.key()] = arg_dict.value()
+        super().__init__(*args, **kwargs)
+
+
 class LogEmbed(Embed):
     def __init__(self, *args, **kwargs):
-        if "timestamp" not in kwargs:
-            kwargs["timestamp"] = datetime.utcnow()
-        super().__init__(*args, **kwargs)
+        super().__init__(arg_dict={"timestamp": datetime.utcnow()}, *args, **kwargs)
 
 
 class PositiveEmbed(LogEmbed):
     def __init__(self, *args, **kwargs):
-        if "colour" not in kwargs:
-            kwargs["colour"] = Colour.dark_teal()
-        super().__init__(*args, **kwargs)
+        super().__init__(arg_dict={"colour": Colour.dark_teal()}, *args, **kwargs)
 
 
 class NegativeEmbed(LogEmbed):
     def __init__(self, *args, **kwargs):
-        if "colour" not in kwargs:
-            kwargs["colour"] = Colour.dark_magenta()
-        super().__init__(*args, **kwargs)
+        super().__init__(arg_dict={"colour": Colour.dark_magenta()}, *args, **kwargs)
 
 
 class NeutralEmbed(LogEmbed):
     def __init__(self, *args, **kwargs):
-        if "colour" not in kwargs:
-            kwargs["colour"] = Colour.dark_orange()
-        super().__init__(*args, **kwargs)
+        super().__init__(arg_dict={"colour": Colour.dark_orange()}, *args, **kwargs)
