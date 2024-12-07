@@ -46,7 +46,7 @@ requests==2.27.1
 shortuuid==1.0.8
 six==1.16.0
 sniffio==1.2.0
-starlette==0.17.1
+starlette==0.25.0
 tomli==2.0.1
 typing_extensions==4.1.1
 tzdata==2021.5
